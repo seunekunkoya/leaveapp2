@@ -1,0 +1,341 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+<style>
+body {
+    font-family: "Lato", sans-serif;
+    font-size: 13px;
+}
+
+table {
+  width: 100px;
+}
+
+.sidenav {
+    height: 100%;
+    margin-left: 250px;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    overflow-x: hidden;
+    padding-top: 50px;
+}
+
+.sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.main {
+    margin-left: 600px; /* Same as the width of the sidenav */
+    /* font-size: 18px;  Increased text to enable scrolling */
+    padding: 0px 10px;
+}
+.main #title{
+  margin-left: -50px;
+}
+.title1{
+  margin-left: 200px; 
+}
+
+.sub-title{
+  text-align: center;
+}
+/*tr.border_bottom td {
+  border-bottom:5pt solid black;
+  padding-bottom: 5px;
+}
+*/
+
+
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+</style>
+</head>
+<body>
+
+
+<div class="sidenav">
+
+  <h3 class="card-title">Application Details</h3>
+                            <table class="table table-user-information ">
+                                <tbody>
+                                    <tr>
+                                        <td>Staff Name:</td>
+                                        <td>Ojikutu David</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Leave Type:</td>
+                                        <td>Annual</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Applied Start Date:</td>
+                                        <td>12/02/2017</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Applied End Date</td>
+                                        <td>12/02/2017</td>
+                                    </tr> 
+                                    <tr>
+                                        <td>Reason:</td>
+                                        <td>It's my annual leave</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Phone number:</td>
+                                        <td>09876543</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><b>Officers to handover to : </b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Officer 1:</td>
+                                        <td>Dele Steve</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Officer 2:</td>
+                                        <td>Aliyu Jimoh</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Officer 3:</td>
+                                        <td>Dauda Longe</td>
+                                    </tr>
+                                    <tr>
+                                      <td colspan="2">
+                                        <input type="submit" name="" value="Add more comment" class="btn btn-primary">
+                                      </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+</div>
+
+<div class="main">
+  <div class="container">
+  <h2 id="title">Leave Application Review </h2>
+  <h3 class="card-title sub-title">Recommendations/Approvals</h3>
+    <h3 class="sub-title" >Supervisor 1</h3>
+                            <table class="table table-borderless ">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                           Recommended Start Date : 
+                                           <input type="text" name="" value="">
+                                        <td>
+                                           Recommended End Date :  
+                                           <input name="text" type="text" value=''>
+                                        </td>
+                                    </tr> 
+                                    </tr>
+                                    <tr>
+                                        <td rowspan ="2">
+                                          Comment: <textarea class="form-control" name="reason" id="reason" rows="2" cols="5" required></textarea> 
+                                        </td>               
+                                    </tr>
+                                    <tr class="border_bottom">
+                                      <td> Recommendation 
+                                        
+                                          <select style="width: 200px;" name="leavetype" class="form-control " id="leavetype" required>
+                                                  <option value = ''></option>
+                                                  <option value = 'casual'>Casual</option>
+                                                  <option value = 'annual'>Annual</option>
+                                                  <option value = 'medical'>Medical</option>
+                                                  <option value = 'study'>Study</option>
+                                                  <option value = 'post_doc'>Post Doctoral</option>
+                                              </select>
+
+                                        </td>
+                                        <td>
+                                            <input class="btn btn-primary" type="submit" name="" value="Save">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+          <!-- -->
+<hr style="height:3px;border:none;color:#333;background-color:#333;" />
+
+            <h3 class="sub-title">Supervisor 2</h3>
+                             <table class="table table-borderless ">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                           Recommended Start Date : 
+                                           <input type="text" name="" value="">
+                                        <td>
+                                           Recommended End Date :  
+                                           <input name="text" type="text" value=''>
+                                        </td>
+                                    </tr> 
+                                    </tr>
+                                    <tr>
+                                        <td rowspan ="2">
+                                          Comment: <textarea class="form-control" name="reason" id="reason" rows="2" cols="5" required></textarea> 
+                                        </td>               
+                                    </tr>
+                                    <tr class="border_bottom">
+                                      <td> Recommendation 
+                                        
+                                          <select style="width: 200px;" name="leavetype" class="form-control " id="leavetype" required>
+                                                  <option value = ''></option>
+                                                  <option value = 'casual'>Casual</option>
+                                                  <option value = 'annual'>Annual</option>
+                                                  <option value = 'medical'>Medical</option>
+                                                  <option value = 'study'>Study</option>
+                                                  <option value = 'post_doc'>Post Doctoral</option>
+                                              </select>
+
+                                        </td>
+                                        <td>
+                                            <input class="btn btn-primary" type="submit" name="" value="Save">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table> 
+              <!-- -->
+<hr style="height:3px;border:none;color:#333;background-color:#333;" />
+            
+            <h3 class="sub-title">Registar's Office</h3>
+               <table class="table table-borderless ">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                           Recommended Start Date : 
+                                           <input type="text" name="" value="">
+                                        <td>
+                                           Recommended End Date :  
+                                           <input name="text" type="text" value=''>
+                                        </td>
+                                    </tr> 
+                                    </tr>
+                                    <tr>
+                                        <td rowspan ="2">
+                                          Comment: <textarea class="form-control" name="reason" id="reason" rows="2" cols="5" required></textarea> 
+                                        </td>               
+                                    </tr>
+                                    <tr class="border_bottom">
+                                      <td> Recommendation 
+                                        
+                                          <select style="width: 200px;" name="leavetype" class="form-control " id="leavetype" required>
+                                                  <option value = ''></option>
+                                                  <option value = 'casual'>Casual</option>
+                                                  <option value = 'annual'>Annual</option>
+                                                  <option value = 'medical'>Medical</option>
+                                                  <option value = 'study'>Study</option>
+                                                  <option value = 'post_doc'>Post Doctoral</option>
+                                              </select>
+
+                                        </td>
+                                        <td>
+                                            <input class="btn btn-primary" type="submit" name="" value="Save">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+<hr style="height:3px;border:none;color:#333;background-color:#333;" />
+                <!-- -->
+            <h3 class="sub-title">VC office</h3>
+                 <table class="table table-borderless ">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                           Recommended Start Date : 
+                                           <input type="text" name="" value="">
+                                        <td>
+                                           Recommended End Date :  
+                                           <input name="text" type="text" value=''>
+                                        </td>
+                                    </tr> 
+                                    </tr>
+                                    <tr>
+                                        <td rowspan ="2">
+                                          Comment: <textarea class="form-control" name="reason" id="reason" rows="2" cols="5" required></textarea> 
+                                        </td>               
+                                    </tr>
+                                    <tr class="border_bottom">
+                                      <td> Recommendation 
+                                        
+                                          <select style="width: 200px;" name="leavetype" class="form-control " id="leavetype" required>
+                                                  <option value = ''></option>
+                                                  <option value = 'casual'>Casual</option>
+                                                  <option value = 'annual'>Annual</option>
+                                                  <option value = 'medical'>Medical</option>
+                                                  <option value = 'study'>Study</option>
+                                                  <option value = 'post_doc'>Post Doctoral</option>
+                                              </select>
+
+                                        </td>
+                                        <td>
+                                            <input class="btn btn-primary" type="submit" name="" value="Save">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+<hr style="height:3px;border:none;color:#333;background-color:#333;" />
+                    <!-- -->
+          <h3 class="sub-title">HR Office</h3>
+                    <table class="table table-borderless ">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                           Recommended Start Date : 
+                                           <input type="text" name="" value="">
+                                        <td>
+                                           Recommended End Date :  
+                                           <input name="text" type="text" value=''>
+                                        </td>
+                                    </tr> 
+                                    </tr>
+                                    <tr>
+                                        <td rowspan ="2">
+                                          Comment: <textarea class="form-control" name="reason" id="reason" rows="2" cols="5" required></textarea> 
+                                        </td>               
+                                    </tr>
+                                    <tr class="border_bottom">
+                                      <td> Recommendation 
+                                        
+                                          <select style="width: 200px;" name="leavetype" class="form-control " id="leavetype" required>
+                                                  <option value = ''></option>
+                                                  <option value = 'casual'>Casual</option>
+                                                  <option value = 'annual'>Annual</option>
+                                                  <option value = 'medical'>Medical</option>
+                                                  <option value = 'study'>Study</option>
+                                                  <option value = 'post_doc'>Post Doctoral</option>
+                                              </select>
+
+                                        </td>
+                                        <td>
+                                            <input class="btn btn-primary" type="submit" name="" value="Save">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>                         
+    <hr style="height:3px;border:none;color:#333;background-color:#333;" />
+</div>
+</div>
+<div class="container">
+  <div class="row">
+      <button class="btn btn-primary">Save</button>    
+  </div>
+  
+</div>
+    
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script> 
+</body>
+</html> 

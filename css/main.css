@@ -1,0 +1,47 @@
+.content {
+	max-width: 1400px;
+	padding-left: 300px;
+
+}
+.hed {
+			background-color: #ffffff;
+			color: black;
+			padding-left: 10px;
+			margin-top: 10px;
+			border-bottom: 10px solid #ffffff;
+			align-content: center;
+	}
+
+.para_1{
+			color: #808080;
+			padding: 20px;
+			font-family: "Times New Roman", Times, serif;
+
+		}
+.pend{
+	color: blue;
+	}
+
+.deny{
+	color: red;
+	}
+
+.approve{
+	color: green;
+	}
+.appr-status{
+	padding-top: 20px;
+	}
+.bor_der1{
+	border-style: groove;
+	padding: 20px;
+			
+}
+		/*Table CSS*/
+table, th, td {
+	border: 1px solid black;
+}
+
+th {
+background-color: #f7f7ef;
+}

@@ -1,0 +1,7 @@
+[15-Feb-2019 09:47:32 Africa/Lagos] PHP Warning:  fopen(): Filename cannot be empty in /home/attendance/public_html/lectureattendance/uploadchecks.php on line 95
+[15-Feb-2019 09:47:32 Africa/Lagos] PHP Warning:  fgetcsv() expects parameter 1 to be resource, boolean given in /home/attendance/public_html/lectureattendance/uploadchecks.php on line 96
+[15-Feb-2019 09:47:42 Africa/Lagos] PHP Warning:  fopen(): Filename cannot be empty in /home/attendance/public_html/lectureattendance/uploadchecks.php on line 95
+[15-Feb-2019 09:47:42 Africa/Lagos] PHP Warning:  fgetcsv() expects parameter 1 to be resource, boolean given in /home/attendance/public_html/lectureattendance/uploadchecks.php on line 96
+[15-Feb-2019 22:08:35 Africa/Lagos] PHP Catchable fatal error:  Object of class PDOStatement could not be converted to string in /home/attendance/public_html/class/attendanceupload.php on line 82
+[15-Feb-2019 22:08:37 Africa/Lagos] PHP Catchable fatal error:  Object of class PDOStatement could not be converted to string in /home/attendance/public_html/class/attendanceupload.php on line 82
+[15-Feb-2019 22:13:05 Africa/Lagos] PHP Catchable fatal error:  Object of class PDOStatement could not be converted to string in /home/attendance/public_html/class/attendanceupload.php on line 82
