@@ -60,6 +60,20 @@ class leaveclass extends general {
 		return $staffinfo;
 	}
 
+  function getSession()
+  {
+      $query = "
+                SELECT DISTINCT session 
+                FROM rptyears 
+                WHERE sessionid = (SELECT max(sessionid) FROM rptyears)
+         ";
+      $stmt = $this->db->prepare($query);
+      $stmt->execute();
+
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $session;
+  }
+
 	#LAT => Leave Application Table
 	public function insertLAT($staffid, $appno, $leavetype, $reason, $sdate, $edate, $session, $location, $phone, $officer1, $officer2, $officer3, $leavestatus, $leavestageid, $datecreated)
 	{
