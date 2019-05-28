@@ -171,7 +171,7 @@ class leaveclass extends general {
 	public function approvedleavesUpdate($resumed, $appno){
 
 		$qry3 = "UPDATE approvedleaves 
-                          SET resumed = :resumed
+                          SET resumestatus = :resumed
                             WHERE appno = :appno";
 
                 // prepare query for excecution
@@ -912,10 +912,10 @@ class leaveclass extends general {
 
 	public function getStaffRelease($staffid){
 
-		$query = "SELECT releaseddate, resumed, resumeddate
+		$query = "SELECT releaseddate, resumestatus, resumeddate
                         FROM approvedleaves
                           WHERE staffid LIKE '$staffid'
-                          AND resumed = 0";
+                          AND resumestatus = 0";
               
             $stmt = $this->db->prepare($query);
             $stmt->execute();
