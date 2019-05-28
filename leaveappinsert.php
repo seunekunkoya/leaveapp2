@@ -89,12 +89,9 @@ extract($_POST);
         $leavestageid = 1;
         $transactionid = 1;
         $role = "Applicant";//role of the staff as at the point of leave application
-        $session = '2018/2019';
-        /*
-        $semesterDetails = $lvobj->currentsemester();
-        $curSession = $semesterDetails['currentsession'];
-        echo $curSession;
-        */
+        //$session = '2018/2019';
+        $session = $lvobj->getSession();
+        
         $remarks = '';//so as to be able to use it as an argument
         $edate = date('Y-m-d', strtotime($edate));
         $sdate = date('Y-m-d', strtotime($sdate));

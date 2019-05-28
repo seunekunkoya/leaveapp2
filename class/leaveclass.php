@@ -71,14 +71,16 @@ class leaveclass extends general {
       $stmt->execute();
 
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
-      return $session;
+      return $row['session'];
   }
 
 	#LAT => Leave Application Table
-	public function insertLAT($staffid, $appno, $leavetype, $reason, $sdate, $edate, $session, $location, $phone, $officer1, $officer2, $officer3, $leavestatus, $leavestageid, $datecreated)
-	{
-		$stmt = $this->db->prepare("INSERT INTO leaveapplication(staffid, appno, leavetype, reason, startdate, enddate, session, location, phone, officer1,officer2, officer3, leavestatus, leavestageid, datecreated) 
-                                VALUES(:staffid, :appno, :leavetype, :reason, :startdate, :enddate, :session, :location, :phone, :officer1, :officer2, :officer3, :leavestatus, :leavestageid, :datecreated )");
+  #insert values into leave application
+  public function insertLAT($staffid, $appno, $leavetype, $reason, $sdate, $edate, $numdays, $session, $location, $phone, $officer1, $officer2, $officer3, $leavestatus, $leavestageid, $datecreated)
+  {
+    
+    $stmt = $this->db->prepare("INSERT INTO leaveapplication(staffid, appno, leavetype, reason, startdate, enddate, numdays, session, location, phone, officer1,officer2, officer3, leavestatus, leavestageid, datecreated) 
+                                VALUES(:staffid, :appno, :leavetype, :reason, :startdate, :enddate, :numdays, :session, :location, :phone, :officer1, :officer2, :officer3, :leavestatus, :leavestageid, :datecreated )");
 
                     $stmt->bindparam(':staffid', $staffid);
                     $stmt->bindparam(':appno', $appno);
@@ -86,6 +88,7 @@ class leaveclass extends general {
                     $stmt->bindparam(':reason', $reason);
                     $stmt->bindparam(':startdate', $sdate);
                     $stmt->bindparam(':enddate', $edate);
+                    $stmt->bindparam(':numdays', $numdays);
                     $stmt->bindparam(':session', $session);
                     $stmt->bindparam(':location', $location);
                     $stmt->bindparam(':phone', $phone);
@@ -97,12 +100,14 @@ class leaveclass extends general {
                     $stmt->bindparam(':datecreated', $datecreated);
 
                     if($stmt->execute()){
-                    	return true;
+                      return true;
                     }
                     else{
-                    	return false;
+                      return false;
                     }
-	}//end of insertLAT
+  
+
+  }//end of insertLAT
 
 	public function insertLT($appno, $staffid, $role, $transactionid, $timeviewed, $comment = null, $status, $recstartdate, $recenddate, $remarks = null)
   {

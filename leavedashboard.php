@@ -19,7 +19,10 @@ $cat = $_SESSION['staffinfo']['category'];
 $deanid = $_SESSION['staffinfo']['dean'];
 $dfs = $_SESSION['staffinfo']['dfs'];
 
-$cursession = '2018/2019';
+//$cursession = '2018/2019';
+
+$cursession = $lvobj->getSession();
+echo '<br><br>'.$cursession;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
