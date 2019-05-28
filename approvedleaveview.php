@@ -76,16 +76,15 @@ if(isset($_GET['id']))
 
           echo "<tr>";
             echo "<th> No</th>";
-            echo "<th> Staff Name</th>";
-            echo "<th> Dept</th>";
             echo "<th> Appno</th>";
             echo "<th> Leave Type</th>";
+            echo "<th> Reason</th>";
             echo "<th> Start Date</th>";
             echo "<th> End Date</th>";
             echo "<th> Days</th>";
             echo "<th> Location</th>";
-            echo  "<th> Phone</th>";
-            //echo  "<th> Release Date</th>";
+            echo "<th> Staff Name</th>";
+            echo "<th> Application Date</th>";
             echo "<th> Action</th>";
          echo "</tr>";
  
@@ -99,17 +98,17 @@ if(isset($_GET['id']))
                    //create new row per record
                    echo "<tr>";
                       echo "<td>".$n++."</td>";
-                      //echo "<td>".date('j M, Y - h:i:s', strtotime($row['timeviewed']))."</td>";
-                      echo "<td>".$lvobj->getname($row['staffid'])."</td>";
-                      echo "<td>".$row['dept']."</td>";
                       echo "<td>".$row['appno']."</td>";
                       echo "<td>".$row['leavetype']."</td>";
-                     // echo "<td>".$row['reason']."</td>";
+                      echo "<td>".$row['reason']."</td>";
                       echo "<td>".date('j M, Y', strtotime($row['apstartdate']))."</td>";
                       echo "<td>".date('j M, Y', strtotime($row['apenddate']))."</td>";
                       echo "<td>".$lvobj->numdays($row['apstartdate'], $row['apenddate'])."</td>";
                       echo "<td>".$row['location']."</td>";
-                      echo "<td>".$row['phone']."</td>";
+                      echo "<td>".$lvobj->getname($row['staffid'])."</td>";
+                      echo "<td>".date('j M, Y', strtotime($row['datecreated']))."</td>";
+                      //echo "<td>".$row['dept']."</td>";                                          
+                      //echo "<td>".$row['phone']."</td>";
                       //echo "<td>".$row['releaseddate']."</td>";
                       //echo "<td>".$row['status']."</td>";
                       

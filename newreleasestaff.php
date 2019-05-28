@@ -20,20 +20,6 @@ $_SESSION['staffinfo'] = $staffdetails;
 
 extract($_POST);
 
-$numRel = $lvobj->numdays($startFr, $toRes);
-$numAppr = $lvobj->numdays($sdate, $edate);
-
-if($numRel > $numAppr)
-{
-  $result['daysGreater'] = true;
-  $result['numrel'] = $numRel;
-  $result['numappr'] = $numAppr;
-}
-else 
-{
-
-if($status == 'Released'){
-
 //get transaction id for the current application stream 
 $track = $lvobj->trackid($appno); //this is the transactionid which will later be increased by 1
 $transactionid = $track + 1;
@@ -44,6 +30,8 @@ $dateofrelease = date('Y-m-d H:i:s');
 
 $edate = date('Y-m-d', strtotime($edate));
 $sdate = date('Y-m-d', strtotime($sdate));
+$toRes = date('Y-m-d', strtotime($toRes));
+$startFr = date('Y-m-d', strtotime($startFr));
 
 $comment = '';
  
@@ -55,8 +43,6 @@ $comment = '';
           {    
             if($lvobj->updateLeaveApplication($status, $stage, $appno));
             {
-               // $message = "Query Submitted";
-               // echo $message;
               $result['insert'] = true;
             }
           }//end of if stmt1
@@ -65,19 +51,12 @@ $comment = '';
     else 
     {
       $result['error'] = true;
-      // $error="Not Inserted,Some Problem occur.";
-      // print_r($stmtu->errorInfo());
-      //echo json_encode($error);
-      //echo $error;
+      
     }//end of else statement
  }//end of try
  catch(PDOException $e){
      echo "Error: " . $e->getMessage();
   }//end of catch
-
- }//end of if Released
-
-}//end of days test
 
 echo json_encode($result);
 

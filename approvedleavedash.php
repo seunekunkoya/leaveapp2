@@ -27,8 +27,7 @@ try {
         $chkstmt1 = $lvobj->checkSupervisor1($appno, $staffid);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  #A QUICK QUERY TO CHECK IF A SUPERVISOR HAS ACTED ON AN APPLICATION
-        $stmtApprovedDates = $lvobj->getApprovedDates($appno);
+     $stmtApprovedDates = $lvobj->getApprovedDates($appno);
         
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         #Query to select leave details of the $this staff
@@ -333,19 +332,18 @@ try {
 
     $(document).ready(function(){
 
-      
-          $('select#reco').change(function(){
+            $('select#reco').change(function(){
 
             var appno = $('#appno').val();
             var staffid = $('#staffid').val();
             var sdate = $('#sdate').val();
             var edate = $('#edate').val();
             var remarks = $('#remarks').val();
-            var status = $('#reco').val();
+            var status = $(this).val();
             var role = $('#role').val();
             var stage = $('#stage').val();
 
-            //alert(appno+staffid+sdate+edate+remarks+reco+role);
+           // console.log(appno+staffid+sdate+edate+remarks+status+role);
 
             var encappno = window.btoa(staffid);
             var appnum = window.btoa(appno);
@@ -377,9 +375,6 @@ try {
 
                      $('#numd').change(function(){
                         var numd = $(this).val();
-                        //alert(tada + ' ,' + numD);
-                        //$( "#startFr" ).prop( "disabled", true );
-                        //$( "#toRes" ).prop( "disabled", true );
 
                         $.ajax({
                               type: "POST",
@@ -388,7 +383,6 @@ try {
                               dataType: "json",
                                 success: function(result) {
                                   if(result.numGreater){
-                                    console.log(appnum);
                                     $('#modalContent').html('<h5 class="stylo">Number of days greater than approved days. Click <a data-dismiss="modal" class ="btn-style" href="#">here</a> to re-enter the number of days. </h5>');
                                     $('#myModal1').modal({backdrop: false, keyboard: false});
                                     //$('#myModal1').modal("show");
@@ -425,12 +419,13 @@ try {
                             var startFr = $('#startFr').val();
                             var toRes = $('#toRes').val();
 
-
                             console.log(sdate+' '+edate+ 'Release '+ toRes +' '+startFr);
 
+                            /*
                             $.ajax({
                               type: "POST",
                               url: "newreleasestaff.php",
+                              dataType: "json",
                               data: {
                                   appno: appno,
                                   staffid:staffid,
@@ -444,15 +439,8 @@ try {
                                   startFr: startFr,
                                   toRes: toRes
                               },
-                              dataType: "json",
                                 success: function(result) {
 
-                                  if(result.daysGreater)
-                                  {
-                                    $('#modalContent').html('<h4>Please Enter number of days not greater than the approved number of days.</h4>');
-                                    $('#myModal1').modal({backdrop: false, keyboard: false});
-                                    console.log('Approved days = '+result.numappr +'Released days = '+result.numrel)
-                                  }
                                   if(result.insert)
                                   {
                                     $(location).attr('href', url);
@@ -465,25 +453,25 @@ try {
                                           
                                 }
                           });//ajax ends
+                          */
 
-                        /*
                            $('#error').load('newreleasestaff.php', {
                                   appno: appno,
                                   staffid:staffid,
                                   sdate: sdate,
                                   edate: edate,
                                   remarks: remarks,
-                                  reco: reco,
+                                  status: status,
                                   role: role,
                                   stage: stage,
                                   numD: numD,
                                   startFr: startFr,
                                   toRes: toRes
-                           });/*, 
-                          // function(){
-                              //alert("Approval Sent");
-                              //$(location).attr('href', url);
-                          });*/
+                           }, 
+                           function(){
+                              console.log("Approval Sent");
+                             //$(location).attr('href', url);
+                          });
 
                     }); 
               }//end of if released

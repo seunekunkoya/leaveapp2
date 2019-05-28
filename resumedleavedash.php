@@ -30,13 +30,6 @@ try {
         #A QUICK QUERY TO CHECK IF A SUPERVISOR HAS ACTED ON AN APPLICATION
         $chkstmt1 = $lvobj->checkSupervisor1($appno, $staffid);
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  #A QUICK QUERY TO CHECK IF A SUPERVISOR HAS ACTED ON AN APPLICATION
-        $chkstmt = $lvobj->checkSupervisor($appno);
-        
-        $chkqrynum = $chkstmt->rowCount();
-        $datenum = $chkstmt->rowCount();
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         #Query to select leave details of the $this staff
         $stmtleave = $lvobj->leaveDetails($appno);

@@ -93,8 +93,6 @@ if(isset($_GET['id']))
      #Table begins below
           echo "<tr>";
             echo "<th> No</th>";
-            echo "<th> Action Date</th>";
-            echo "<th> Staff Name</th>";
             echo "<th> Appno</th>";
             echo "<th> Leave Type</th>";
             echo "<th> Reason</th>";
@@ -102,8 +100,8 @@ if(isset($_GET['id']))
             echo "<th> End Date</th>";
             echo "<th> Days</th>";
             echo "<th> Location</th>";
-            //echo "<th> Remarks</th>";
-            //echo  "<th> Status</th>";
+            echo "<th> Staff Name</th>";
+            echo "<th> Application Date</th>";
             echo "<th> Action</th>";
          echo "</tr>";
  
@@ -112,22 +110,18 @@ if(isset($_GET['id']))
           
           while($row=$stmt->fetch(PDO::FETCH_ASSOC))         
                 {
-                   //extract row this truns array keys into variables
-                   //extract($row);
-                   //create new row per record
+
                    echo "<tr>";
                       echo "<td>".$n++."</td>";
-                      echo "<td>".date('j M, Y - h:i:s', strtotime($row['timeviewed']))."</td>";
-                      echo "<td>".$lvobj->getname($row['staffid'])."</td>";
                       echo "<td>".$row['appno']."</td>";
                       echo "<td>".$row['leavetype']."</td>";
                       echo "<td>".$row['reason']."</td>";
-                      echo "<td>".date('j M, Y', strtotime($row['startdate']))."</td>";
-                      echo "<td>".date('j M, Y', strtotime($row['enddate']))."</td>";
-                      echo "<td>".$lvobj->numdays($row['startdate'], $row['enddate'])."</td>";
+                      echo "<td>".date('j M, Y', strtotime($row['recstartdate']))."</td>";
+                      echo "<td>".date('j M, Y', strtotime($row['recenddate']))."</td>";
+                      echo "<td>".$lvobj->numdays($row['recstartdate'], $row['recenddate'])."</td>";
                       echo "<td>".$row['location']."</td>";
-                      //echo "<td>".$row['remarks']."</td>";
-              //        echo "<td>".$row['status']."</td>";
+                      echo "<td>".$lvobj->getname($row['staffid'])."</td>";
+                      echo "<td>".date('j M, Y', strtotime($row['datecreated']))."</td>";
                       echo "<td>";
                           //view a single record
                       $appno = $row['appno'];
@@ -152,15 +146,13 @@ if(isset($_GET['id']))
   elseif ($id == $deanid){
           
           $stmt = $lvobj->getDeanView($deanid, $kol, $cat); 
+          
           $num = $stmt->rowCount();
             
          #Table begins below
 
           echo "<tr>";
             echo "<th> No</th>";
-            echo "<th> Action Date</th>";
-            echo "<th> Staff Name</th>";
-            echo "<th> Dept</th>";
             echo "<th> Appno</th>";
             echo "<th> Leave Type</th>";
             echo "<th> Reason</th>";
@@ -168,34 +160,29 @@ if(isset($_GET['id']))
             echo "<th> End Date</th>";
             echo "<th> Days</th>";
             echo "<th> Location</th>";
-            //echo "<th> Remarks</th>";
-            //echo  "<th> Status</th>";
+            echo "<th> Staff Name</th>";
+            echo "<th> Application Date</th>";
             echo "<th> Action</th>";
          echo "</tr>";
- 
+
+
         if ($num > 0) { //if starts here
           $n = 1;
           
           while($row=$stmt->fetch(PDO::FETCH_ASSOC))         
                 {
-                   //extract row this truns array keys into variables
-                   //extract($row);
-                   //create new row per record
-                   echo "<tr>";
+                    echo "<tr>";
                       echo "<td>".$n++."</td>";
-                      echo "<td>".date('j M, Y - h:i:s', strtotime($row['timeviewed']))."</td>";
-                      echo "<td>".$lvobj->getname($row['staffid'])."</td>";
-                      echo "<td>".$row['dept']."</td>";
                       echo "<td>".$row['appno']."</td>";
                       echo "<td>".$row['leavetype']."</td>";
                       echo "<td>".$row['reason']."</td>";
-                      echo "<td>".date('j M, Y', strtotime($row['startdate']))."</td>";
-                      echo "<td>".date('j M, Y', strtotime($row['enddate']))."</td>";
-                      echo "<td>".$lvobj->numdays($row['startdate'], $row['enddate'])."</td>";
+                      echo "<td>".date('j M, Y', strtotime($row['recstartdate']))."</td>";
+                      echo "<td>".date('j M, Y', strtotime($row['recenddate']))."</td>";
+                      echo "<td>".$lvobj->numdays($row['recstartdate'], $row['recenddate'])."</td>";
                       echo "<td>".$row['location']."</td>";
-                      //echo "<td>".$row['remarks']."</td>";
-              //        echo "<td>".$row['status']."</td>";
-                      
+                      echo "<td>".$lvobj->getname($row['staffid'])."</td>";
+                      echo "<td>".date('j M, Y', strtotime($row['datecreated']))."</td>";
+                                 
                       echo "<td>";
                           //view a single record
                       $appno = $row['appno'];
@@ -223,12 +210,8 @@ if(isset($_GET['id']))
       $num = $stmt->rowCount();
     
        #Table begins below
-
           echo "<tr>";
             echo "<th> No</th>";
-            echo "<th> Action Date</th>";
-            echo "<th> Staff Name</th>";
-            echo "<th> Dept</th>";
             echo "<th> Appno</th>";
             echo "<th> Leave Type</th>";
             echo "<th> Reason</th>";
@@ -236,8 +219,8 @@ if(isset($_GET['id']))
             echo "<th> End Date</th>";
             echo "<th> Days</th>";
             echo "<th> Location</th>";
-            //echo "<th> Remarks</th>";
-            //echo  "<th> Status</th>";
+            echo "<th> Staff Name</th>";
+            echo "<th> Application Date</th>";
             echo "<th> Action</th>";
          echo "</tr>";
  
@@ -246,24 +229,17 @@ if(isset($_GET['id']))
           
           while($row=$stmt->fetch(PDO::FETCH_ASSOC))         
                 {
-                   //extract row this truns array keys into variables
-                   //extract($row);
-                   //create new row per record
                    echo "<tr>";
                       echo "<td>".$n++."</td>";
-                      echo "<td>".date('j M, Y - h:i:s', strtotime($row['timeviewed']))."</td>";
-                      echo "<td>".$lvobj->getname($row['staffid'])."</td>";
-                      echo "<td>".$row['dept']."</td>";
                       echo "<td>".$row['appno']."</td>";
                       echo "<td>".$row['leavetype']."</td>";
                       echo "<td>".$row['reason']."</td>";
-                      echo "<td>".date('j M, Y', strtotime($row['startdate']))."</td>";
-                      echo "<td>".date('j M, Y', strtotime($row['enddate']))."</td>";
-                      echo "<td>".$lvobj->numdays($row['startdate'], $row['enddate'])."</td>";
+                      echo "<td>".date('j M, Y', strtotime($row['recstartdate']))."</td>";
+                      echo "<td>".date('j M, Y', strtotime($row['recenddate']))."</td>";
+                      echo "<td>".$lvobj->numdays($row['recstartdate'], $row['recenddate'])."</td>";
                       echo "<td>".$row['location']."</td>";
-              //        echo "<td>".$row['remarks']."</td>";
-              //        echo "<td>".$row['status']."</td>";
-                      
+                      echo "<td>".$lvobj->getname($row['staffid'])."</td>";
+                      echo "<td>".date('j M, Y', strtotime($row['datecreated']))."</td>";   
                       echo "<td>";
                           //view a single record
                       $appno = $row['appno'];
@@ -293,12 +269,8 @@ if(isset($_GET['id']))
     $num = $stmt->rowCount();
 
        #Table begins below
-
           echo "<tr>";
             echo "<th> No</th>";
-            echo "<th> Action Date</th>";
-            echo "<th> Staff Name</th>";
-            echo "<th> Dept</th>";
             echo "<th> Appno</th>";
             echo "<th> Leave Type</th>";
             echo "<th> Reason</th>";
@@ -306,8 +278,8 @@ if(isset($_GET['id']))
             echo "<th> End Date</th>";
             echo "<th> Days</th>";
             echo "<th> Location</th>";
-        //    echo "<th> Remarks</th>";
-        //    echo  "<th> Status</th>";
+            echo "<th> Staff Name</th>";
+            echo "<th> Application Date</th>";
             echo "<th> Action</th>";
          echo "</tr>";
  
@@ -316,26 +288,20 @@ if(isset($_GET['id']))
           
           while($row=$stmt->fetch(PDO::FETCH_ASSOC))         
                 {
-                   //extract row this truns array keys into variables
-                   //extract($row);
-                   //create new row per record
+
                    echo "<tr>";
                       echo "<td>".$n++."</td>";
-                      echo "<td>".date('j M, Y - h:i:s', strtotime($row['timeviewed']))."</td>";
-                      echo "<td>".$lvobj->getname($row['staffid'])."</td>";
-                      echo "<td>".$row['dept']."</td>";
                       echo "<td>".$row['appno']."</td>";
                       echo "<td>".$row['leavetype']."</td>";
                       echo "<td>".$row['reason']."</td>";
-                      echo "<td>".date('j M, Y', strtotime($row['startdate']))."</td>";
-                      echo "<td>".date('j M, Y', strtotime($row['enddate']))."</td>";
-                      echo "<td>".$lvobj->numdays($row['startdate'], $row['enddate'])."</td>";
+                      echo "<td>".date('j M, Y', strtotime($row['recstartdate']))."</td>";
+                      echo "<td>".date('j M, Y', strtotime($row['recenddate']))."</td>";
+                      echo "<td>".$lvobj->numdays($row['recstartdate'], $row['recenddate'])."</td>";
                       echo "<td>".$row['location']."</td>";
-          //            echo "<td>".$row['remarks']."</td>";
-              //        echo "<td>".$row['status']."</td>";
-                      
+                      echo "<td>".$lvobj->getname($row['staffid'])."</td>";
+                      echo "<td>".date('j M, Y', strtotime($row['datecreated']))."</td>";   
                       echo "<td>";
-                          //view a single record
+                      //view a single record
                       $appno = $row['appno'];
                       echo '<a href="leavedash.php?appno='.base64_encode($appno).'" class="btn btn-sm m-r-0em">Review</a>';
                           //link to update record
@@ -363,9 +329,6 @@ if(isset($_GET['id']))
 
           echo "<tr>";
             echo "<th> No</th>";
-            echo "<th> Action Date</th>";
-            echo "<th> Staff Name</th>";
-            echo "<th> Dept</th>";
             echo "<th> Appno</th>";
             echo "<th> Leave Type</th>";
             echo "<th> Reason</th>";
@@ -373,8 +336,8 @@ if(isset($_GET['id']))
             echo "<th> End Date</th>";
             echo "<th> Days</th>";
             echo "<th> Location</th>";
-            //echo "<th> Remarks</th>";
-            //echo  "<th> Status</th>";
+            echo "<th> Staff Name</th>";
+            echo "<th> Application Date</th>";
             echo "<th> Action</th>";
          echo "</tr>";
  
@@ -388,19 +351,15 @@ if(isset($_GET['id']))
                    //create new row per record
                    echo "<tr>";
                       echo "<td>".$n++."</td>";
-                      echo "<td>".date('j M, Y - h:i:s', strtotime($row['timeviewed']))."</td>";
-                      echo "<td>".$lvobj->getname($row['staffid'])."</td>";
-                      echo "<td>".$row['dept']."</td>";
                       echo "<td>".$row['appno']."</td>";
                       echo "<td>".$row['leavetype']."</td>";
                       echo "<td>".$row['reason']."</td>";
-                      echo "<td>".date('j M, Y', strtotime($row['startdate']))."</td>";
-                      echo "<td>".date('j M, Y', strtotime($row['enddate']))."</td>";
-                      echo "<td>".$lvobj->numdays($row['startdate'], $row['enddate'])."</td>";
+                      echo "<td>".date('j M, Y', strtotime($row['recstartdate']))."</td>";
+                      echo "<td>".date('j M, Y', strtotime($row['recenddate']))."</td>";
+                      echo "<td>".$lvobj->numdays($row['recstartdate'], $row['recenddate'])."</td>";
                       echo "<td>".$row['location']."</td>";
-              //        echo "<td>".$row['remarks']."</td>";
-                      //echo "<td>".$row['status']."</td>";
-                      
+                      echo "<td>".$lvobj->getname($row['staffid'])."</td>";
+                      echo "<td>".date('j M, Y', strtotime($row['datecreated']))."</td>";   
                       echo "<td>";
                           //view a single record
                       $appno = $row['appno'];

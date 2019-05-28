@@ -24,26 +24,25 @@ $_SESSION['staffinfo'] = $staffdetails;
   $appno  = base64_decode($_GET['appno']); //? base64_decode($_GET['appno']): header("Location:logout.php") ;
 
 try {
-        #A QUICK QUERY TO CHECK IF A SUPERVISOR HAS ACTED ON AN APPLICATION
-        
-        $chkstmt1 = $lvobj->checkSupervisor($appno);
+        #extract reccommended date of appno        
+        $reccDates = $lvobj->extractRecc($appno);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   #A QUICK QUERY TO CHECK IF A SUPERVISOR HAS ACTED ON AN APPLICATION
         $chkstmt = $lvobj->checkSupervisor1($appno, $staffid);
-        
-        $chkqrynum = $chkstmt->rowCount();
-        $datenum = $chkstmt->rowCount();
         $supnum = $chkstmt->rowCount();
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         #Query to select leave details of the $this staff
         $stmtleave = $lvobj->leaveDetails($appno);   
         $num = $stmtleave->rowCount();
+
+        print_r($stmtleave);
         
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         #Query to select leave progress of staff
         $stmtr = $lvobj->leaveProgress($appno);        
         $numtr = $stmtr->rowCount();  
+        print_r($stmtr);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
         #Query to select leave history. staffid is first queried from the leave application tableand then used to find the leave history from the approve leaves table. 
@@ -285,7 +284,7 @@ try {
         
 <hr style="margin: 0px 0 0px;">
                     <?php
-                         }//end of while
+                        }//end of while
                     }//end of if statement
                     else {
                        // echo "Application in Progress";
@@ -354,7 +353,7 @@ if(!isset($hodid) || !isset($deanid) || !isset($hro) || !isset($vco) || !isset($
              echo '<tr>';
                echo '<td><b>Recommended Start date</b></td>';
               
-            while($lvdate = $chkstmt1->fetch(PDO::FETCH_ASSOC))
+            while($lvdate = $reccDates->fetch(PDO::FETCH_ASSOC))
               {
                   $rdt = strtotime($lvdate["recstartdate"]);
                   $rdate1 = date("d-M-y", $rdt); 
@@ -420,7 +419,7 @@ else if ($_SESSION['staffid'] == $_SESSION['staffinfo']['dean']) {
              echo '<tr>';
                echo '<td><b>Recommended Start date</b></td>';
     
-            while($lvdate=$chkstmt1->fetch(PDO::FETCH_ASSOC))
+            while($lvdate=$reccDates->fetch(PDO::FETCH_ASSOC))
               {
                   $rdt = strtotime($lvdate["recstartdate"]);
                   $rdate1 = date("d-M-y", $rdt); 
@@ -484,7 +483,7 @@ else if ($_SESSION['staffid'] == $_SESSION['staffinfo']['dean']) {
              echo '<tr>';
                echo '<td><b>Recommended Start date</b></td>';
          
-            while($lvdate=$chkstmt1->fetch(PDO::FETCH_ASSOC))
+            while($lvdate=$reccDates->fetch(PDO::FETCH_ASSOC))
               {   
                 $rdt = strtotime($lvdate["recstartdate"]);
                 $rdate1 = date("d-M-y", $rdt); 
@@ -550,7 +549,7 @@ else if ($_SESSION['staffid'] == $_SESSION['staffinfo']['dean']) {
              echo '<tr>';
                echo '<td>Recommended Start date</td>';
               
-            while($lvdate=$chkstmt1->fetch(PDO::FETCH_ASSOC))
+            while($lvdate=$reccDates->fetch(PDO::FETCH_ASSOC))
               {
                   $rdt = strtotime($lvdate["recstartdate"]);
                   $rdate1 = date("d-M-y", $rdt); 
@@ -616,7 +615,7 @@ else if ($_SESSION['staffid'] == $_SESSION['staffinfo']['dean']) {
              echo '<tr>';
                echo '<td>Recommended Start date</td>';
               
-            while($lvdate=$chkstmt1->fetch(PDO::FETCH_ASSOC))
+            while($lvdate=$reccDates->fetch(PDO::FETCH_ASSOC))
               { 
                 $rdt = strtotime($lvdate["recstartdate"]);
                 $rdate1 = date("d-M-y", $rdt); 
@@ -828,7 +827,6 @@ else if ($_SESSION['staffid'] == $_SESSION['staffinfo']['dean']) {
    });   
 
   $('#btn-save').click(function(){
-           // $('.rec-form').hide();
           
       var appno = $('#appno').val();
       var staffid = $('#staffid').val();
@@ -849,8 +847,7 @@ else if ($_SESSION['staffid'] == $_SESSION['staffinfo']['dean']) {
       }
       else {
 
-            if (reco == 'Approved') {
-              console.log('Approve');
+            if (status == 'Approved') {
                $('#error').load('leaveapprove.php', {
                    appno: appno,
                    staffid:staffid,
@@ -865,24 +862,23 @@ else if ($_SESSION['staffid'] == $_SESSION['staffinfo']['dean']) {
                    $(location).attr('href', url);
               });
                      
-            }//end of if reco
+            }//end of if status
                   
            else {        
 
-              //alert(reason + edate + sdate + reco);
+            
               $('#error').load('leaverec.php', {
                   appno: appno,
                   staffid:staffid,
                   sdate: sdate,
                   edate: edate,
                   remarks: remarks,
-                  reco: reco,
+                  status: status,
                   role: role,
                   stage: stage
                }, 
               function(){
-                //alert("Recommendation Saved");
-                //$(location).attr('href', url);
+                $(location).attr('href', url);
               });
           }//end of else
       }//end of main else

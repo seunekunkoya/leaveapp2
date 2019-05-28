@@ -60,7 +60,6 @@ class leaveclass extends general {
 		return $staffinfo;
 	}
 
-
 	#LAT => Leave Application Table
 	public function insertLAT($staffid, $appno, $leavetype, $reason, $sdate, $edate, $session, $location, $phone, $officer1, $officer2, $officer3, $leavestatus, $leavestageid, $datecreated)
 	{
@@ -89,33 +88,32 @@ class leaveclass extends general {
                     else{
                     	return false;
                     }
-	
-
 	}//end of insertLAT
 
-	public function insertLT($appno, $staffid, $role, $transactionid, $datecreated, $reason, $leavestatus, $sdate, $edate)
-	{
-		$query1 = "INSERT INTO leavetransaction (appno, tstaffid, role, transactionid, timeviewed, comment, status, recstartdate, recenddate) VALUE (:appno, :tstaffid, :role, :transactionid, :timeviewed, :comment, :leavestatus, :startdate, :enddate)";
+	public function insertLT($appno, $staffid, $role, $transactionid, $timeviewed, $comment = null, $status, $recstartdate, $recenddate, $remarks = null)
+  {
+    $query1 = "INSERT INTO leavetransaction (appno, tstaffid, role, transactionid, timeviewed, comment , status, recstartdate, recenddate, remarks) VALUE (:appno, :tstaffid, :role, :transactionid, :timeviewed, :comment, :status, :recstartdate, :recenddate, :remarks)";
                         $stmt1 = $this->db->prepare($query1);
 
                         $stmt1->bindparam(':appno', $appno);
                         $stmt1->bindparam(':tstaffid', $staffid);
                         $stmt1->bindparam(':role', $role);
                         $stmt1->bindparam(':transactionid', $transactionid);
-                        $stmt1->bindparam(':timeviewed', $datecreated);
-                        $stmt1->bindparam(':comment', $reason);
-                        $stmt1->bindparam(':leavestatus', $leavestatus);
-                        $stmt1->bindparam(':startdate', $sdate);
-                        $stmt1->bindparam(':enddate', $edate);
+                        $stmt1->bindparam(':timeviewed', $timeviewed);
+                        $stmt1->bindparam(':comment', $comment);
+                        $stmt1->bindparam(':status', $status);
+                        $stmt1->bindparam(':recstartdate', $recstartdate);
+                        $stmt1->bindparam(':recenddate', $recenddate);
+                        $stmt1->bindParam(':remarks', $remarks);
 
-                        if($stmt1->execute()){
-                    		return true;
-	                    }
-	                    else{
-	                    	return false;
-	                    }
+                      if($stmt1->execute()){
+                        return true;
+                      }
+                      else{
+                        return false;
+                      }
 
-	}
+  }
 
 	public function insertLTS($appno, $staffid, $role, $transactionid, $timeviewed, $reco, $sdate, $edate, $remarks){
 
@@ -457,7 +455,7 @@ class leaveclass extends general {
 
 	public function getHodView($hodid, $dept, $cat){
 		#Query to select leave details of the $this staff
-          $query = "SELECT lt.timeviewed, l.staffid, lt.appno, lt.tstaffid, l.leavetype, l.reason, l.startdate, l.enddate, l.location, lt.remarks, lt.status, st.coldirid, st.hod, st.dean, st.dept
+          $query = "SELECT lt.timeviewed, l.staffid, lt.appno, lt.tstaffid, l.leavetype, l.reason, lt.recstartdate, lt.recenddate, l.location, lt.remarks, lt.status, st.coldirid, st.hod, st.dean, st.dept, l.datecreated
           FROM leavetransaction AS lt
           INNER JOIN leaveapplication AS l
           ON lt.appno = l.appno
@@ -479,7 +477,7 @@ class leaveclass extends general {
 
 	public function getDeanView($deanid, $kol, $cat){
 
-		$query = "SELECT lt.timeviewed, l.staffid, lt.appno, lt.tstaffid, l.leavetype, l.reason, l.startdate, l.enddate, l.location, lt.remarks, lt.status, st.coldirid, st.hod, st.dean, st.dept
+		$query = "SELECT lt.timeviewed, l.staffid, lt.appno, lt.tstaffid, l.leavetype, l.reason, lt.recstartdate, lt.recenddate, l.location, lt.remarks, lt.status, st.coldirid, st.hod, st.dean, st.dept, l.datecreated
           FROM leavetransaction AS lt
           INNER JOIN leaveapplication AS l
           ON lt.appno = l.appno
@@ -502,7 +500,7 @@ class leaveclass extends general {
 	public function getHrView($hro){
 
 		$query = "
-				  SELECT lt.timeviewed, l.staffid, lt.appno, lt.tstaffid, l.leavetype, l.reason, l.startdate, l.enddate, l.location, lt.remarks, lt.status, st.coldirid, st.hod, st.dean, st.dept
+				  SELECT lt.timeviewed, l.staffid, lt.appno, lt.tstaffid, l.leavetype, l.reason, lt.recstartdate, lt.recenddate, l.location, lt.remarks, lt.status, st.coldirid, st.hod, st.dean, st.dept, l.datecreated
 		          FROM leavetransaction AS lt
 		          INNER JOIN leaveapplication AS l
 		          ON lt.appno = l.appno
@@ -524,7 +522,7 @@ class leaveclass extends general {
 
 	public function getRegView($rego){
 
-		$query = "SELECT lt.timeviewed, l.staffid, lt.appno, lt.tstaffid, l.leavetype, l.reason, l.startdate, l.enddate, l.location, lt.remarks, lt.status, st.coldirid, st.hod, st.dean, st.dept
+		$query = "SELECT lt.timeviewed, l.staffid, lt.appno, lt.tstaffid, l.leavetype, l.reason, lt.recstartdate, lt.recenddate, l.location, lt.remarks, lt.status, st.coldirid, st.hod, st.dean, st.dept, l.datecreated
           FROM leavetransaction AS lt
           INNER JOIN leaveapplication AS l
           ON lt.appno = l.appno
@@ -545,7 +543,7 @@ class leaveclass extends general {
 
 	public function getVcView($vco){
 
-		$query = "SELECT lt.timeviewed, l.staffid, lt.appno, lt.tstaffid, l.leavetype, l.reason, l.startdate, l.enddate, l.location, lt.remarks, lt.status, st.coldirid, st.hod, st.dean, st.dept
+		$query = "SELECT lt.timeviewed, l.staffid, lt.appno, lt.tstaffid, l.leavetype, l.reason, lt.recstartdate, lt.recenddate, l.location, lt.remarks, lt.status, st.coldirid, st.hod, st.dean, st.dept, l.datecreated
           FROM leavetransaction AS lt
           INNER JOIN leaveapplication AS l
           ON lt.appno = l.appno
@@ -609,7 +607,16 @@ class leaveclass extends general {
         return $hstmt;
 
 	}
+  
+  public function getApprovedDates($appno){
+    #this function gets the approved date for an appno
+    $chkdtqry = "SELECT * FROM leavetransaction WHERE appno LIKE '$appno' AND status = 'Approved'";
+    
+        $chkstmt1 = $this->db->prepare($chkdtqry);
+        $chkstmt1->execute();
 
+        return $chkstmt1;
+  }
 	public function leaveRec($staffid, $staffcat, $hodid, $deanid, $rego, $hro, $vco){
 
 		if (($staffid == $rego) &&  ($staffcat == 'NTS'))
@@ -639,7 +646,7 @@ class leaveclass extends general {
             return $recstmt;
 	}
 
-	public function checkSupervisor($appno){
+	public function extractRecc($appno){
 
 		$chkdtqry = "SELECT recstartdate, recenddate FROM leavetransaction 
                      WHERE appno = '$appno' 
@@ -652,8 +659,7 @@ class leaveclass extends general {
         return $chkstmt1;
 	}
 
-	public function checkSupervisor1($appno, $staffid){
-		
+	public function checkSupervisor1($appno, $staffid){		
 		$chkqry = "SELECT * FROM leavetransaction 
                    WHERE appno LIKE '$appno' 
                    AND tstaffid LIKE '$staffid' ORDER BY `sn` ASC";
@@ -668,12 +674,14 @@ class leaveclass extends general {
 	public function getApprovedLeaves(){
 
 		$query ="
-				SELECT st.fname, st.sname, st.dept, al.staffid, al.appno, al.leavetype, al.apstartdate, al.apenddate, al.location, al.phone, al.releaseddate
-                    FROM approvedleaves AS al
-                    INNER JOIN stafflst AS st
-                    ON st.staffid = al.staffid 
-                    WHERE al.releaseddate = ''       
-                    ORDER BY al.sn DESC
+              SELECT st.fname, st.sname, st.dept, al.staffid, al.appno, al.leavetype, al.apstartdate, al.apenddate, al.location, al.phone, al.releaseddate, l.datecreated, l.reason 
+              FROM approvedleaves AS al 
+              INNER JOIN stafflst AS st  
+              ON st.staffid = al.staffid
+              INNER JOIN leaveapplication as l
+              ON l.appno = al.appno
+              WHERE al.releaseddate = '' 
+              ORDER BY l.datecreated DESC
                 ";
 
 

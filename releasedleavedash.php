@@ -29,17 +29,9 @@ try {
         #A QUICK QUERY TO CHECK IF A SUPERVISOR HAS ACTED ON AN APPLICATION
         $chkstmt1 = $lvobj->checkSupervisor1($appno, $staffid);
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  #A QUICK QUERY TO CHECK IF A SUPERVISOR HAS ACTED ON AN APPLICATION
-        $chkstmt = $lvobj->checkSupervisor($appno);
-        
-        $chkqrynum = $chkstmt->rowCount();
-        $datenum = $chkstmt->rowCount();
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         #Query to select leave details of the $this staff
-        $stmtleave = $lvobj->leaveDetails($appno);
-        //$stmtapp = $con->prepare($queryleave);      
+        $stmtleave = $lvobj->leaveDetails($appno);  
         $num = $stmtleave->rowCount();
         
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -321,46 +313,6 @@ try {
 
  <script type="text/javascript">
 
-        $(document).ready(function(){
-           
-             $('select#reco').change(function(){
-
-            var appno = $('#appno').val();
-            var staffid = $('#staffid').val();
-            var sdate = $('#sdate').val();
-            var edate = $('#edate').val();
-            var remarks = $('#remarks').val();
-            var reco = $('#reco').val();
-            var role = $('#role').val();
-
-            alert(appno+staffid+sdate+edate+remarks+reco+role);
-
-            var encappno = window.btoa(staffid);
-
-            var url = "leavedashboard.php?id="+encappno;            
-
-            if ((appno == '') || (staffid == '') || (sdate == '') || (edate == '') || (remarks == '') || (reco == '') )
-            {
-                  alert("There is a missing field somewhere.");
-            }
-
-            $('#error').load('hrapproval.php', {
-                      appno: appno,
-                      staffid:staffid,
-                      sdate: sdate,
-                      edate: edate,
-                      remarks: remarks,
-                      reco: reco,
-                      role: role
-                 }, 
-                 function(){
-                      alert("Approval Sent");
-                      $(location).attr('href', url);
-                });         
-
-        });
-            
-    });
-    </script>
+ </script>
 </body>
 </html>

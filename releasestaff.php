@@ -4,7 +4,7 @@ Developer: Ekunkoya Isaiah
 Site:      ekunkoya.com.ng
 Script:    Inserts data into transaction table
 File:      releasestaff.php
-For every appno entrying this file, the transactionid increases by 1.
+
 */
 include "include/config.php";
 
@@ -18,7 +18,7 @@ $_SESSION['staffinfo'] = $staffdetails;
 
 extract($_POST);
 
-if($reco == 'Released'){
+if($status == 'Released'){
 
 //get transaction id for the current application stream 
 $track = $lvobj->trackid($appno); //this is the transactionid which will later be increased by 1
@@ -37,7 +37,7 @@ $dend = date_format(date_create($edate), "d-M-Y"); //date ending
 
  try {
 
-    if($lvobj->insertLTS($appno, $staffid, $role, $transactionid, $timeviewed, $reco, $sdate, $edate, $remarks))
+    if($lvobj->insertLT($appno, $staffid, $role, $transactionid, $timeviewed, $comment, $status, $sdate, $edate, $remarks))
     {
         
         if($lvobj->approvedleavesUpdateByRelease($dateofrelease, $appno));
@@ -83,9 +83,9 @@ $dend = date_format(date_create($edate), "d-M-Y"); //date ending
 
  try {
 
-    if($lvobj->insertLTS($appno, $staffid, $role, $transactionid, $timeviewed, $reco, $sdate, $edate, $remarks))
+    if($lvobj->insertLT($appno, $staffid, $role, $transactionid, $timeviewed, $comment = null, $status, $recstartdate, $recenddate, $remarks = null))
     {
-     if($lvobj->updateLeaveApplication($reco, $stage, $appno));
+     if($lvobj->updateLeaveApplication($status, $stage, $appno));
       {
         $message = "Query Submitted";
         echo $message;
@@ -124,9 +124,9 @@ $dend = date_format(date_create($edate), "d-M-Y"); //date ending
 
 try {
 
-    if($lvobj->insertLTS($appno, $staffid, $role, $transactionid, $timeviewed, $reco, $sdate, $edate, $remarks))
+    if($lvobj->insertLT($appno, $staffid, $role, $transactionid, $timeviewed, $comment = null, $status, $recstartdate, $recenddate, $remarks = null))
     {  
-      if($lvobj->updateLeaveApplication($reco, $stage, $appno))
+      if($lvobj->updateLeaveApplication($status, $stage, $appno))
       {
         $message = "Query Submitted";
         echo $message;
