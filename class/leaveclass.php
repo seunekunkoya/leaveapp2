@@ -276,7 +276,7 @@ class leaveclass extends general {
 	         }
 	}
 
-	public function approveLeaves($appno, $sdate, $edate, $reco, $stage){
+	public function approvedLeaves($appno, $sdate, $edate, $reco, $stage){
 
 		$qry1 = "SELECT l.staffid, l.appno, l.leavetype, l.reason, lt.recstartdate, lt.recenddate, l.session, l.location, l.phone
                 FROM leaveapplication AS l

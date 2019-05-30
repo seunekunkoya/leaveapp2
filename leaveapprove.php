@@ -35,7 +35,7 @@ $comment = '';//to allow arguement passage
     
     if($lvobj->insertLT($appno, $staffid, $role, $transactionid, $timeviewed, $comment, $status, $sdate, $edate, $remarks))
     {
-      if($lvobj->approveLeaves($appno, $sdate, $edate, $status, $stage))
+      if($lvobj->approvedLeaves($appno, $sdate, $edate, $status, $stage))
         {
          $message = "Query Submitted";
          echo $message;
