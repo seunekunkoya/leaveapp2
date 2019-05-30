@@ -276,66 +276,32 @@ class leaveclass extends general {
 	         }
 	}
 
-	public function approvedLeaves($appno, $sdate, $edate, $reco, $stage){
-
-		$qry1 = "SELECT l.staffid, l.appno, l.leavetype, l.reason, lt.recstartdate, lt.recenddate, l.session, l.location, l.phone
-                FROM leaveapplication AS l
-                INNER JOIN leavetransaction AS lt
-                ON lt.appno = l.appno
-                where lt.appno = '$appno'
-                AND lt.status = 'Approved'";
-
-                
-                $stmt = $this->db->prepare($qry1);
-                $stmt->execute();
-
-                $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                $staffId = $row['staffid'];
-                $leavetype = $row['leavetype'];
-                $reason = $row['reason'];
-                $csession = $row['session'];//current session
-                $location = $row['location'];
-                $phone = $row['phone'];
+	public function approvedLeaves($staffid, $appno, $leavetype, $reason, $sdate, $edate, $session, $location, $phone){
         
-        $qry2 = "INSERT INTO approvedleaves (staffid, appno, leavetype, reason, apstartdate, apenddate, session, location, phone) 
+        $qry = "INSERT INTO approvedleaves (staffid, appno, leavetype, reason, apstartdate, apenddate, session, location, phone) 
                 VALUES (:staffId, :appno, :leavetype, :reason, :recst, :recend, :session, :location, :phone)";
 
-              $stmt1 = $this->db->prepare($qry2);
+              $stmt1 = $this->db->prepare($qry);
 
-              $stmt1->bindParam(':staffId', $staffId);
+              $stmt1->bindParam(':staffId', $staffid);
               $stmt1->bindParam(':appno', $appno);
               $stmt1->bindParam(':leavetype', $leavetype);
               $stmt1->bindParam(':reason', $reason);
               $stmt1->bindParam(':recst', $sdate);
               $stmt1->bindParam(':recend', $edate);
-              $stmt1->bindParam(':session', $csession);
+              $stmt1->bindParam(':session', $session);
               $stmt1->bindParam(':location', $location);
               $stmt1->bindParam(':phone', $phone);
 
               if($stmt1->execute())
               {
-                $qry3 = "UPDATE leaveapplication 
-                          SET leavestatus = :leavestatus, leavestageid = :stage
-                            WHERE appno = :appno";
+               	return true;
+              }
+          
+             	return false;
+  }
 
-                // prepare query for excecution
-                $stmt3 = $this->db->prepare($qry3);     
-
-                // bind the parameters
-                $stmt3->bindParam(':leavestatus', $reco);
-                $stmt3->bindParam(':stage', $stage);
-                $stmt3->bindParam(':appno', $appno);
-    
-                if($stmt3->execute()){
-                	return true;
-                }else{
-                	return false;
-                }
-	}
-
-}
-
-	public function updateLeaveApplication($reco, $stage, $appno){
+	public function updateLeaveApplication($status, $stage, $appno){
 
 		$qry1 = "UPDATE leaveapplication 
                           SET leavestatus = :leavestatus, leavestageid = :stage
@@ -345,7 +311,7 @@ class leaveclass extends general {
                 $stmt1 = $this->db->prepare($qry1);     
 
                 // bind the parameters
-                $stmt1->bindParam(':leavestatus', $reco);
+                $stmt1->bindParam(':leavestatus', $status);
                 $stmt1->bindParam(':stage', $stage);
                 $stmt1->bindParam(':appno', $appno);
 
@@ -584,7 +550,7 @@ class leaveclass extends general {
 	public function leaveDetails($appno){
 
 		$query = "
-					SELECT st.sname, st.fname, l.staffid, l.leavetype, l.startdate, l.enddate, l.phone, l.reason, l.officer1, l.officer2, l.officer3, st.post, st.dept, st.kol, st.unitprg, st.category
+					SELECT st.sname, st.fname, l.staffid, l.leavetype, l.startdate, l.enddate, l.phone, l.reason, l.location, l.session, l.officer1, l.officer2, l.officer3, st.post, st.dept, st.kol, st.unitprg, st.category
                        FROM leaveapplication AS l
                        INNER JOIN stafflst AS st
                        ON st.staffid = l.staffid

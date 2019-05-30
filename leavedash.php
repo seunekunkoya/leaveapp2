@@ -68,7 +68,6 @@ try {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -78,9 +77,22 @@ try {
 <body>
 
 <?php
+  
   if ($num > 0) { 
         while($staffdet=$stmtleave->fetch(PDO::FETCH_ASSOC))
         {
+          $approvedArr = array(
+            "staffid" => $staffdet['staffid'],
+            "appno" => $appno,
+            "leavetype" => $staffdet['leavetype'],
+            "reason" => $staffdet['reason'],
+            "session" => $staffdet['session'],
+            "location" => $staffdet['location'],
+            "phone" => $staffdet['phone']
+          );
+
+          echo "<br>";
+          print_r($approvedArr);
     ?>
 <div class="wrapper">
   <div class="container-fluid">
@@ -848,25 +860,28 @@ else if ($_SESSION['staffid'] == $_SESSION['staffinfo']['dean']) {
       else {
 
             if (status == 'Approved') {
+
+              var approvedArr = <?php echo json_encode($approvedArr, JSON_PRETTY_PRINT) ?>;
+              console.log(approvedArr);
+              
                $('#error').load('leaveapprove.php', {
-                   appno: appno,
-                   staffid:staffid,
-                   sdate: sdate,
-                   edate: edate,
-                   remarks: remarks,
-                   status: status,
-                   role: role,
-                   stage: stage
-                }, 
-               function(){
-                   $(location).attr('href', url);
+                  approvedArr: approvedArr,
+                  sdate: sdate,
+                  edate: edate,
+                  remarks: remarks,
+                  status: status,
+                  role: role,
+                  stage: stage
+                //}, 
+               //function(){
+               //    $(location).attr('href', url);
               });
+              
                      
             }//end of if status
                   
            else {        
-
-            
+              
               $('#error').load('leaverec.php', {
                   appno: appno,
                   staffid:staffid,

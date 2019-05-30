@@ -19,6 +19,7 @@ $lvobj->checkSession();
 
 extract($_POST);
 
+extract($approvedArr);
 //get transaction id for the current application stream 
 $track = $lvobj->trackid($appno); //this is the transactionid which will later be increased by 1
 $transactionid = $track + 1;
@@ -31,16 +32,24 @@ $sdate = date('Y-m-d', strtotime($sdate));
 
 $comment = '';//to allow arguement passage
 
+// echo 'Appno--'.$appno.'--Staffid--'. $staffid.'--Role--'. $role.'--TID--'. $transactionid.'--Time--'. $timeviewed.'--Comment--'. $comment.'--Status--'. $status.'--Sdate--'. $sdate.'--Edate--'. $edate.'--remarks--'. $remarks.'--stage--'.$stage;
+// echo "<br>";
+// echo $leavetype.'--Reason--'.  $reason.'--Seaaion--'.  $session.'--location--'.  $location.'--Phone--'.  $phone
+
+
  try {
     
     if($lvobj->insertLT($appno, $staffid, $role, $transactionid, $timeviewed, $comment, $status, $sdate, $edate, $remarks))
     {
-      if($lvobj->approvedLeaves($appno, $sdate, $edate, $status, $stage))
+      if($lvobj->approvedLeaves($staffid, $appno, $leavetype, $reason, $sdate, $edate, $session, $location, $phone))
         {
-         $message = "Query Submitted";
-         echo $message;
+          if($lvobj->updateLeaveApplication($status, $stage, $appno))
+          {
+              $message = "Query Submitted";
+              echo $message;
 
-         //$lvobj->sendMail($to, $header, $subject, $message);
+              //$lvobj->sendMail($to, $header, $subject, $message);
+            }
         }
     }//end of if
     else 
