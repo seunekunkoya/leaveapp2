@@ -41,11 +41,8 @@ $comment = '';//to allow arguement passage
     
     if($lvobj->insertLT($appno, $staffid, $role, $transactionid, $timeviewed, $comment, $status, $sdate, $edate, $remarks))
     {
-<<<<<<< HEAD
       if($lvobj->approvedLeaves($staffid, $appno, $leavetype, $reason, $sdate, $edate, $session, $location, $phone))
-=======
-      if($lvobj->approvedLeaves($appno, $sdate, $edate, $status, $stage))
->>>>>>> 2cb9e77d65c1f00f2cb7344931fd3b156cb83049
+
         {
           if($lvobj->updateLeaveApplication($status, $stage, $appno))
           {
