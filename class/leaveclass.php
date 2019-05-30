@@ -276,7 +276,30 @@ class leaveclass extends general {
 	         }
 	}
 
+<<<<<<< HEAD
 	public function approvedLeaves($staffid, $appno, $leavetype, $reason, $sdate, $edate, $session, $location, $phone){
+=======
+	public function approvedLeaves($appno, $sdate, $edate, $reco, $stage){
+
+		$qry1 = "SELECT l.staffid, l.appno, l.leavetype, l.reason, lt.recstartdate, lt.recenddate, l.session, l.location, l.phone
+                FROM leaveapplication AS l
+                INNER JOIN leavetransaction AS lt
+                ON lt.appno = l.appno
+                where lt.appno = '$appno'
+                AND lt.status = 'Approved'";
+
+                
+                $stmt = $this->db->prepare($qry1);
+                $stmt->execute();
+
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $staffId = $row['staffid'];
+                $leavetype = $row['leavetype'];
+                $reason = $row['reason'];
+                $csession = $row['session'];//current session
+                $location = $row['location'];
+                $phone = $row['phone'];
+>>>>>>> 2cb9e77d65c1f00f2cb7344931fd3b156cb83049
         
         $qry = "INSERT INTO approvedleaves (staffid, appno, leavetype, reason, apstartdate, apenddate, session, location, phone) 
                 VALUES (:staffId, :appno, :leavetype, :reason, :recst, :recend, :session, :location, :phone)";
