@@ -1,5 +1,6 @@
 <?php  
-
+#from leavedash.php
+#handling specific details of leave history of staff
 if(isset($_POST["appno"]))  
 {  
      include 'config/database.php';

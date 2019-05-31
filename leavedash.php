@@ -81,6 +81,7 @@ try {
   if ($num > 0) { 
         while($staffdet=$stmtleave->fetch(PDO::FETCH_ASSOC))
         {
+          #approvedArr holds data going into the approvedleaves table
           $approvedArr = array(
             "staffid" => $staffdet['staffid'],
             "appno" => $appno,
@@ -732,10 +733,7 @@ else if ($_SESSION['staffid'] == $_SESSION['staffinfo']['dean']) {
                     </tr>
 
           <?php }//end of while ?>
-                <!-- <tr>
-                  <td><label>Total</label></td>
-                  <td colspan="2"><?php //echo $leavedaystotal; ?></td>
-                </tr> -->
+                
               </table>
         </div><!--table responsive--->
       </div>
@@ -872,13 +870,11 @@ else if ($_SESSION['staffid'] == $_SESSION['staffinfo']['dean']) {
                   status: status,
                   role: role,
                   stage: stage
-                //}, 
-               //function(){
-               //    $(location).attr('href', url);
-              });
-              
-                     
-            }//end of if status
+                }, 
+               function(){
+                 $(location).attr('href', url);
+              });    
+            }//end of if 
                   
            else {        
               

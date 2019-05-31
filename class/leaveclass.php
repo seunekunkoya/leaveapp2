@@ -277,7 +277,7 @@ class leaveclass extends general {
 	}
 
 	public function approvedLeaves($staffid, $appno, $leavetype, $reason, $sdate, $edate, $session, $location, $phone){
-       
+        
         $qry = "INSERT INTO approvedleaves (staffid, appno, leavetype, reason, apstartdate, apenddate, session, location, phone) 
                 VALUES (:staffId, :appno, :leavetype, :reason, :recst, :recend, :session, :location, :phone)";
 
