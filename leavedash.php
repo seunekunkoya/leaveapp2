@@ -551,7 +551,6 @@ else if ($_SESSION['staffid'] == $_SESSION['staffinfo']['dean']) {
 
   else if ($_SESSION['staffid'] == $_SESSION['staffinfo']['rego'] ) {
 
-
    echo ' <b>Make Recommendation/Approval</b>';
 
    echo "</span>";
@@ -849,7 +848,7 @@ else if ($_SESSION['staffid'] == $_SESSION['staffinfo']['dean']) {
 
       var encappno = window.btoa(staffid);
 
-      var url = "leavedashboard.php?id="+encappno;            
+      var url = "leaveview.php?id="+encappno;            
 
       if ((appno == '') || (staffid == '') || (sdate == '') || (edate == '') || (remarks == '') || (status == ''))
       {

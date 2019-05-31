@@ -1194,7 +1194,7 @@ public function leavedaysgone($staffid, $currentsession, $leavetype)
 	            {  
 		            $date1 = $row['apstartdate'];
 		            $date2 = $row['apenddate']; 
-		            $days[$i] = (int)numdays($date1, $date2);
+		            $days[$i] = (int)$this->numdays($date1, $date2);
 		            $leavedaystotal += $days[$i];   
 		            ++$i;//increment counter
 		          }
@@ -1202,39 +1202,10 @@ public function leavedaysgone($staffid, $currentsession, $leavetype)
 		         return $leavedaystotal;
 }//end of public function leavedaysdone
 
-public function casualleavedaysgone($staffid, $currentsession)
-{
-
-            	$hquery = "SELECT ap.apstartdate, ap.apenddate 
-		                   FROM approvedleaves AS ap
-		                   WHERE ap.staffid LIKE '$staffid'
-		                   AND ap.leavetype = 'casual'
-		                   AND ap.session = '$currentsession'";
-
-		        $hstmt = $this->db->prepare($hquery);
-		        $hstmt->execute();      
-		        $hnum = $hstmt->rowCount(); 
-		     
-		        $days = array();
-	            $i = 1;
-	            $leavedaystotal = 0;
-	            while ($row = $hstmt->fetch(PDO::FETCH_ASSOC))
-	            {  
-		            $date1 = $row['apstartdate'];
-		            $date2 = $row['apenddate']; 
-		            $days[$i] = (int)numdays($date1, $date2);
-		            $leavedaystotal += $days[$i];   
-		            ++$i;//increment counter
-		          }
-
-		         return $leavedaystotal;
-}//end of public function leavedaysdone
 
 public function annualleavedaysgone($staffid, $currentsession)
 {
-	
-
-            	$hquery = "SELECT ap.apstartdate, ap.apenddate 
+	         	$hquery = "SELECT ap.apstartdate, ap.apenddate 
 		                   FROM approvedleaves AS ap
 		                   WHERE ap.staffid LIKE '$staffid'
 		                   AND ap.leavetype = 'annual'

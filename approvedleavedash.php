@@ -419,7 +419,7 @@ try {
                             var startFr = $('#startFr').val();
                             var toRes = $('#toRes').val();
 
-                            console.log(sdate+' '+edate+ 'Release '+ toRes +' '+startFr);
+                            //console.log(sdate+' '+edate+ 'Release '+ toRes +' '+startFr);
 
                             /*
                             $.ajax({
@@ -469,14 +469,14 @@ try {
                                   toRes: toRes
                            }, 
                            function(){
-                              console.log("Approval Sent");
-                             //$(location).attr('href', url);
+                              //console.log("Approval Sent");
+                             $(location).attr('href', url);
                           });
 
                     }); 
               }//end of if released
 
-              if(reco == 'Not Released' || reco == 'Not Yet Released')
+              if(status == 'Not Released' || status == 'Not Yet Released')
               {
                 //alert("Not yet Released");
                 $('#modalContent').html('<p>Not yet Released</p>');
@@ -500,9 +500,7 @@ try {
                     });  
                 */
             }       
-
-        });
-            
+        });          
     });
     
 </script>

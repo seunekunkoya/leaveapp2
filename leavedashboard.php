@@ -32,6 +32,7 @@ echo '<br><br>'.$cursession;
             $stmt = $lvobj->getStaffRelease($staffid);
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $num = $stmt->rowCount();
+            print_r($stmt);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             $stmreg = $lvobj->getDashboardOfficer($cursession);
