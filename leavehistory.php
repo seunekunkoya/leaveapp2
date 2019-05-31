@@ -1,23 +1,19 @@
-<?php  
+<?php 
+
+  include "include/config.php";
+
+  //checksession();
+  $lvobj->checkSession();
+  $staffid = $_SESSION['staffid'];
+
+  $output = '';
 #from leavedash.php
 #handling specific details of leave history of staff
 if(isset($_POST["appno"]))  
 {  
-     include 'config/database.php';
-     require 'leavefunction.php';
+   $appno = $_POST["appno"];
 
-     $appno = $_POST["appno"];
-     $output = ''; 
-
-try{
-
-    $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $qry = "SELECT * FROM approvedleaves
-           WHERE appno = '$appno'";
-
-    $stmt = $con->prepare($qry);
-    $stmt->execute();
+    $stmt = $lvobj->getLeavesGone($appno);
 
     $output .= '  
       <div class="table-responsive">  
@@ -40,7 +36,7 @@ try{
                      <td>'.ucfirst($row["reason"]).'</td> 
                      <td>'.date('j M, Y', strtotime($row['apstartdate'])).'</td> 
                      <td>'.date('j M, Y', strtotime($row['apenddate'])).'</td>
-                     <td>'.numdays($row['apstartdate'], $row['apenddate']).'</td>
+                     <td>'.$lvobj->numdays($row['apstartdate'], $row['apenddate']).'</td>
                      <td>'.$row["location"].'</td>
                 </tr> 
 
@@ -48,10 +44,9 @@ try{
     }  
     $output .= "</table></div>";  
     echo $output; 
-  }
-      catch(PDOException $e){
-        echo "Error: " . $e->getMessage();
-      }//end of catch
-
 }
- ?>
+else
+{
+    $output .= "Resource not found. Please try again latter";
+}
+?>

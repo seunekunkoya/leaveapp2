@@ -579,8 +579,8 @@ class leaveclass extends general {
         return $stmtr;
 	}
 
+  #this function gets the application status with the staff history 
 	public function leaveHistory($appno){
-
 		$hquery = "SELECT st.fname, st.sname, ap.appno, ap.leavetype, ap.apstartdate, ap.apenddate, ap.resumeddate 
                    FROM approvedleaves AS ap
                    INNER JOIN stafflst As st 
@@ -590,8 +590,18 @@ class leaveclass extends general {
         $hstmt->execute();
 
         return $hstmt;
-
 	}
+
+  #This function gets the leaves gone by an individual
+  function getLeavesGone($appno){
+    $qry = "SELECT * FROM approvedleaves
+           WHERE appno = '$appno'";
+
+    $stmt = $this->db->prepare($qry);
+    $stmt->execute();
+
+    return $stmt;
+  }
   
   public function getApprovedDates($appno){
     #this function gets the approved date for an appno
