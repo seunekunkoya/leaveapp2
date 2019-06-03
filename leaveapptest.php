@@ -19,6 +19,7 @@ $staffdetails = $lvobj->staffInfo($staffid);
 $_SESSION['staffinfo'] = $staffdetails;
 
 $level = $_SESSION['staffinfo']['level'];
+echo $lvobj->getSession();
 
 //$con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 

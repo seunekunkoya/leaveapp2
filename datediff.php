@@ -15,7 +15,7 @@ include "include/config.php";
 
 $result = array();
 
-$session = '2018/2019';
+$session = $lvobj->getSession();
 
 $leavedaysgone = (int)$lvobj->leavedaysgone($staffid, $session, $leavetype);
 $leaveallowed = (int)$lvobj->leavedaysallowed($staffid, $leavetype);

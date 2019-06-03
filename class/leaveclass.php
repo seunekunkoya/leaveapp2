@@ -980,11 +980,11 @@ class leaveclass extends general {
 
 	public function isLeaveAppExist($staffid, $leavetype){
 
-		$query = "	SELECT staffid, leavetype, leavestatus
+		$query = "SELECT staffid, leavetype, leavestatus
 						FROM leaveapplication 
 							WHERE staffid = '$staffid'
 								AND leavetype = '$leavetype' 
-									AND leavestatus != 'Approved'
+									AND leavestatus != 'Released'
 				";
 
 
@@ -1174,10 +1174,19 @@ public function leavedaysallowed($staffid, $leavetype)
 	return $ndays;
 }//end of public function leavedays
 
+function addSlash($session){
+    $sentence = $session;
+    $escapestring ='\\';
+    $position = '4';
+    $newacadsession=substr_replace($sentence, $escapestring, $position, 0 );
+
+    return $newacadsession;
+}
+
 public function leavedaysgone($staffid, $currentsession, $leavetype)
 {
-	
-            	$hquery = "SELECT ap.apstartdate, ap.apenddate 
+    
+	            	$hquery = "SELECT ap.apstartdate, ap.apenddate 
 		                   FROM approvedleaves AS ap
 		                   WHERE ap.staffid LIKE '$staffid'
 		                   AND ap.session = '$currentsession'
@@ -1574,7 +1583,7 @@ public function getstatusbyID($id)
         $diff = date_diff($stdate,$eddate);
         $ndays = $diff->format("%r%a ");
 
-        return $ndays;
+        return (int)$ndays + 1;
 	}//end of public function number of days
 
 	public function decoder($words)
