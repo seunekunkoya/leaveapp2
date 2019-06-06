@@ -16,6 +16,7 @@ include "include/config.php";
 $result = array();
 
 $session = $lvobj->getSession();
+$session = $lvobj->addSlash($session);
 
 $leavedaysgone = (int)$lvobj->leavedaysgone($staffid, $session, $leavetype);
 $leaveallowed = (int)$lvobj->leavedaysallowed($staffid, $leavetype);

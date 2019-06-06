@@ -10,7 +10,9 @@ extract($_POST);
 	// $output = ' ';
 	// $output .= '  <p>A test </p>   '; 
 
-	 $session = '2018/2019';
+	 
+	 $session = $lvobj->getSession();
+	 $session = $lvobj->addSlash($session);
 	 $output = ' ';
 	 $outp = array();
 

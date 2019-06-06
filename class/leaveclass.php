@@ -1184,8 +1184,7 @@ function addSlash($session){
 }
 
 public function leavedaysgone($staffid, $currentsession, $leavetype)
-{
-    
+{    
 	            	$hquery = "SELECT ap.apstartdate, ap.apenddate 
 		                   FROM approvedleaves AS ap
 		                   WHERE ap.staffid LIKE '$staffid'
