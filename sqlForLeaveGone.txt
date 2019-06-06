@@ -1,0 +1,35 @@
+SELECT leavetype, count(staffid), datediff(apenddate, apstartdate) AS daysnumber
+from approvedleaves
+where resumestatus = 1
+group by staffid
+having count(staffid) > 1
+
+#staff who has gone for one leave or the other
+SELECT staffid,leavetype, datediff(apenddate, apstartdate) + 1 as daysnumber FROM `approvedleaves` WHERE resumestatus = 1
+
+#how many staff had more than one leave
+SELECT COUNT(staffid) as staff, staffid
+FROM leavesgone
+GROUP BY staffid
+HAVING staff > 1
+
+#total days of leave gone by staff
+SELECT COUNT(staffid) as staff, staffid, SUM(daysnumber), leavetype
+FROM leavesgone
+GROUP BY staffid
+
+#duplicate staffid
+SELECT leavesgone.staffid, leavetype, daysnumber
+FROM leavesgone
+INNER JOIN(
+SELECT staffid
+FROM leavesgone
+GROUP BY staffid
+HAVING COUNT(leavetype) >1
+)temp ON leavesgone.staffid = temp.staffid
+ORDER BY staffid
+
+#sum values from duplicate rows
+SELECT staffid, leavetype, sum(daysnumber) AS totalday 
+FROM leavesgone 
+GROUP BY staffid, leavetype
