@@ -580,12 +580,12 @@ class leaveclass extends general {
 	}
 
   #this function gets the application status with the staff history 
-	public function leaveHistory($appno){
-		$hquery = "SELECT st.fname, st.sname, ap.appno, ap.leavetype, ap.apstartdate, ap.apenddate, ap.resumeddate 
-                   FROM approvedleaves AS ap
-                   INNER JOIN stafflst As st 
-                   ON ap.staffid = st.staffid
-                   WHERE ap.staffid LIKE (SELECT staffid FROM leaveapplication WHERE appno = $appno)";
+	public function leaveHistory($staffid){
+	
+  	$hquery = "SELECT staffid, leavetype, SUM(daysnumber) AS totalday 
+                FROM leavesgone 
+                WHERE staffid = '$staffid'
+                GROUP BY staffid, leavetype";
         $hstmt = $this->db->prepare($hquery);
         $hstmt->execute();
 
@@ -593,9 +593,14 @@ class leaveclass extends general {
 	}
 
   #This function gets the leaves gone by an individual
-  function getLeavesGone($appno){
-    $qry = "SELECT * FROM approvedleaves
-           WHERE appno = '$appno'";
+  function getLeavesGone($staffid, $ltype){
+    $qry = "
+                      SELECT ap.reason, ap.apstartdate, ap.apenddate, ap.location, ap.leavetype, datediff(ap.apenddate, ap.apstartdate) + 1 as numday, ap.staffid
+                       FROM approvedLeaves AS ap
+                       WHERE ap.staffid = '$staffid'
+                       AND ap.leavetype = '$ltype'
+                       AND ap.resumestatus = 1
+              ";
 
     $stmt = $this->db->prepare($qry);
     $stmt->execute();
@@ -933,7 +938,7 @@ class leaveclass extends general {
             return $stm;
 
 	}
-
+  #function to get leaveschedule in order to test button appearance in leavedashboard
 	public function getSchedule($cursession){
 
 		$query1 = "SELECT *
@@ -945,7 +950,7 @@ class leaveclass extends general {
 
                     return $stmt1;
 	}
-
+  #function to check if leave schedule is done
 	public function isExistSchedule($cursession){
 
 		$qry = "SELECT * FROM leaveschedule 
@@ -956,10 +961,10 @@ class leaveclass extends general {
 
         return $stmt;
 	}
-
+  #function to get annual leave schedule
 	public function getAnnualLeaveSchdule(){
 
-		$query = "SELECT st.staffid, CONCAT(sname,\" \", fname) AS staffname, st.title, st.post, st.level, st.dept, st.employmentdate,
+		$query = "SELECT st.staffid, CONCAT(sname,\" \", fname) AS staffname, st.title, st.post, st.level, st.dept, st.employmentdate, st.category, st.kol, st.unitprg,
                   daysworked(st.employmentdate) AS daysworked, 
                   daysentitled(st.level) AS daysentitled,
                   IFNULL(daystaken.daystaken, 0) AS daysgone, 

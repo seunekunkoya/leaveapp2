@@ -22,7 +22,8 @@ $_SESSION['staffinfo'] = $staffdetails;
   $rego = $_SESSION['staffinfo']['rego'];
   $vco = $_SESSION['staffinfo']['vco'];
   
-  $cursession = '2018/2019';
+  $cursession = $lvobj->getSession();
+
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /*Query to check if the schedule for the current session exists*/
@@ -41,64 +42,46 @@ $_SESSION['staffinfo'] = $staffdetails;
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
   <script src="js/datepicker.js"></script>
+  <script src="js/table2excel.js"></script>
 <style>
-     .wrapper{
-      padding-left: 300px;
-    }
-    /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
-    .row.content {height: 1000px;}
-    
-    /* Set gray background color and 100% height */
-    .sidenav {
-      background-color: #f1f1f1;
-      height: 100%;
-    }
-
-    .adiff {
-  position: absolute;
-  top: 237px;
-  right: -90px;
-  width: 100px;
-  height: 40px;
-  padding: 3px;
-  margin-left: 10px;  
+ .btnn{
+  margin-top: 20px;
 }
-
-.modal-center {
-       position: absolute;
-       top: 250px;
-       right: 0px;
-       bottom: 0;
-       left: 0;
-       z-index: 10040;
-       overflow: auto;
-       overflow-y: auto;
+.btnn a{
+  color: white;
 }
- 
-/* On small screens, set height to 'auto' for sidenav and grid */
-@media screen and (max-width: 767px) {
-      .sidenav {
-        height: auto;
-        padding: 15px;
-      }
-      .row.content {height: auto;} 
+.container{
+  width: 1600px;
+}
+#btncapsule{
+  padding-left: 180px;
+  margin-right: 0px;
 }
 </style>
 
 <body>
 <div class="container">
-    <div class="row hed" >
-      <div class="col-md-4"></div>
+    <div class="row">
+      <div class="col-md-6">
         <h3 class="h3">
           <?php echo $cursession; ?> Annual Leave Schedule
         </h3>
+      </div>
+      <div class="col-md-3"></div>
+      <div class="col-md-3" id="btncapsule">
+        <button type="button" class="btn-primary btnn" id="export">Export to Excel</button>
+        <button class="btn-primary btnn">
+          <?php 
+              echo '<a style="font-size: 14px;" href="leavedashboard.php?id='.base64_encode($_SESSION['staffid']).'">Dashboard</a>'; 
+          ?>
+        </button>
+      </div>
+        
     </div>  
     <!-- End of title  -->
     
-    <div class="row">
-
-      <div class="col-md-2"></div>      
-           <table class="table table-bordered table-condensed">
+    <div class="row">  
+      <table class="table table-bordered table-condensed" id="leaveschedule">
 <?php 
 
     try 
@@ -117,13 +100,16 @@ $_SESSION['staffinfo'] = $staffdetails;
 
           echo "<tr align ='center'>";
             echo "<th> No</th>";
+            echo "<th> Category</th>";
+            echo "<th> College/Directorate</th>";
+            echo "<th> Department</th>";
+            echo "<th> Unit/Program</th>";
             echo "<th> Staff Name</th>";
             echo "<th> Title</th>";
             echo "<th> Staffid</th>";
             echo "<th> Post</th>";
-            echo "<th> Program/ Unit</th>";
-            echo "<th> Salary Level</th>";
-            echo "<th> Resumption Date</th>";
+            echo "<th> CUSS</th>";
+            echo "<th> Employment Resumption Date</th>";
             echo "<th> Days Worked in the Year</th>";
             echo "<th> Days Entitled</th>";
             echo "<th> Days Already Taken</th>";
@@ -131,7 +117,6 @@ $_SESSION['staffinfo'] = $staffdetails;
             echo "<th> Leave Bonus</th>";
             echo "<th> Bank Account</th>";
             echo "<th> Bank Name</th>";
-            //echo "<th> Action</th>";
          echo "</tr>";
           $schedule = array();
         if ($num > 0) { //if starts here
@@ -145,12 +130,15 @@ $_SESSION['staffinfo'] = $staffdetails;
                    //extract($row);
                    //create new row per record
                    echo "<tr>";
-                      echo "<td>".$n++."</td>";     
+                      echo "<td>".$n++."</td>";
+                      echo "<td>".$row['category']."</td>";
+                      echo "<td>".$row['kol']."</td>";  
+                      echo "<td>".$row['dept']."</td>";
+                      echo "<td>".$row['unitprg']."</td>";   
                       echo "<td>".$row['staffname']."</td>";//$staffid = getname($row['staffid'])
                       echo "<td>".$row['title']."</td>";
                       echo "<td>".$row['staffid']."</td>";
                       echo "<td>".$row['post']."</td>";
-                      echo "<td>".$row['dept']."</td>";
                       echo "<td>".$row['level']."</td>";
                       echo "<td>".date('j M, Y', $empdate)."</td>";
                       echo "<td>".$row['daysworked']."</td>";
@@ -165,7 +153,7 @@ $_SESSION['staffinfo'] = $staffdetails;
                   $totalbonus += $row['leavebonus'];
                 }//end of while loop
                    echo "<tr>";
-                      echo "<td colspan=\"12\"><b>TOTAL LEAVE BONUS IN NAIRA</b></td>";
+                      echo "<td colspan=\"15\"><b>TOTAL LEAVE BONUS IN NAIRA</b></td>";
                       echo "<td>".number_format($totalbonus,2)."</td>";
                       echo "<td></td>";
                       echo "<td></td>";
@@ -241,10 +229,14 @@ $_SESSION['staffinfo'] = $staffdetails;
 </div>
 
    <script>
-      $("#generate").click(function(){
-        //console.log("generate");
-          alert("generate");
+      $(document).ready(function () {
+        $('#export').click(function(){
+            $("#leaveschedule").table2excel({
+                filename: "leaveschedule.xls"
+            });
+        });
       });
+        
 </script>
 </body>
 </html>

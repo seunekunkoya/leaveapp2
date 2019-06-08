@@ -35,25 +35,19 @@ try {
         #Query to select leave details of the $this staff
         $stmtleave = $lvobj->leaveDetails($appno);   
         $num = $stmtleave->rowCount();
-
-        print_r($stmtleave);
+//        print_r($stmtleave);
         
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         #Query to select leave progress of staff
         $stmtr = $lvobj->leaveProgress($appno);        
         $numtr = $stmtr->rowCount();  
-        print_r($stmtr);
+        //print_r($stmtr);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
         #Query to select leave history. staffid is first queried from the leave application tableand then used to find the leave history from the approve leaves table. 
-        $hstmt = $lvobj->leaveHistory($appno);
-        $hnum = $hstmt->rowCount(); 
-
-        $days = array();
-        $i = 1;
-        $leavedaystotal = 0;
-
         
+
+                
   }//end of try
     catch(PDOException $e){
          echo "Error: " . $e->getMessage();
@@ -91,9 +85,9 @@ try {
             "location" => $staffdet['location'],
             "phone" => $staffdet['phone']
           );
-
-          echo "<br>";
-          print_r($approvedArr);
+          
+          $hstmt = $lvobj->leaveHistory($approvedArr['staffid']);
+          $hnum = $hstmt->rowCount(); 
     ?>
 <div class="wrapper">
   <div class="container-fluid">
@@ -717,18 +711,12 @@ else if ($_SESSION['staffid'] == $_SESSION['staffinfo']['dean']) {
             <?php //////////////////////////////////////////////////////////////Leave History/////////////////////////////////////////////
                                     
                   while($staffhistory=$hstmt->fetch(PDO::FETCH_ASSOC))
-                  {        
-                      $date1 = $staffhistory['apstartdate'];
-                      $date2 = $staffhistory['apenddate']; 
-                      $days[$i] = (int)$lvobj->numdays($date1, $date2);
-                      $leavedaystotal += $days[$i];
-
-                      ++$i;        
+                  {      
             ?>
                     <tr>
-                      <td><?php echo ucfirst($staffhistory['leavetype']); ?></td>
-                      <td><?php echo $lvobj->numdays($date1, $date2); ?></td>
-                      <td><input type="button" name="view" value="Full Details..." id="<?php echo $staffhistory["appno"]; ?>" class="btn btn-xs view_history" /></td>
+                      <td id= "ltype"><?php echo ucfirst($staffhistory['leavetype']); ?></td>
+                      <td><?php echo $staffhistory['totalday'] ; ?></td>
+                      <td><input type="button" name="view" value="Full Details..." id="<?php echo $staffhistory["staffid"]; ?>" class="btn btn-xs view_history" /></td>
                     </tr>
 
           <?php }//end of while ?>
@@ -788,11 +776,13 @@ else if ($_SESSION['staffid'] == $_SESSION['staffinfo']['dean']) {
  $(document).ready(function(){
       
       $('.view_history').click(function(){  
-           var appno = $(this).attr("id");  
+           var staffid = $(this).attr("id");  
+           var ltype = $('#ltype').text().toLowerCase();
+           //console.log(ltype);
            $.ajax({  
                 url:"leavehistory.php",  
                 method:"post",  
-                data:{appno:appno},  
+                data:{staffid:staffid, ltype:ltype},  
                 success:function(data){  
                      $('#leavehistory').html(data);  
                      $('#myModal2').modal("show");  

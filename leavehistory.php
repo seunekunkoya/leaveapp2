@@ -9,20 +9,17 @@
   $output = '';
 #from leavedash.php
 #handling specific details of leave history of staff
-if(isset($_POST["appno"]))  
+if(isset($_POST["staffid"]))  
 {  
-   $appno = $_POST["appno"];
+   $staffid = $_POST["staffid"];
+   $ltype = $_POST["ltype"];
 
-    $stmt = $lvobj->getLeavesGone($appno);
+    $stmt = $lvobj->getLeavesGone($staffid, $ltype);
 
     $output .= '  
       <div class="table-responsive">  
-           <table class="table table-bordered">';  
-
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
-    {  
-      $output .= '  
-                <tr>  
+           <table class="table table-bordered">';
+    $output .= '<tr>  
                      <td> <label>Leave Type</label></td> 
                      <td> <label>Reason</label></td>
                      <td> <label>Started On</label></td>
@@ -30,7 +27,11 @@ if(isset($_POST["appno"]))
                      <td> <label>Days</label></td>
                      <td> <label>Location</label></td>
                        
-                </tr>  
+                </tr> ';
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+    {  
+      $output .= '
                 <tr>  
                      <td>'.ucfirst($row["leavetype"]).'</td> 
                      <td>'.ucfirst($row["reason"]).'</td> 
