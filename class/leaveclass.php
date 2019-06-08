@@ -960,7 +960,7 @@ class leaveclass extends general {
 
         return $hrstm;  
 	}
-
+  #gets leave report for Registrar
 	public function leaveReportReg($cursession){
 
 		$qrydfs = "SELECT * FROM leavescheduletransaction
@@ -973,6 +973,7 @@ class leaveclass extends general {
         return $stmdfs;
 	}
 
+  #gets leave report for DFS
 	public function leaveReportDFS($cursession){
 
 		$qryvco = "SELECT * FROM leavescheduletransaction
@@ -985,7 +986,8 @@ class leaveclass extends general {
         return $stmvco; 
 	}
 
-	public function leaveReportVC($cursession){
+	#gets leave report for VC
+  public function leaveReportVC($cursession){
 
 		$qryvc = "
                   SELECT * FROM leavescheduletransaction
@@ -998,6 +1000,7 @@ class leaveclass extends general {
         return $stmvc;
 	}
 
+  #check if VC has made recommendation on the leave schedule
 	public function leaveReportIsVC($cursession){
 
 		$vcqry = "SELECT * FROM leavescheduletransaction
@@ -1010,6 +1013,7 @@ class leaveclass extends general {
         return $vcstm;
 	}
 
+#function to calculate when a staff resumes
 public function resumptionday($edate)
 {
 	$dayOfWeek = date("l", strtotime($edate));
@@ -1045,33 +1049,7 @@ public function resumptionday($edate)
 		}
 }//resumption day end
 
-
-		public function checkLeaveStatus($id)
-		{
-			$qry = "SELECT appstatus
-					FROM leaveapp
-					WHERE staffid = '$id'
-					LIMIT 0,1";
-
-			$stmt = $this->db->prepare($qry);
-			$stmt->execute();
-
-			$row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-			$status = $row['appstatus'];
-			
-			if ($status = 0) {
-				echo "denied";
-			} elseif ($status = 1) {
-				echo "pending";
-			} elseif ($status = 2){
-				echo "approved";
-			} else {
-				echo "The staff has no application in the database";
-			}
-				
-		}//end of public function check leave status
-
+#checks the leave days a staff is allowed to apply for
 public function leavedaysallowed($staffid, $leavetype)
 {
 	
@@ -1114,6 +1092,8 @@ public function leavedaysallowed($staffid, $leavetype)
 	return $ndays;
 }//end of public function leavedays
 
+
+#adds slashes to the session to enable safe input and retrieval from database
 function addSlash($session){
     $sentence = $session;
     $escapestring ='\\';
@@ -1123,6 +1103,7 @@ function addSlash($session){
     return $newacadsession;
 }
 
+#calculate the total days a staff has gone for leave
 public function leavedaysgone($staffid, $currentsession, $leavetype)
 {    
 	            	$hquery = "SELECT ap.apstartdate, ap.apenddate 
@@ -1151,6 +1132,7 @@ public function leavedaysgone($staffid, $currentsession, $leavetype)
 }//end of public function leavedaysdone
 
 
+#calculate the total number leave days gone for a staff
 public function annualleavedaysgone($staffid, $currentsession)
 {
 	         	$hquery = "SELECT ap.apstartdate, ap.apenddate 
@@ -1178,6 +1160,7 @@ public function annualleavedaysgone($staffid, $currentsession)
 		         return $leavedaystotal;
 }//end of public function leavedaysdone
 
+#gets a staff name
 public function getname($id)
 {
 		$qry = "SELECT sname, mname, fname
@@ -1195,77 +1178,7 @@ public function getname($id)
 
 }//end of public function getname
 
-public function getunitprgid($id){
-	
-	
-
-	$qry = "SELECT unitprgid 
-        	  FROM stafflst
-			  WHERE staffid = '$id'";
-
-    $stmt = $this->db->prepare($qry);
-    $stmt->execute();
-        
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-	$unitprgid = $row['unitprgid'];
-
-	return $unitprgid;
-
-}//end of public function to get unit/program ID
-
-public function getcolid($id){
-	
-	
-
-	$qry = "SELECT coldirid	 
-        	  FROM stafflst
-			  WHERE staffid = '$id'";
-
-    $stmt = $this->db->prepare($qry);
-    $stmt->execute();
-        
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-	$coldirid = $row['coldirid'];
-
-	return $coldirid;
-
-}//end of public function to get unit/program ID
-
-public function getkol($id){
-	$qry = "SELECT kol	 
-        	  FROM stafflst
-			  WHERE staffid = '$id'";
-
-    $stmt = $this->db->prepare($qry);
-    $stmt->execute();
-        
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-	$kol = $row['kol'];
-
-	return $kol;
-
-}
-
-public function getdept($id){
-
-	$qry = "SELECT dept	 
-        	  FROM stafflst
-			  WHERE staffid = '$id'";
-
-    $stmt = $this->db->prepare($qry);
-    $stmt->execute();
-        
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-	$dept = $row['dept'];
-
-	return $dept;
-
-}
-
+#checks if the loggedin staff is HOD or not
 public function isHod($staffid){
 
 		$qry = "SELECT staffid
@@ -1284,6 +1197,7 @@ public function isHod($staffid){
 			}
 	}//end of public function isHod
 
+#checks if the loggedin staff is Dean or not
 public function isdean($staffid){
 
 		$qry = "SELECT staffid
@@ -1300,58 +1214,8 @@ public function isdean($staffid){
 			{
 				return false;
 			}
-	}//end of public function isHod
+}//end of public function isHod
 
-public function getstaffidbyappno($appno){
-
-	$qry = "SELECT staffid
-        	  FROM leaveapplication
-			  WHERE appno = '$appno'";
-
-    $stmt = $this->db->prepare($qry);
-    $stmt->execute();
-        
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-	$staffid = $row['staffid'];
-
-	return $staffid;
-
-}//end of public function to get staffid by appno in leaveapplication tabless
-
-	public function randomString($length) {
-		$str = "";
-		$characters = array_merge(range('A','Z'), range('a','z'), range('0','9'));
-		$max = count($characters) - 1;
-		for ($i = 0; $i < $length; $i++) {
-			$rand = mt_rand(0, $max);
-			$str .= $characters[$rand];
-		}
-		return $str;
-	}//end of public function random string
-
-	public function randomID($length) {
-		$str = "";
-		$characters = array_merge(range('A','Z'), range('0','9'));
-		$max = count($characters) - 1;
-		for ($i = 0; $i < $length; $i++) {
-			$rand = mt_rand(0, $max);
-			$str .= $characters[$rand];
-		}
-		return $str;
-	}//end of public function randomID
-
-
-	public function appNo($length) {
-		$str = "";
-		$characters = array_merge(range('0','9'), range('0','9'));
-		$max = count($characters) - 1;
-		for ($i = 0; $i < $length; $i++) {
-			$rand = mt_rand(0, $max);
-			$str .= $characters[$rand];
-		}
-		return $str;
-	}//end of public function randomID
 
 	public function serAppno(){
 
@@ -1398,6 +1262,7 @@ public function getstaffidbyappno($appno){
         }//end of if else      
 	}//end of public function transactionNo
 
+  #sanitizes form input for safe database insertion
 	public function test_input($data) {
 		$data = trim($data);
 		$data = addslashes($data);
@@ -1414,10 +1279,9 @@ public function getstaffidbyappno($appno){
 		return $data;
 	}//end of public function get_input
 
+  #this function gets the last transaction number from the leavetransaction table in order to monitor transactions on an application
 	public function trackid($appno){
-		
-		
-
+	
 		$qry = "SELECT MAX(transactionid) AS transaction
 				FROM leavetransaction
 				WHERE appno = '$appno'";
@@ -1433,88 +1297,8 @@ public function getstaffidbyappno($appno){
 
 	}//end of trackid
 
-public function getstatusbyID($id)
-{
-			$query = "SELECT st.fname, st.sname, s.dept, s.hod, l.staffid, l.leavetype, l.reason, l.startdate, l.enddate, l.leavestatus, l.appno, lt.tstaffid, lt.comment, lt.transactionid, lt.recstartdate, lt.recenddate, lt.status, lt.timeviewed
-				  FROM stafflst AS s
-                  INNER JOIN leaveapplication AS l
-                  ON s.staffid = l.staffid
-                  INNER JOIN stafflist AS st
-                  ON s.staffid = st.staffid
-                  INNER JOIN leavetransaction AS lt
-                  ON l.appno = lt.appno
-                  WHERE l.staffid = '$id'";
-
-        	$stmt = $this->db->prepare($query);
-        	$stmt->execute(); 
-
-        	$row=$stmt->fetch(PDO::FETCH_ASSOC);
-
-        	return $row;
-
-}
-
-	public function getstaffnames($id)
-	{
-		$query = "";
-
-        	$stmt = $this->db->prepare($query);
-        	$stmt->execute(); 
-
-        	$row=$stmt->fetch(PDO::FETCH_ASSOC);
-
-        	return $row;
-        
-
-	}
-
-	public function getstatus1($appno){
-
-		$qry = "SELECT status
-				FROM leavetransaction
-				WHERE appno = '$appno'
-				ORDER BY transactionid DESC
-				LIMIT 1";
-
-		$stmt = $this->db->prepare($qry);
-		$stmt->execute();
-
-		$row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-		$status = $row['status'];
-
-		//use status to get recomendation
-
-		$qry1 = "SELECT rectitle
-				FROM leaverecommendation
-				WHERE recid = '$status'";
-
-		$stmt1= $this->db->prepare($qry1);
-		$stmt1->execute();
-
-		$row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
-
-		$recomendation = $row1['rectitle'];
-
-		return $recomendation; //recommendations in the database gives the status of the application.
-
-	}
-
-	
-	public function cleandata($formdata){
-			$arrlength=count($formdata);
-
-			for($x = 0; $x < $arrlength; $x++)
-		  	{
-		  		 $formdata[$x] = trim($formdata[$x]);
-		  		 $formdata[$x] = stripslashes($formdata[$x]);
-		  		 $formdata[$x] = filter_var($formdata[$x], FILTER_SANITIZE_STRING);  		
-		  	}
-
-		  	return $formdata;
-	}//end of public function clean data
-
-	public function numdays($date1, $date2)
+	#calculates number of days between dates
+  public function numdays($date1, $date2)
 	{
 		$stdate = date_create($date1);
 		$eddate = date_create($date2);
@@ -1525,13 +1309,6 @@ public function getstatusbyID($id)
         return (int)$ndays + 1;
 	}//end of public function number of days
 
-	public function decoder($words)
-	{
-            echo base64_encode($words);
-            echo base64_decode($words); 
-
-	}//end of public function to encode and decode words 
-	
 }
 
 ?>
