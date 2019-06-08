@@ -7,7 +7,8 @@ class leaveclass extends general {
 	{
 		parent::__construct($con);
 	}
-	
+
+	#this function checks for login session of users
 	public function checkSession()
 	{
 		// Check if the user is logged in, if not then redirect him to login page
@@ -17,6 +18,7 @@ class leaveclass extends general {
 		}
 	}//end of public function checkSession
 
+  #logs a user in to the application
 	public function login($id){
 
 		$qry = "SELECT staffid FROM stafflst WHERE staffid = '$id'";
@@ -35,18 +37,20 @@ class leaveclass extends general {
 		}
 	}//end of login
 
+  #redirects a user after login
 	public function redirect($url) {
         header("Location: $url");
     }
 
-    	public function staffDetails()
+  #to be used on life server to obtain staff details
+  public function staffDetails()
 	{
-		
 		$userdetails = get_user($_SESSION['loginid']);
 		// $staffdetails = get_user($staffid);
 	//	$staffid = implode(',',array_map(public function($el){return $el['idno']; }, $userdetails));
 	}
 
+  #gets staff information from the stafflst table
 	public function staffInfo($id){
 		$staffInfo = array();
 		$query = "
@@ -60,6 +64,7 @@ class leaveclass extends general {
 		return $staffinfo;
 	}
 
+  #gets the current academic session 
   function getSession()
   {
       $query = "
@@ -109,6 +114,7 @@ class leaveclass extends general {
 
   }//end of insertLAT
 
+  #inserts into leave transaction table
 	public function insertLT($appno, $staffid, $role, $transactionid, $timeviewed, $comment = null, $status, $recstartdate, $recenddate, $remarks = null)
   {
     $query1 = "INSERT INTO leavetransaction (appno, tstaffid, role, transactionid, timeviewed, comment , status, recstartdate, recenddate, remarks) VALUE (:appno, :tstaffid, :role, :transactionid, :timeviewed, :comment, :status, :recstartdate, :recenddate, :remarks)";
@@ -134,59 +140,7 @@ class leaveclass extends general {
 
   }
 
-	public function insertLTS($appno, $staffid, $role, $transactionid, $timeviewed, $reco, $sdate, $edate, $remarks){
-
-		$qry = "INSERT INTO leavetransaction (appno, tstaffid, role, transactionid, timeviewed, status, recstartdate, recenddate, remarks) 
-				VALUES (:appno, :staffid, :role, :transactionid, :timeviewed, :status, :recstartdate, :recenddate, :remarks)";
-
-        // prepare query for excecution
-        $stmtu = $this->db->prepare($qry);
-
-        // bind the parameters
-        $stmtu->bindParam(':appno', $appno);
-        $stmtu->bindParam(':staffid', $staffid);
-        $stmtu->bindParam(':role', $role);
-        $stmtu->bindParam(':transactionid', $transactionid);
-        $stmtu->bindParam(':timeviewed', $timeviewed);
-        $stmtu->bindParam(':status', $reco);
-        $stmtu->bindParam(':recstartdate', $sdate);
-        $stmtu->bindParam(':recenddate', $edate); 
-        $stmtu->bindParam(':remarks', $remarks);
-
-        if($stmtu->execute()){
-           return true;
-	     }
-	     else{
-	       	return false;
-	     }
-	}
-
-	public function insertResumption($appno, $staffid, $role, $transactionid, $timeviewed, $reco, $sdate, $edate){
-
-				$qry = "INSERT INTO leavetransaction (appno, tstaffid, role, transactionid, timeviewed, status, recstartdate, recenddate) 
-						VALUES (:appno, :staffid, :role, :transactionid, :timeviewed, :status, :recstartdate, :recenddate)";
-
-		        // prepare query for excecution
-		        $stmtu = $this->db->prepare($qry);
-
-		        // bind the parameters
-		        $stmtu->bindParam(':appno', $appno);
-		        $stmtu->bindParam(':staffid', $staffid);
-		        $stmtu->bindParam(':role', $role);
-		        $stmtu->bindParam(':transactionid', $transactionid);
-		        $stmtu->bindParam(':timeviewed', $timeviewed);
-		        $stmtu->bindParam(':status', $reco);
-		        $stmtu->bindParam(':recstartdate', $sdate);
-		        $stmtu->bindParam(':recenddate', $edate);
-
-		        if($stmtu->execute()){
-		        	return true;
-		        }
-		        else {
-		        	return false;
-		        }
-	}
-
+  #updates approveleaves table from 0 to 1 to indicate staff resumption awaiting HOD confirmation
 	public function approvedleavesUpdate($resumed, $appno){
 
 		$qry3 = "UPDATE approvedleaves 
@@ -209,7 +163,7 @@ class leaveclass extends general {
 
 	}
 
-
+  #updates approveleaves table to show the date staff resumed
 	public function approvedleavesUpdateByDate($rdate, $appno){
 
             $qry3 = "UPDATE approvedleaves 
@@ -229,29 +183,7 @@ class leaveclass extends general {
                 	return false;
                 }               
 	}
-
-	public function approvedleavesUpdateByRelease($dateofrelease, $appno){
-
-		$qry1 = "UPDATE approvedleaves
-                  SET releaseddate=:dateofrelease
-                  WHERE appno = :appno";
-
-        // prepare query for excecution
-        $stmt1 = $this->db->prepare($qry1);     
-
-        // bind the parameters
-        $stmt1->bindParam(':dateofrelease', $dateofrelease);
-        $stmt1->bindParam(':appno', $appno);
-
-        if($stmt1->execute()){
-            return true;
-          }
-         else{
-          	return false;
-         } 
-	}
-
-
+  #updates approveleaves table to show the date HR releases a staff to go for leave
 	public function newApprovedleavesUpdateByRelease($dateofrelease, $appno, $numD, $startFr, $toRes){
 
 			$qry1 = "UPDATE approvedleaves
@@ -276,7 +208,8 @@ class leaveclass extends general {
 	         }
 	}
 
-	public function approvedLeaves($staffid, $appno, $leavetype, $reason, $sdate, $edate, $session, $location, $phone){
+  #inserts into the approvedleaves table details of leave approval 
+	public function insertApprovedLeaves($staffid, $appno, $leavetype, $reason, $sdate, $edate, $session, $location, $phone){
         
         $qry = "INSERT INTO approvedleaves (staffid, appno, leavetype, reason, apstartdate, apenddate, session, location, phone) 
                 VALUES (:staffId, :appno, :leavetype, :reason, :recst, :recend, :session, :location, :phone)";
@@ -297,10 +230,9 @@ class leaveclass extends general {
               {
                	return true;
               }
-          
              	return false;
   }
-
+  #this function updates the leaveapplication table at every stage of recommmendation and approval of supervisors
 	public function updateLeaveApplication($status, $stage, $appno){
 
 		$qry1 = "UPDATE leaveapplication 
@@ -324,33 +256,7 @@ class leaveclass extends general {
     
 	} 
 
-	public function insertResumptionConfirmed($appno, $staffid, $role, $transactionid, $timeviewed, $reco, $sdate, $edate, $remarks){
-
-		$qry = "INSERT INTO leavetransaction (appno, tstaffid, role, transactionid, timeviewed, status, recstartdate, recenddate, remarks) 
-				VALUES (:appno, :staffid, :role, :transactionid, :timeviewed, :status, :recstartdate, :recenddate, :remarks)";
-
-        // prepare query for excecution
-        $stmtu = $this->db->prepare($qry);
-
-        // bind the parameters
-        $stmtu->bindParam(':appno', $appno);
-        $stmtu->bindParam(':staffid', $staffid);
-        $stmtu->bindParam(':role', $role);
-        $stmtu->bindParam(':transactionid', $transactionid);
-        $stmtu->bindParam(':timeviewed', $timeviewed);
-        $stmtu->bindParam(':status', $reco);
-        $stmtu->bindParam(':recstartdate', $sdate);
-        $stmtu->bindParam(':recenddate', $edate); 
-        $stmtu->bindParam(':remarks', $remarks);
-
-        if($stmtu->execute()){
-        	return true;
-        }else{
-        	return false;
-        }
-
-	}
-
+  #this function inserts into the leave schedule transaction
 	public function insertLeaveScheduleTransaction($transactionDate, $transaactionNo, $cursession, $officer, $recc, $comment, $action){
 
 		$qry = "INSERT INTO leavescheduletransaction (transactionDate, transactionNo, session, officer, recommendation, comment, action) VALUE (:transactionDate, :transactionNo, :session, :officer, :recommendation, :comment, :action)";
@@ -367,6 +273,7 @@ class leaveclass extends general {
                 $stm->execute();
 	}
 
+  #this function inserts into leaveschedule table
 	public function insertLeaveSchedule($schedule, $cursession ){
 
 		for ($i=0; $i < count($schedule); $i++)
@@ -398,6 +305,7 @@ class leaveclass extends general {
         }//end of for loop
 	}
 
+  #inserts notification of management staff into the schedule transaction
 	public function insertNote($transactionDate, $transaactionNo, $cursession, $officer, $recc, $comment, $action){
 
 			$qry = "INSERT INTO leavescheduletransaction (transactionDate, transactionNo, session, officer, recommendation, comment, action) VALUE (:transactionDate, :transactionNo, :session, :officer, :recommendation, :comment, :action)";
@@ -418,7 +326,7 @@ class leaveclass extends general {
         	}
 
 	}
-
+  #gets details of staff leave application in progress
 	public function getStatus($id, $cat){
 
 		$query = "SELECT st.fname, st.sname, s.dept, s.hod, l.staffid, l.leavetype, l.reason, l.startdate, l.enddate, l.leavestatus, l.appno, lt.tstaffid, lt.comment, lt.role, lt.transactionid, lt.recstartdate, lt.recenddate, lt.status, lt.timeviewed, lt.remarks, l.location
@@ -438,6 +346,7 @@ class leaveclass extends general {
         		  return $stmt;
 	}//end of get status
 
+  #gets leave info for the HOD to view and make recommendation
 	public function getHodView($hodid, $dept, $cat){
 		#Query to select leave details of the $this staff
           $query = "SELECT lt.timeviewed, l.staffid, lt.appno, lt.tstaffid, l.leavetype, l.reason, lt.recstartdate, lt.recenddate, l.location, lt.remarks, lt.status, st.coldirid, st.hod, st.dean, st.dept, l.datecreated
@@ -460,7 +369,8 @@ class leaveclass extends general {
           return $stmt;  
 	}//end of getHodView
 
-	public function getDeanView($deanid, $kol, $cat){
+	#gets leave info for the Dean to view and make recommendation
+  public function getDeanView($deanid, $kol, $cat){
 
 		$query = "SELECT lt.timeviewed, l.staffid, lt.appno, lt.tstaffid, l.leavetype, l.reason, lt.recstartdate, lt.recenddate, l.location, lt.remarks, lt.status, st.coldirid, st.hod, st.dean, st.dept, l.datecreated
           FROM leavetransaction AS lt
@@ -482,6 +392,7 @@ class leaveclass extends general {
         return $stmt;  
 	}//end of getDeanView
 
+  #gets leave info for the HR to view and make recommendation
 	public function getHrView($hro){
 
 		$query = "
@@ -505,6 +416,7 @@ class leaveclass extends general {
         return $stmt;
 	}//end of getHrView
 
+  #gets leave info for the Registra to view and make recommendation
 	public function getRegView($rego){
 
 		$query = "SELECT lt.timeviewed, l.staffid, lt.appno, lt.tstaffid, l.leavetype, l.reason, lt.recstartdate, lt.recenddate, l.location, lt.remarks, lt.status, st.coldirid, st.hod, st.dean, st.dept, l.datecreated
@@ -526,6 +438,7 @@ class leaveclass extends general {
 
 	}//end of getRegView->Regisrars view
 
+  #gets leave info for the VC to view and make recommendation
 	public function getVcView($vco){
 
 		$query = "SELECT lt.timeviewed, l.staffid, lt.appno, lt.tstaffid, l.leavetype, l.reason, lt.recstartdate, lt.recenddate, l.location, lt.remarks, lt.status, st.coldirid, st.hod, st.dean, st.dept, l.datecreated
@@ -547,6 +460,8 @@ class leaveclass extends general {
         return $stmt;
 	}
 
+  #gets the leave application details using the application number
+  #appno => application number
 	public function leaveDetails($appno){
 
 		$query = "
@@ -565,6 +480,7 @@ class leaveclass extends general {
         return $stmt;
 	}
 
+  #shows progress of an application
 	function leaveProgress($appno){
 
 		$trqry = "SELECT *
@@ -608,8 +524,9 @@ class leaveclass extends general {
     return $stmt;
   }
   
+  #this function gets the approved date for an appno
   public function getApprovedDates($appno){
-    #this function gets the approved date for an appno
+    
     $chkdtqry = "SELECT * FROM leavetransaction WHERE appno LIKE '$appno' AND status = 'Approved'";
     
         $chkstmt1 = $this->db->prepare($chkdtqry);
@@ -617,6 +534,8 @@ class leaveclass extends general {
 
         return $chkstmt1;
   }
+
+  #gets recommendation for each staff role
 	public function leaveRec($staffid, $staffcat, $hodid, $deanid, $rego, $hro, $vco){
 
 		if (($staffid == $rego) &&  ($staffcat == 'NTS'))
@@ -646,6 +565,7 @@ class leaveclass extends general {
             return $recstmt;
 	}
 
+  #gets recommended start and end date for a particular leave application
 	public function extractRecc($appno){
 
 		$chkdtqry = "SELECT recstartdate, recenddate FROM leavetransaction 
@@ -659,6 +579,7 @@ class leaveclass extends general {
         return $chkstmt1;
 	}
 
+  #A QUICK QUERY TO CHECK IF A SUPERVISOR HAS ACTED ON AN APPLICATION and also brings out details of the transaction for that leave application
 	public function checkSupervisor1($appno, $staffid){		
 		$chkqry = "SELECT * FROM leavetransaction 
                    WHERE appno LIKE '$appno' 
@@ -671,6 +592,7 @@ class leaveclass extends general {
         return $chkstmt1;
 	}
 
+  #gets leaves that have been approved by the HR
 	public function getApprovedLeaves(){
 
 		$query ="
@@ -691,7 +613,7 @@ class leaveclass extends general {
         return $stmt;
 	}
 
-
+  #get recommendation for HR
 	public function getRecHr(){
 
 		$recqry = "SELECT recctitle, reccgroup
@@ -704,6 +626,7 @@ class leaveclass extends general {
         return $recstmt; 
 	}
 
+  #gets details of those that have been released to go on leave
 	public function staffDetailsforHR(){
 		$query ="SELECT st.fname, st.sname, st.dept, al.staffid, al.appno, al.leavetype, al.apstartdate, al.apenddate, al.location, al.phone, al.releaseddate, al.resumeddate
                     FROM approvedleaves AS al
@@ -718,6 +641,7 @@ class leaveclass extends general {
         return $stmt;
 	}
 
+  #gets details of those that have resumed from leave
 	public function getResumedStaff(){
 
 		$query ="SELECT st.fname, st.sname, st.dept, al.staffid, al.appno, al.leavetype, al.apstartdate, al.apenddate, al.location, al.phone, al.releaseddate, al.resumeddate
@@ -734,6 +658,7 @@ class leaveclass extends general {
         return $stmt; 
 	}
 
+  #gets details of those that have overstayed their leave duration
 	public function getOverstayedStaff(){
 		$query ="SELECT st.fname, st.sname, st.dept, al.staffid, al.appno, al.leavetype, al.apstartdate, al.apenddate, al.location, al.phone, al.releaseddate, al.resumeddate
                     FROM approvedleaves AS al
@@ -747,6 +672,7 @@ class leaveclass extends general {
 		return $stmt;
 	}
 
+  #get staff details using appno and staff category
 	public function getDetailsByCategory($appno, $cat){
 
 		$query = "	SELECT *
@@ -772,6 +698,7 @@ class leaveclass extends general {
         return $stmt;
 	}
 
+  #get staff details using staffid
 	public function getDetailsByStaffid($staffid, $cat){
 
 		$query = "	SELECT *
@@ -797,6 +724,7 @@ class leaveclass extends general {
         return $stmt;
 	}
 
+  #get resumption details of staff for HOD
 	public function getResumptionViewHOD($dept, $hodid, $cat){
 
 		$query = "SELECT lt.timeviewed, l.staffid, lt.appno, lt.tstaffid, l.leavetype, l.reason, l.startdate, l.enddate, l.location, lt.remarks, lt.status, st.coldirid, st.hod, st.dean, st.dept
@@ -822,6 +750,7 @@ class leaveclass extends general {
           return $stmt;
 	}
 
+  #get resumption details of staff for Dean
 	public function getResumptionViewDean($kol, $deanid, $cat){
 
 		$query = "SELECT lt.timeviewed, l.staffid, lt.appno, lt.tstaffid, l.leavetype, l.reason, l.startdate, l.enddate, l.location, lt.remarks, lt.status, st.coldirid, st.hod, st.dean, st.dept
@@ -844,7 +773,7 @@ class leaveclass extends general {
         return $stmt;
 	}
 
-
+  #get resumption details of staff for HR
 	public function getResumptionViewHR($hro){
 
 		$query = "SELECT lt.timeviewed, l.staffid, lt.appno, lt.tstaffid, l.leavetype, l.reason, l.startdate, l.enddate, l.location, lt.remarks, lt.status, st.coldirid, st.hod, st.dean, st.dept
@@ -866,7 +795,7 @@ class leaveclass extends general {
         return $stmt;
 	}
 
-
+  #get resumption details of staff for Registrar
 	public function getResumptionViewReg($rego){
 
 		 $query = "SELECT lt.timeviewed, l.staffid, lt.appno, lt.tstaffid, l.leavetype, l.reason, l.startdate, l.enddate, l.location, lt.remarks, lt.status, st.coldirid, st.hod, st.dean, st.dept
@@ -887,6 +816,7 @@ class leaveclass extends general {
         return $stmt;
 	}
 
+  #get resumption details of staff for VC
 	public function getResumptionViewVC($vco){
 
 		$query = "SELECT lt.timeviewed, l.staffid, lt.appno, lt.tstaffid, l.leavetype, l.reason, l.startdate, l.enddate, l.location, lt.remarks, lt.status, st.coldirid, st.hod, st.dean, st.dept
@@ -899,10 +829,7 @@ class leaveclass extends general {
           AND l.leavestatus = 'Recommended'
           AND l.leavestageid = '5'
           AND lt.role = 'Registrar'
-          AND st.category = 'ACS'
           ORDER BY lt.timeviewed DESC";
-
-          
      
         $stmt = $this->db->prepare($query);
         $stmt->execute();
@@ -910,6 +837,7 @@ class leaveclass extends general {
         return $stmt;
 	}
 
+  #gets the date the staff was released
 	public function getStaffRelease($staffid){
 
 		$query = "SELECT releaseddate, resumestatus, resumeddate
@@ -924,6 +852,7 @@ class leaveclass extends general {
 
 	}
 
+  #gets the dashboard detailof the officer to make comment
 	public function getDashboardOfficer($cursession){
 
 		$qryreg = "
@@ -938,6 +867,7 @@ class leaveclass extends general {
             return $stm;
 
 	}
+
   #function to get leaveschedule in order to test button appearance in leavedashboard
 	public function getSchedule($cursession){
 
@@ -950,6 +880,7 @@ class leaveclass extends general {
 
                     return $stmt1;
 	}
+  
   #function to check if leave schedule is done
 	public function isExistSchedule($cursession){
 
@@ -961,6 +892,7 @@ class leaveclass extends general {
 
         return $stmt;
 	}
+  
   #function to get annual leave schedule
 	public function getAnnualLeaveSchdule(){
 
@@ -983,6 +915,7 @@ class leaveclass extends general {
 
 	}
 
+#to check if leave application for a leavetype is in progress so as to disallow staff from making double application
 	public function isLeaveAppExist($staffid, $leavetype){
 
 		$query = "SELECT staffid, leavetype, leavestatus
@@ -999,6 +932,7 @@ class leaveclass extends general {
 		return $stmt;
 	}
 
+  #gets leave report
 	public function leaveReport($cursession){
 
 		$query = "SELECT *
@@ -1011,6 +945,7 @@ class leaveclass extends general {
         return $stmt;
 	}
 
+  #gets leave report for HR
 	public function leaveReportHR($cursession){
 
 		$hrqry = "

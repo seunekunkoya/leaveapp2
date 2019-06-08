@@ -4,7 +4,7 @@
 Developer: Ekunkoya Isaiah
 Site:      ekunkoya.com.ng
 Script:    Inserts data into transaction table
-File:      leaverec.php
+File:      resumeleave.php
 For every appno entrying this file, the transactionid increases by 1.
 */
 
@@ -24,36 +24,38 @@ $transactionid = $track + 1;
 
 //get the time viewed
 $timeviewed = date('Y-m-d', strtotime($rdate));
+$comment = '';
+$remarks = '';
  
 //need be changed
 //get comment
 #comment is gotten from the post variables
 
 //get status
-try{
-
-
-        if($lvobj->insertResumption($appno, $staffid, $role, $transactionid, $timeviewed, $reco, $sdate, $edate)){
-                $resumed = 1;
-            
-               if($lvobj->approvedleavesUpdate($resumed, $appno));
-                {
-                    //$lvobj->sendMail($to, $header, $subject, $message);
-                    $message = "Query Submitted";
-                    echo $message;
-
-                }
+try
+{
     
+    if($lvobj->insertLT($appno, $staffid, $role, $transactionid, $timeviewed, $comment, $status, $sdate, $edate, $remarks))
+    {      
+            $resumed = 1;
+            
+            if($lvobj->approvedleavesUpdate($resumed, $appno));
+            {
+                //$lvobj->sendMail($to, $header, $subject, $message);
+                $message = "Query Submitted";
+                echo $message;
+            }  
         }
-        else
-        {
-            echo "Query not inserted";
-           // print_r($_POST);
-        }
-
+    else
+    {
+        echo "Query not inserted";
+        // print_r($_POST);
     }
-        catch(PDOException $e){
+
+}
+catch(PDOException $e)
+{
    	            echo "Error: " . $e->getMessage();
- }//end of catch
+}//end of catch
 
 ?>

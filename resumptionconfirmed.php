@@ -4,7 +4,7 @@
 Developer: Ekunkoya Isaiah
 Site:      ekunkoya.com.ng
 Script:    Inserts data into transaction table
-File:      leaverec.php
+File:      resumptionconfirmed.php
 For every appno entrying this file, the transactionid increases by 1.
 */
 
@@ -20,6 +20,8 @@ $transactionid = $track + 1;
 
 //get the time viewed
 $timeviewed = date('Y-m-d H:i:s');
+
+$comment = '';
  
 //need be changed
 //get comment
@@ -27,25 +29,13 @@ $timeviewed = date('Y-m-d H:i:s');
 
 //get status
 try{
-
+            
 		
-        if($lvobj->insertResumptionConfirmed($appno, $staffid, $role, $transactionid, $timeviewed, $reco, $sdate, $edate, $remarks)){
+        if($lvobj->insertLT($appno, $staffid, $role, $transactionid, $timeviewed, $comment, $status, $sdate, $edate, $remarks)){
             
             //$resumed = 1;
             $rdt = strtotime($rdate);
-            $rdate1 = date("Y-m-d", $rdt);
-
-            // $qry3 = "UPDATE approvedleaves 
-            //             SET resumeddate = :rdate
-            //                WHERE appno = :appno";
-
-            //     // prepare query for excecution
-            //     $stmt3 = $con->prepare($qry3);     
-
-            //     // bind the parameters
-            //     $stmt3->bindParam(':rdate', $rdate1);
-            //     $stmt3->bindParam(':appno', $appno);
-                
+            $rdate1 = date("Y-m-d", $rdt);             
 
                 if($lvobj->approvedleavesUpdateByDate($rdate1, $appno));
                 {

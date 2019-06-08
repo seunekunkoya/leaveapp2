@@ -1,9 +1,9 @@
 <?php
 /*
 Developer: Ekunkoya Isaiah
-Site:      ekunkoya.com.ng
+Site:      
 Script:    Inserts data into transaction table
-File:      leaverec.php
+File:      leaveapprove.php
 For every appno entrying this file, the transactionid increases by 1.
 */
 
@@ -32,18 +32,13 @@ $sdate = date('Y-m-d', strtotime($sdate));
 
 $comment = '';//to allow arguement passage
 
-// echo 'Appno--'.$appno.'--Staffid--'. $staffid.'--Role--'. $role.'--TID--'. $transactionid.'--Time--'. $timeviewed.'--Comment--'. $comment.'--Status--'. $status.'--Sdate--'. $sdate.'--Edate--'. $edate.'--remarks--'. $remarks.'--stage--'.$stage;
-// echo "<br>";
-// echo $leavetype.'--Reason--'.  $reason.'--Seaaion--'.  $session.'--location--'.  $location.'--Phone--'.  $phone
 
-
- try {
+try {
     
     if($lvobj->insertLT($appno, $staffid, $role, $transactionid, $timeviewed, $comment, $status, $sdate, $edate, $remarks))
     {
-      if($lvobj->approvedLeaves($staffid, $appno, $leavetype, $reason, $sdate, $edate, $session, $location, $phone))
-
-        {
+      if($lvobj->insertApprovedLeaves($staffid, $appno, $leavetype, $reason, $sdate, $edate, $session, $location, $phone))
+      {
           if($lvobj->updateLeaveApplication($status, $stage, $appno))
           {
               $message = "Query Submitted";
@@ -60,9 +55,9 @@ $comment = '';//to allow arguement passage
       //echo json_encode($error);
       echo $error;
     }//end of else statement
- }//end of try
- catch(PDOException $e){
+}//end of try
+catch(PDOException $e){
      echo "Error: " . $e->getMessage();
- }//end of catch
+}//end of catch
 
 ?>

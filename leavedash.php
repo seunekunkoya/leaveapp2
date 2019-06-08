@@ -87,7 +87,8 @@ try {
           );
           
           $hstmt = $lvobj->leaveHistory($approvedArr['staffid']);
-          $hnum = $hstmt->rowCount(); 
+          $hnum = $hstmt->rowCount();
+          echo '<br>'.$approvedArr['session'];
     ?>
 <div class="wrapper">
   <div class="container-fluid">
@@ -313,37 +314,12 @@ if(!isset($hodid) || !isset($deanid) || !isset($hro) || !isset($vco) || !isset($
     }
     echo $sdate.'---------'.$edate;
 }
-  
-
-    #Query for recommendations 
-        /*
-          Testing each staff id to know which role each staff is to play.
-        */
-            if (($staffid == $rego) &&  ($staffcat == 'NTS'))
-            {
-              $recqry = "SELECT recctitle, reccgroup
-                            FROM leaverecommendations
-                            WHERE reccgroup = 2";            
-            }
-
-            else if(($staffid == $hodid) || ($staffid == $deanid) || ($staffid == $rego) || ($staffid == $hro))
-            {
-                $recqry = "SELECT recctitle, reccgroup
-                            FROM leaverecommendations
-                            WHERE reccgroup = 1";              
-            } 
-          
-            else if ($staffid == $vco) 
-            {
-              $recqry = "SELECT recctitle, reccgroup
-                            FROM leaverecommendations
-                            WHERE reccgroup = 2";             
-            }
-
-            $recstmt = $con->prepare($recqry);
-            $recstmt->execute();
-            
-            $recnum = $recstmt->rowCount(); 
+  #Query for recommendations 
+  /*
+  Testing each staff id to know which role each staff is to play.
+  */
+  $recstmt = $lvobj->leaveRec($staffid, $staffcat, $hodid, $deanid, $rego, $hro, $vco);          
+  $recnum = $recstmt->rowCount(); 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     if ($_SESSION['staffid'] == $_SESSION['staffinfo']['hod'] ) 

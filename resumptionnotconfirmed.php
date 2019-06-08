@@ -19,6 +19,8 @@ $transactionid = $track + 1;
 
 //get the time viewed
 $timeviewed = date('Y-m-d H:i:s');
+
+$comment = '';
  
 //need be changed
 //get comment
@@ -27,7 +29,7 @@ $timeviewed = date('Y-m-d H:i:s');
 //get status
 try{
 
-        if($lvobj->insertResumptionConfirmed($appno, $staffid, $role, $transactionid, $timeviewed, $reco, $sdate, $edate, $remarks)){
+        if($lvobj->insertLT($appno, $staffid, $role, $transactionid, $timeviewed, $comment, $status, $sdate, $edate, $remarks)){
             echo "Query Inserted";
         }
         else

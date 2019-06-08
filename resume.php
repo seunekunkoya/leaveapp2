@@ -218,7 +218,7 @@ try {
   </tr>
 
   <tr>
-    <th>Totals Days Recommended for Annual Leave</th>
+    <th>Totals Days statusmmended for Annual Leave</th>
     <td>4</td>
     <th>Leave Days Entitled</th>
     <td>4</td>
@@ -245,7 +245,7 @@ try {
         <?php echo '<input type="hidden" id="appno" value="'.$staffdet['appno'].'">'; ?>
         <?php echo '<input type="hidden" id="role" value="Applicant">'; ?>
         <?php echo '<input type="hidden" id="stage" value="1">'; ?>
-        <?php echo '<input type="hidden" id="reco" value="Resumed">'; ?>
+        <?php echo '<input type="hidden" id="status" value="Resumed">'; ?>
         <?php echo '<input type="hidden" id="sdate" value="'.$staffdet['recstartdate'].'">'; ?>
         <?php echo '<input type="hidden" id="edate" value="'.$staffdet['recenddate'].'">'; ?>
         <?php echo '<input type="hidden" id="staffid" value="'.$staffid.'">'; ?>
@@ -305,7 +305,7 @@ try {
         var sdate = $('#sdate').val();
         var edate = $('#edate').val();
         var remarks = $('#remarks').val();
-        var reco = $('#reco').val();
+        var status = $('#status').val();
         var role = $('#role').val();
         var stage = $('#stage').val();
         var rdate = $('#rdate').val();
@@ -327,17 +327,17 @@ try {
                 sdate: sdate,
                 edate: edate,
                 remarks: remarks,
-                reco: reco,
+                status: status,
                 role: role,
                 stage: stage,
                 rdate: rdate
              }, 
           function(){
-          //  alert("Date Saved");
+               //console.log("Date Saved");
                $(location).attr('href', url);
           });
         }
-       //alert(reason + edate + sdate + reco);
+       //alert(reason + edate + sdate + status);
          
         });
     });

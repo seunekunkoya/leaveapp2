@@ -211,7 +211,7 @@ try {
   </tr>
 
   <tr>
-    <th>Totals Days Recommended for Annual Leave</th>
+    <th>Totals Days statusmmended for Annual Leave</th>
     <td>4</td>
     <th>Leave Days Entitled</th>
     <td>4</td>
@@ -255,7 +255,7 @@ try {
         <?php echo '<input type="hidden" id="appno" value="'.$staffdet['appno'].'">'; ?>
         <?php echo '<input type="hidden" id="role" value="Hod">'; ?>
         <?php echo '<input type="hidden" id="stage" value="2">'; ?>
-        <?php //echo '<input type="hidden" id="reco" value="Resumed">'; ?>
+        <?php //echo '<input type="hidden" id="status" value="Resumed">'; ?>
         <?php echo '<input type="hidden" id="sdate" value="'.$staffdet['recstartdate'].'">'; ?>
         <?php echo '<input type="hidden" id="edate" value="'.$staffdet['recenddate'].'">'; ?>
         <?php echo '<input type="hidden" id="staffid" value="'.$staffid.'">'; ?>
@@ -317,7 +317,7 @@ try {
         var sdate = $('#sdate').val();
         var edate = $('#edate').val();
         var remarks = $('#remarks').val();
-        var reco = 'Resumption Confirmed';
+        var status = 'Resumption Confirmed';
         var role = $('#role').val();
         var stage = $('#stage').val();
         var rdate = $('#rdate').val();
@@ -328,19 +328,19 @@ try {
 
           if (remarks == '')
           {
-                //alert("Date cannot be blank");
+                
                 $('#modalContent').html('<h4>Remarks cannot be blank</h4>');
                 $('#myModal1').modal({backdrop: false, keyboard: false});
            }
           else {
-            //alert(reason + edate + sdate + reco);
+            
               $('#message').load('resumptionconfirmed.php', {
                   appno: appno,
                   staffid:staffid,
                   sdate: sdate,
                   edate: edate,
                   remarks: remarks,
-                  reco: reco,
+                  status: status,
                   role: role,
                   stage: stage,
                   rdate: rdate
@@ -359,7 +359,7 @@ try {
         var sdate = $('#sdate').val();
         var edate = $('#edate').val();
         var remarks = $('#remarks').val();
-        var reco = 'Resumption Not Confirmed';
+        var status = 'Resumption Not Confirmed';
         var role = $('#role').val();
         var stage = $('#stage').val();
         var rdate = $('#rdate').val();
@@ -375,14 +375,14 @@ try {
            $('#myModal1').modal({backdrop: false, keyboard: false});
         }
         else {
-          //alert(reason + edate + sdate + reco);
-         $('#message').load('resumptionnotconfirmed.php', {
+          //alert(reason + edate + sdate + status);
+         $('#message').load('resumptionconfirmed.php', {
                 appno: appno,
                 staffid:staffid,
                 sdate: sdate,
                 edate: edate,
                 remarks: remarks,
-                reco: reco,
+                status: status,
                 role: role,
                 stage: stage,
                 rdate: rdate
