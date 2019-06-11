@@ -279,11 +279,13 @@ class leaveclass extends general {
 		for ($i=0; $i < count($schedule); $i++)
       	{ 
 
-            $query1 = "INSERT INTO leaveschedule (session, title, staffname, staffid, post, progunit, level, empdate, daysworked, daysentitled, daysgone, dayspermissible, leavebonus, bankacctno, bankname) VALUE (:cursession, :title, :staffname, :staffid, :post, :progunit, :level, :empdate, :daysworked, :daysentitled, :daysgone, :dayspermissible, :leavebonus, :bankacctno, :bankname)";
+            $query1 = "INSERT INTO leaveschedule (session, category, coldean, title, staffname, staffid, post, progunit, level, empdate, daysworked, daysentitled, daysgone, dayspermissible, leavebonus, bankacctno, bankname) VALUE (:cursession, :category, :coldean, :title, :staffname, :staffid, :post, :progunit, :level, :empdate, :daysworked, :daysentitled, :daysgone, :dayspermissible, :leavebonus, :bankacctno, :bankname)";
 
                           $stmt1 = $this->db->prepare($query1);
 
                           $stmt1->bindparam(':cursession', $cursession);
+                          $stmt1->bindparam(':category', $schedule[$i]['category']);
+                          $stmt1->bindparam(':coldean', $schedule[$i]['kol']);
                           $stmt1->bindparam(':title', $schedule[$i]['title']);
                           $stmt1->bindparam(':staffname', $schedule[$i]['staffname']);
                           $stmt1->bindparam(':staffid', $schedule[$i]['staffid']);
@@ -910,8 +912,14 @@ class leaveclass extends general {
 
         $stmt = $this->db->prepare($qry);
         $stmt->execute();
+        $num = $stmt->rowCount();
 
-        return $stmt;
+        if($num > 0)
+          { 
+            return true;
+          }
+          
+        return false;
 	}
   
   #function to get annual leave schedule

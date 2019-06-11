@@ -23,12 +23,12 @@ $_SESSION['staffinfo'] = $staffdetails;
   $vco = $_SESSION['staffinfo']['vco'];
   
   $cursession = $lvobj->getSession();
-
+  $slashedSession = $lvobj->addSlash($cursession);
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /*Query to check if the schedule for the current session exists*/
-  $stmt = $lvobj->isExistSchedule($cursession);
-  $nm = $stmt->rowCount();
+  $checkSchedule = $lvobj->isExistSchedule($slashedSession);
+  
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ?>
@@ -70,13 +70,13 @@ $_SESSION['staffinfo'] = $staffdetails;
       </div>
       <div class="col-md-3"></div>
       <div class="col-md-3" id="btncapsule">
-        <button type="button" class="btn-primary btnn" id="export">Export to Excel</button>
+        
         <?php 
-          if (!($nm > 0))//session exist
+          if (!$checkSchedule)
                {
-                // echo ' ';
                  echo '<button class="btn-primary btnn"><a href="annualleavereport.php?schedule=1">Generate Schedule</a></button>';
                }
+               echo '<button type="button" class="btn-primary btnn" id="export">Export to Excel</button>';
                echo '<button class="btn-primary btnn"><a style="font-size: 14px;" href="leavedashboard.php?id='.base64_encode($_SESSION['staffid']).'">Dashboard</a></button>';
           ?>
         
@@ -140,7 +140,7 @@ $_SESSION['staffinfo'] = $staffdetails;
                       echo "<td>".$row['kol']."</td>";  
                       echo "<td>".$row['dept']."</td>";
                       echo "<td>".$row['unitprg']."</td>";   
-                      echo "<td>".$row['staffname']."</td>";//$staffid = getname($row['staffid'])
+                      echo "<td>".$row['staffname']."</td>";
                       echo "<td>".$row['title']."</td>";
                       echo "<td>".$row['staffid']."</td>";
                       echo "<td>".$row['post']."</td>";
@@ -176,7 +176,7 @@ $_SESSION['staffinfo'] = $staffdetails;
     //print_r(getname($schedule[0]['staffid']));
     //echo count($schedule);
 
-    if(isset($_GET['schedule']) == 1 ){
+    if(isset($_GET['schedule']) == 1){
       
       //print_r($schedule[0]['staffid']);
 
@@ -214,12 +214,7 @@ $_SESSION['staffinfo'] = $staffdetails;
                     <a style="font-size: 14px;" href="leavedashboard.php?id='.base64_encode($_SESSION['staffid']).'">Dashboard</a>
               </button>
               ';
-       
-    ?><!-- 
-    <button>
-          <a style="font-size: 14px;" href="leavedashboard.php?id= <?php //echo base64_encode($_SESSION['staffdetails']['staffid']); ?>">Cancel</a>
-    </button>
-      <button onclick="goBack()" class="btn btn-default">Back to dashboard</button> --> 
+    ?>
 
   </p>
 </div>

@@ -1,56 +1,50 @@
 <?php 
-
 include "include/config.php";
-
 $lvobj->checkSession();
-
 $staffid = $_SESSION['staffid'];
 //$staffid = implode(',', array_map(function($el){ return $el['idno']; }, get_user($_SESSION['loginid'])));
-
 $staffdetails = $lvobj->staffInfo($staffid);
 $_SESSION['staffinfo'] = $staffdetails;
-
   $hro = $_SESSION['staffinfo']['hro'];
   $rego = $_SESSION['staffinfo']['rego'];
   $vco = $_SESSION['staffinfo']['vco'];  
   $dfs = $_SESSION['staffinfo']['dfs'];
   
   //echo $rego;
-    $cursession = '2018/2019';
+    $cursession = $lvobj->getSession();
+    $slashedSession = $lvobj->addSlash($cursession);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        $stmt = $lvobj->leaveReport($cursession);
-        $num = $stmt->rowCount();
+    $stmt = $lvobj->leaveReport($slashedSession);
+    $num = $stmt->rowCount();
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /*Query to check if HR has made a comment*/
-        $hrstm = $lvobj->leaveReportHR($cursession);
-        $hrnum = $hrstm->rowCount();
+    $hrstm = $lvobj->leaveReportHR($slashedSession);
+    $hrnum = $hrstm->rowCount();
 
         //$rowdfs = $hrstm->fetch(PDO::FETCH_ASSOC);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /*Query to check if registrar has made a comment*/
-        $stmdfs = $lvobj->leaveReportReg($cursession); 
+        $stmdfs = $lvobj->leaveReportReg($slashedSession); 
         $regnm = $stmdfs->rowCount();
 
         $rowdfs = $stmdfs->fetch(PDO::FETCH_ASSOC);
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         #Query to check if dfs has made a comment
-        $stmvco = $lvobj->leaveReportDFS($cursession);
+        $stmvco = $lvobj->leaveReportDFS($slashedSession);
         $vconum = $stmvco->rowCount();
 
         $rowvco = $stmvco->fetch(PDO::FETCH_ASSOC);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         #Query to display comments for VC
-        $stmvc = $lvobj->leaveReportVC($cursession);
+        $stmvc = $lvobj->leaveReportVC($slashedSession);
         $vcnum = $stmvc->rowCount();
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         #Query to check if vc has made a comment
-        $vcstm = $lvobj->leaveReportIsVC($cursession);
+        $vcstm = $lvobj->leaveReportIsVC($slashedSession);
         $numvc = $vcstm->rowCount();
 
         //$rowvco = $stmvco->fetch(PDO::FETCH_ASSOC); 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-     
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////     
 ?>
 <!DOCTYPE html>
 <html>
@@ -70,7 +64,7 @@ $_SESSION['staffinfo'] = $staffdetails;
   <script type="text/javascript">
   $(document).ready(function() {
         $('#example').DataTable( {
-            "scrollY": 400,
+            "scrollY": 600,
             "scrollX": true,
             "searching": false,
             "ordering": false,
@@ -92,6 +86,9 @@ $_SESSION['staffinfo'] = $staffdetails;
   <thead>
     <tr>
             <th> No</th>
+            <th> Category</th>
+            <th> College/Directorate</th>
+            <th> Program/Unit</th>
             <th> Staff Name</th>
             <th> Title</th>
             <th> Staffid</th>
@@ -117,11 +114,12 @@ $_SESSION['staffinfo'] = $staffdetails;
                 {
                     $lbonus = $row['leavebonus'];
                     $empdate = strtotime($row['empdate']);
-                   //extract row this truns array keys into variables
-                   //extract($row);
-                   //create new row per record
+                   
                    echo "<tr>";
-                      echo "<td>".$n++."</td>";     
+                      echo "<td>".$n++."</td>";                       
+                      echo "<td>".$row['category']."</td>";
+                      echo "<td>".$row['coldean']."</td>";  
+                      echo "<td>".$row['progunit']."</td>";    
                       echo "<td>".$row['staffname']."</td>";//$staffid = getname($row['staffid'])
                       echo "<td>".$row['title']."</td>";
                       echo "<td>".$row['staffid']."</td>";
@@ -172,9 +170,10 @@ $_SESSION['staffinfo'] = $staffdetails;
   <div class="row pt-5">
     <div class="col-sm-6">
       <!-- <button class="btn_schedule">Print Schedule</button> -->
-      <button>
-          <a class = "btn btn-sm" style="font-size: 14px;" href="leavedashboard.php?id= <?php echo base64_encode($_SESSION['staffid']); ?>">Dashboard</a>
+      <button class = "dsh_btn">
+          <a style="font-size: 14px;" href="leavedashboard.php?id= <?php echo base64_encode($_SESSION['staffid']); ?>">Dashboard</a>
         </button>
+        <button class = "dsh_btn">Export To Excel</button>
         <?php //echo $rego ?>
     </div>
     <div class="col-sm-3">
@@ -196,18 +195,13 @@ $_SESSION['staffinfo'] = $staffdetails;
 <div class="row">
 
 <?php 
-
   if($rego == $staffid) {
     if($regnm > 0)
     {
-
     }
-
     else {
             //echo "Rego";
-
                 $commentform = '
-
                     <div class="col-sm-3"> </div>
                     <div class="col-sm-8">
                     <h4 class="recommend">Enter Comment and Recommendation below</h4>
@@ -228,22 +222,17 @@ $_SESSION['staffinfo'] = $staffdetails;
                         </div>
                     </div>
                 </div>
-
                 <input type="hidden" id="staffid" name="staffId" value="'.$_SESSION['staffid'].'">
                 <div id ="note"class="col-sm-1"> </div> 
                 ';
-
               echo $commentform;
     }
   }//end of registrar
-
   if($dfs == $staffid) {
     if($vconum > 0)
     {
-
     }
     else {
-
       while($rowvc = $stmvc->fetch(PDO::FETCH_ASSOC))
         {  
          // echo $rowvc['comment'];
@@ -251,7 +240,6 @@ $_SESSION['staffinfo'] = $staffdetails;
           {
             $officer = 'Registrar';
           }
-
           else if($rowvc['officer'] == 'VC')
           {
             $officer = 'VC';
@@ -283,10 +271,8 @@ $_SESSION['staffinfo'] = $staffdetails;
             <hr>
           ";
           echo $prevComment;
-
       }//end of while loop
            $commentform = '
-
                     <div class="col-sm-3"> </div>
                     <div class="col-sm-8">
                        <h4 class="recommend">Enter Comment and Recommendation below</h4>
@@ -306,22 +292,17 @@ $_SESSION['staffinfo'] = $staffdetails;
                         </div>
                     </div>
                 </div>
-
                 <input type="hidden" id="staffid" name="staffId" value="'.$_SESSION['staffid'].'">
                 <div id ="note"class="col-sm-1"> </div> 
                 ';
-
               echo $commentform;
      }//end of vconum
   }//end of dfs
-
   if($vco == $staffid) {
     if($numvc > 0)
     {
-
     }
     else {
-
         while($rowvc = $stmvc->fetch(PDO::FETCH_ASSOC))
         {  
          // echo $rowvc['comment'];
@@ -329,23 +310,19 @@ $_SESSION['staffinfo'] = $staffdetails;
           {
             $officer = 'Registrar';
           }
-
           else if($rowvc['officer'] == 'DFS')
           {
             $officer = 'DFS';
           }
-
           else if($rowvc['officer'] == 'VC')
           {
             $officer = 'VC';
           }
-
           else
           {
             continue;//moves the iteration 
             $officer = 'HR';
           }
-
             $prevComment = "
             <div class='row'>
                 <div class='col-sm-3'>  </div>
@@ -390,20 +367,16 @@ $_SESSION['staffinfo'] = $staffdetails;
                         </div>
                     </div>
                 </div>
-
                 <input type="hidden" id="staffid" name="staffId" value="'.$_SESSION['staffid'].'">
                 <div id ="note"class="col-sm-1"> </div> 
                 ';
-
               echo $commentform;
      }//end of numvc
   }//end of vco
-
   else if ($hro == $staffid)
   {
     if($hrnum > 0)
     {
-
     }
     else 
     {    
@@ -417,11 +390,9 @@ $_SESSION['staffinfo'] = $staffdetails;
                       </div>
                     </div>
                 </div>
-
                 <input type="hidden" id="staffid" name="staffId" value="'.$_SESSION['staffid'].'">
                 <div id ="note"class="col-sm-1"> </div>
                   ';
-
                 echo $send_btn;
     }//end of hrnum
   }//end of hr
@@ -433,7 +404,6 @@ $_SESSION['staffinfo'] = $staffdetails;
  <hr>  
 </div><!--end of container--->
   <script>
-
       $("#hrbtn").click(function(){
         //console.log("generate");
           var staffid = $('#staffid').val();
@@ -441,7 +411,6 @@ $_SESSION['staffinfo'] = $staffdetails;
           var url = "leavedashboard.php?id="+encappno;
           
           //alert("generate"); 
-
           $('#note').load('hrsendnote.php',
                 { staffid: staffid },
                function(){
@@ -449,13 +418,11 @@ $_SESSION['staffinfo'] = $staffdetails;
                 $(location).attr('href', url);
               });                
     });
-
     $("#regbtn").click(function(){
         //console.log("generate");
           var reccom = $('#reccom').val();
           var comment = $('#comment').val();
           var staffid = $('#staffid').val();
-
           if ((reccom == '') || (comment == ''))
             {
               alert("All fields are required.");
@@ -480,13 +447,11 @@ $_SESSION['staffinfo'] = $staffdetails;
                   });
           }//end of else          
     });
-
     $("#dfsbtn").click(function(){
         //console.log("generate");
           var reccom = $('#reccom').val();
           var comment = $('#comment').val();
           var staffid = $('#staffid').val();
-
           if ((reccom == '') || (comment == ''))
             {
               alert("All fields are required.");
@@ -494,7 +459,6 @@ $_SESSION['staffinfo'] = $staffdetails;
           
           else
           {
-
               var encappno = window.btoa(staffid);
               var url = "leavedashboard.php?id="+encappno;
               
@@ -512,13 +476,11 @@ $_SESSION['staffinfo'] = $staffdetails;
               });
           }//end of else
       });
-
     $("#vcbtn").click(function(){
         //console.log("generate");
           var reccom = $('#reccom').val();
           var comment = $('#comment').val();
           var staffid = $('#staffid').val();
-
           if ((reccom == '') || (comment == ''))
             {
               alert("All fields are required.");
