@@ -313,9 +313,9 @@ class leaveclass extends general {
 	}
 
   #inserts notification of management staff into the schedule transaction
-	public function insertNote($transactionDate, $transaactionNo, $cursession, $officer, $recc, $comment, $action){
+	public function insertNote($transactionDate, $transaactionNo, $cursession, $officer, $recc, $comment){
 
-			$qry = "INSERT INTO leavescheduletransaction (transactionDate, transactionNo, session, officer, recommendation, comment, action) VALUE (:transactionDate, :transactionNo, :session, :officer, :recommendation, :comment, :action)";
+			$qry = "INSERT INTO leavescheduletransaction (transactionDate, transactionNo, session, officer, recommendation, comment) VALUE (:transactionDate, :transactionNo, :session, :officer, :recommendation, :comment)";
                            
             $stm = $this->db->prepare($qry);
             $stm->bindparam(':transactionDate', $transactionDate);
@@ -324,7 +324,7 @@ class leaveclass extends general {
             $stm->bindparam(':officer', $officer);
             $stm->bindparam(':recommendation', $recc);
             $stm->bindparam(':comment', $comment);
-            $stm->bindparam(':action', $action);
+            
 
             if($stm->execute()){
     	    	return true;

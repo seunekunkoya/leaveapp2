@@ -22,6 +22,7 @@ $dfs = $_SESSION['staffinfo']['dfs'];
 //$cursession = '2018/2019';
 
 $cursession = $lvobj->getSession();
+$slashedSession = $lvobj->addSlash($cursession);
 echo '<br><br>'.$cursession;
 
 
@@ -32,10 +33,10 @@ echo '<br><br>'.$cursession;
             $stmt = $lvobj->getStaffRelease($staffid);
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $num = $stmt->rowCount();
-            print_r($stmt);
+            
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            $stmreg = $lvobj->getDashboardOfficer($cursession);
+            $stmreg = $lvobj->getDashboardOfficer($slashedSession);
 
             $rowreg = $stmreg->fetch(PDO::FETCH_ASSOC);
             $numreg = $stmreg -> rowCount();  
@@ -43,11 +44,10 @@ echo '<br><br>'.$cursession;
 //          echo $rowreg['officer'];   
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
              #Query to check  if schedule is created
-            $stmt1 = $lvobj->getSchedule($cursession);
+            $stmt1 = $lvobj->getSchedule($slashedSession);
             $num1 = $stmt1->rowCount();       
 ?>
  
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">

@@ -84,7 +84,7 @@ $_SESSION['staffinfo'] = $staffdetails;
 <table id="example" class="display nowrap center-all" style="width:100%">
     
   <thead>
-    <tr>
+    <tr class="trow">
             <th> No</th>
             <th> Category</th>
             <th> College/Directorate</th>
@@ -197,7 +197,12 @@ $_SESSION['staffinfo'] = $staffdetails;
 <?php 
   if($rego == $staffid) {
     if($regnm > 0)
-    {
+    { 
+      $message = '<div class="col-sm-3"> </div>
+                  <div class="col-sm-8">
+                  <h3 class="recommend">Note Sent.</h3>
+                  </div>';
+      echo $message;
     }
     else {
             //echo "Rego";
@@ -213,6 +218,7 @@ $_SESSION['staffinfo'] = $staffdetails;
                         <div class="col-sm-3">
                           <label>Recommendation</label>
                           <select id="reccom">
+                          <option></option>
                             <option>Recommended</option>
                             <option>Not Recommended</option>
                           </select>
@@ -230,7 +236,12 @@ $_SESSION['staffinfo'] = $staffdetails;
   }//end of registrar
   if($dfs == $staffid) {
     if($vconum > 0)
-    {
+    { 
+      $message = '<div class="col-sm-3"> </div>
+                  <div class="col-sm-8">
+                  <h3 class="recommend">Note Sent.</h3>
+                  </div>';
+      echo $message;
     }
     else {
       while($rowvc = $stmvc->fetch(PDO::FETCH_ASSOC))
@@ -239,10 +250,6 @@ $_SESSION['staffinfo'] = $staffdetails;
           if($rowvc['officer'] == 'Registrar')
           {
             $officer = 'Registrar';
-          }
-          else if($rowvc['officer'] == 'VC')
-          {
-            $officer = 'VC';
           }
           else
           {
@@ -284,11 +291,13 @@ $_SESSION['staffinfo'] = $staffdetails;
                         <div class="col-sm-3">
                           <label>Recommendation</label>
                           <select id="reccom">
-                            <option>Approved</option>
+                          <option></option>
+                            <option>Recommended</option>
+                            <option>Not Recommended</option>
                           </select>
                         </div>
                         <div class="col-sm-3">
-                            <button class="btn_style1" id="dfsbtn">Send to Payroll</button>
+                            <button class="btn_style1" id="dfsbtn">Save</button>
                         </div>
                     </div>
                 </div>
@@ -301,6 +310,11 @@ $_SESSION['staffinfo'] = $staffdetails;
   if($vco == $staffid) {
     if($numvc > 0)
     {
+      $message = '<div class="col-sm-3"> </div>
+                  <div class="col-sm-8">
+                  <h3 class="recommend">Note Sent.</h3>
+                  </div>';
+      echo $message;
     }
     else {
         while($rowvc = $stmvc->fetch(PDO::FETCH_ASSOC))
@@ -377,6 +391,11 @@ $_SESSION['staffinfo'] = $staffdetails;
   {
     if($hrnum > 0)
     {
+      $message = '<div class="col-sm-3"> </div>
+                  <div class="col-sm-8">
+                  <h3 class="recommend">Note Sent.</h3>
+                  </div>';
+      echo $message;
     }
     else 
     {    
@@ -408,14 +427,19 @@ $_SESSION['staffinfo'] = $staffdetails;
         //console.log("generate");
           var staffid = $('#staffid').val();
           var encappno = window.btoa(staffid);
+          var reccom = "Presented";
+          var comment = "Note Sent";
           var url = "leavedashboard.php?id="+encappno;
           
           //alert("generate"); 
-          $('#note').load('hrsendnote.php',
-                { staffid: staffid },
+          $('#note').load('sendnote.php',
+                { staffid: staffid, 
+                  reccom: reccom, 
+                  comment: comment 
+                },
                function(){
                 //alert("Notification Sent");
-                $(location).attr('href', url);
+                //$(location).attr('href', url);
               });                
     });
     $("#regbtn").click(function(){
@@ -435,7 +459,7 @@ $_SESSION['staffinfo'] = $staffdetails;
           
           //alert(comment + reccom); 
           
-                $('#note').load('regsendnote.php',
+                $('#note').load('sendnote.php',
                   { 
                     staffid: staffid,
                     comment: comment,
@@ -443,7 +467,7 @@ $_SESSION['staffinfo'] = $staffdetails;
                   },
                   function(){
                     //alert("Notification Sent");
-                    $(location).attr('href', url);
+                    //$(location).attr('href', url);
                   });
           }//end of else          
     });
@@ -464,7 +488,7 @@ $_SESSION['staffinfo'] = $staffdetails;
               
               //alert(comment + reccom); 
               
-              $('#note').load('dfsendnote.php',
+              $('#note').load('sendnote.php',
                     { 
                       staffid: staffid,
                       comment: comment,
@@ -472,7 +496,7 @@ $_SESSION['staffinfo'] = $staffdetails;
                     },
                    function(){
                     //alert("Notification Sent");
-                    $(location).attr('href', url);
+                    //$(location).attr('href', url);
               });
           }//end of else
       });
@@ -493,7 +517,7 @@ $_SESSION['staffinfo'] = $staffdetails;
               
               //alert(comment + reccom); 
               
-              $('#note').load('vcsendnote.php',
+              $('#note').load('sendnote.php',
                     { 
                       staffid: staffid,
                       comment: comment,
@@ -501,7 +525,7 @@ $_SESSION['staffinfo'] = $staffdetails;
                     },
                    function(){
                     //alert("Notification Sent");
-                    $(location).attr('href', url);
+                    //$(location).attr('href', url);
                });
           }//end of else
        });
