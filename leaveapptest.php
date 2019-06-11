@@ -241,7 +241,7 @@ echo $lvobj->addSlash($lvobj->getSession());
 				<select name="officer2" id="officer2" class="form-control" required>
 
 			<?php
-                 foreach ($result as $staff)    
+      foreach ($result as $staff)    
 			{
              echo  '<option value = "'.$staff['staffid'].'">'.$staff['sname'].' '.$staff['fname'].'</option>';
       }
@@ -420,7 +420,7 @@ $('select#leavetype').change(function(e){
             data: {leavetype:leavetype, staffid:staffid},
             dataType: "json",
                 success: function(result) {
-                 
+                
                   //console.log(result);
                    if(result.status == 'TRUE')
                     {
@@ -438,26 +438,16 @@ $('select#leavetype').change(function(e){
                        $( "#officer3" ).prop( "disabled", true );
                        $( "#apply" ).prop( "disabled", true );
                        $('select#leavetype').val('');
-//                      window.location.replace("leaveapptest.php");
+//                     window.location.replace("leaveapptest.php");
                     }
                   }
         });
         //clear initial values entered from form
         $('#sdate').val("");
         $('#edate').val("");
-
-        /*
-        if((leavetype == 'conference') || (leavetype == 'postdoc') || (leavetype == 'sabatical') || (leavetype == 'leave of absence') || (leavetype == 'research') || (leavetype == 'study') || (leavetype == 'medical'))
-            {
-              window.location.replace("leaveapp.php?ltype="+btoa(leavetype));
-              //window.location.replace("leavedashboard.php?id="+btoa(staffid));
-            }
-        */
-  //        else {
+  
             if(leavetype == 'maternity')
             {
-              //alert("Maternity");
-              //$('#leavehistory').html("Maternity");  
               $('#myModal2').modal("show");
             }           
                     $( "#reason" ).prop( "disabled", false );//enables the form fields
@@ -492,7 +482,6 @@ $('select#leavetype').change(function(e){
   //$( "#sdate" ).datepicker( "input", "dateFormat", "d-M-yy");
     $("#edate").change(function(ev){
       console.log($(this).val());
-
 
       ev.preventDefault();
       var sdate = $("#sdate").val();

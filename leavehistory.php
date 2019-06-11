@@ -14,7 +14,7 @@ if(isset($_POST["staffid"]))
    $staffid = $_POST["staffid"];
    $ltype = $_POST["ltype"];
 
-    $stmt = $lvobj->getLeavesGone($staffid, $ltype);
+    $stmt = $lvobj->getLeavesHistoryDetailsByType($staffid, $ltype);
 
     $output .= '  
       <div class="table-responsive">  

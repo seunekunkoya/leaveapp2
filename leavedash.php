@@ -86,9 +86,7 @@ try {
             "phone" => $staffdet['phone']
           );
           
-          $hstmt = $lvobj->leaveHistory($approvedArr['staffid']);
-          $hnum = $hstmt->rowCount();
-          echo '<br>'.$approvedArr['session'];
+          
     ?>
 <div class="wrapper">
   <div class="container-fluid">
@@ -676,7 +674,12 @@ else if ($_SESSION['staffid'] == $_SESSION['staffinfo']['dean']) {
           <h4 class="modal-title"><label>Summary of Leave History for <?php echo $historyname; ?></label></h4>
         </div>
         <div class="modal-body">
-          <?php if ($hnum > 0) {  ?>
+          <?php 
+                  
+              $hstmt = $lvobj->getLeaveHistorySummaryByType($approvedArr['staffid']);
+              $hnum = $hstmt->rowCount();
+              if ($hnum > 0) { 
+           ?>
             <div class="table-responsive">  
                      <table class="table table-bordered">  
                           <tr>  
@@ -685,17 +688,22 @@ else if ($_SESSION['staffid'] == $_SESSION['staffinfo']['dean']) {
                                <th width="30%">View</th>  
                           </tr> 
             <?php //////////////////////////////////////////////////////////////Leave History/////////////////////////////////////////////
-                                    
+                  $newAr = array();             
                   while($staffhistory=$hstmt->fetch(PDO::FETCH_ASSOC))
-                  {      
-            ?>
+                  {                    
+
+                   ?>
                     <tr>
-                      <td id= "ltype"><?php echo ucfirst($staffhistory['leavetype']); ?></td>
-                      <td><?php echo $staffhistory['totalday'] ; ?></td>
-                      <td><input type="button" name="view" value="Full Details..." id="<?php echo $staffhistory["staffid"]; ?>" class="btn btn-xs view_history" /></td>
+                      <td id = "lvtype"><?php echo ucfirst($staffhistory['leavetype']); ?></td>
+                      <input type="hidden" value="<?php echo $staffhistory['leavetype']; ?>" >
+                      <td><?php echo $staffhistory['totalday']; ?></td>
+                      <td>
+                        <input type="button" name="view" value="Full Details..." id="<?php echo $staffhistory["staffid"]; ?>" class="btn btn-xs view_history" />
+                      </td>
+
                     </tr>
 
-          <?php }//end of while ?>
+          <?php  }//end of while ?>
                 
               </table>
         </div><!--table responsive--->
@@ -753,8 +761,8 @@ else if ($_SESSION['staffid'] == $_SESSION['staffinfo']['dean']) {
       
       $('.view_history').click(function(){  
            var staffid = $(this).attr("id");  
-           var ltype = $('#ltype').text().toLowerCase();
-           //console.log(ltype);
+           var ltype = $(this).closest('tr').find('#lvtype').text().toLowerCase();
+           console.log(ltype +' '+ staffid);
            $.ajax({  
                 url:"leavehistory.php",  
                 method:"post",  

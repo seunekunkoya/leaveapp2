@@ -46,6 +46,7 @@ $_SESSION['staffinfo'] = $staffdetails;
 <style>
  .btnn{
   margin-top: 20px;
+  margin-right: 2px;
 }
 .btnn a{
   color: white;
@@ -54,7 +55,7 @@ $_SESSION['staffinfo'] = $staffdetails;
   width: 1600px;
 }
 #btncapsule{
-  padding-left: 180px;
+  padding-left: 10px;
   margin-right: 0px;
 }
 </style>
@@ -70,11 +71,15 @@ $_SESSION['staffinfo'] = $staffdetails;
       <div class="col-md-3"></div>
       <div class="col-md-3" id="btncapsule">
         <button type="button" class="btn-primary btnn" id="export">Export to Excel</button>
-        <button class="btn-primary btnn">
-          <?php 
-              echo '<a style="font-size: 14px;" href="leavedashboard.php?id='.base64_encode($_SESSION['staffid']).'">Dashboard</a>'; 
+        <?php 
+          if (!($nm > 0))//session exist
+               {
+                // echo ' ';
+                 echo '<button class="btn-primary btnn"><a href="annualleavereport.php?schedule=1">Generate Schedule</a></button>';
+               }
+               echo '<button class="btn-primary btnn"><a style="font-size: 14px;" href="leavedashboard.php?id='.base64_encode($_SESSION['staffid']).'">Dashboard</a></button>';
           ?>
-        </button>
+        
       </div>
         
     </div>  
@@ -124,7 +129,7 @@ $_SESSION['staffinfo'] = $staffdetails;
           $totalbonus = 0;
           while($row=$stmt->fetch(PDO::FETCH_ASSOC))         
                 {             
-                  $schedule [] = $row;
+                  $schedule[] = $row;
                   $empdate = strtotime($row['employmentdate']);
                    //extract row this truns array keys into variables
                    //extract($row);
@@ -172,9 +177,11 @@ $_SESSION['staffinfo'] = $staffdetails;
     //echo count($schedule);
 
     if(isset($_GET['schedule']) == 1 ){
+      
+      //print_r($schedule[0]['staffid']);
 
             $transactionDate = date('Y-m-d');
-            $transaactionNo = transactionNo();
+            $transaactionNo = $lvobj->transactionNo();
 
             $officer = "HR";
             $recc = "Presented";
@@ -183,7 +190,7 @@ $_SESSION['staffinfo'] = $staffdetails;
 
             $lvobj->insertLeaveScheduleTransaction($transactionDate, $transaactionNo, $cursession, $officer, $recc, $comment, $action);  
 
-        if($lvobj->insertLeaveSchedule($schedule[], $cursession))
+        if($lvobj->insertLeaveSchedule($schedule, $cursession))
         {
           //header('Location: annualleavereport3.php');
           echo '<script> location.replace("annualleavereport3.php"); </script>';
@@ -201,24 +208,13 @@ $_SESSION['staffinfo'] = $staffdetails;
 
   <p style="text-align: right;">
     <?php
-       if ($nm > 0)//session exist
-       {
-        // echo ' ';
+       //  echo '<button class="btn"><a href="annualleavereport.php?schedule=1">Generate Schedule</a></button>';
          echo '
-              <button>
+              <button type="button" class="btn-primary btnn">
                     <a style="font-size: 14px;" href="leavedashboard.php?id='.base64_encode($_SESSION['staffid']).'">Dashboard</a>
               </button>
               ';
-       } 
-       else 
-       {
-         echo '<button class="btn"><a href="annualleavereport.php?schedule=1">Generate Schedule</a></button>';
-         echo '
-              <button>
-                    <a style="font-size: 14px;" href="leavedashboard.php?id='.base64_encode($_SESSION['staffid']).'">Cancel</a>
-              </button>
-              ';
-       }
+       
     ?><!-- 
     <button>
           <a style="font-size: 14px;" href="leavedashboard.php?id= <?php //echo base64_encode($_SESSION['staffdetails']['staffid']); ?>">Cancel</a>

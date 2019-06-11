@@ -303,6 +303,11 @@ class leaveclass extends general {
                           $result1 = $stmt1->execute();                          
                            
         }//end of for loop
+        if($result1){
+          return true;
+        }else{
+          return false;
+        }
 	}
 
   #inserts notification of management staff into the schedule transaction
@@ -495,10 +500,26 @@ class leaveclass extends general {
         return $stmtr;
 	}
 
+  #This function gets the leaves gone by an individual
+  function getLeavesGone($staffid, $ltype){
+    $qry = "
+                      SELECT ap.reason, ap.apstartdate, ap.apenddate, ap.location, ap.leavetype, datediff(ap.apenddate, ap.apstartdate) + 1 as numday, ap.staffid
+                       FROM approvedLeaves AS ap
+                       WHERE ap.staffid = '$staffid'
+                       AND ap.leavetype = '$ltype'
+                       AND ap.resumestatus = 1
+              ";
+
+    $stmt = $this->db->prepare($qry);
+    $stmt->execute();
+
+    return $stmt;
+  }
+
   #this function gets the application status with the staff history 
-	public function leaveHistory($staffid){
-	
-  	$hquery = "SELECT staffid, leavetype, SUM(daysnumber) AS totalday 
+  public function getLeaveHistorySummaryByType($staffid){
+  
+    $hquery = "SELECT staffid, leavetype, SUM(daysnumber) AS totalday 
                 FROM leavesgone 
                 WHERE staffid = '$staffid'
                 GROUP BY staffid, leavetype";
@@ -506,10 +527,10 @@ class leaveclass extends general {
         $hstmt->execute();
 
         return $hstmt;
-	}
+  }
 
   #This function gets the leaves gone by an individual
-  function getLeavesGone($staffid, $ltype){
+  function getLeavesHistoryDetailsByType($staffid, $ltype){
     $qry = "
                       SELECT ap.reason, ap.apstartdate, ap.apenddate, ap.location, ap.leavetype, datediff(ap.apenddate, ap.apstartdate) + 1 as numday, ap.staffid
                        FROM approvedLeaves AS ap
@@ -906,7 +927,8 @@ class leaveclass extends general {
                   st.bankname
                   FROM stafflst AS st
                   LEFT JOIN daystaken
-                  ON st.staffid = daystaken.staffid";
+                  ON st.staffid = daystaken.staffid
+                  ORDER BY st.category, st.kol, st.dept, st.unitprg, staffname ";
 
         $stmt = $this->db->prepare($query);
         $stmt->execute();
