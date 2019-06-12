@@ -12,6 +12,11 @@
 			align-content: center;
 	}
 
+.dshbd button{
+	margin-top: 30px;
+	float: right;
+}
+
 .para_1{
 			color: #808080;
 			padding: 20px;
@@ -38,10 +43,16 @@
 			
 }
 		/*Table CSS*/
+.tbl{
+	width: 100%;
+}
 table, th, td {
 	border: 1px solid black;
 }
 
 th {
 background-color: #f7f7ef;
+}
+.tdat{
+  text-align: center;
 }

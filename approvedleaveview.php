@@ -78,12 +78,12 @@ if(isset($_GET['id']))
             echo "<th> No</th>";
             echo "<th> Appno</th>";
             echo "<th> Leave Type</th>";
-            echo "<th> Reason</th>";
+            echo "<th class='tdat'> Reason</th>";
             echo "<th> Start Date</th>";
             echo "<th> End Date</th>";
             echo "<th> Days</th>";
-            echo "<th> Location</th>";
-            echo "<th> Staff Name</th>";
+            echo "<th class='tdat'> Location</th>";
+            echo "<th class='tdat'> Staff Name</th>";
             echo "<th> Application Date</th>";
             echo "<th> Action</th>";
          echo "</tr>";
@@ -103,7 +103,7 @@ if(isset($_GET['id']))
                       echo "<td>".$row['reason']."</td>";
                       echo "<td>".date('j M, Y', strtotime($row['apstartdate']))."</td>";
                       echo "<td>".date('j M, Y', strtotime($row['apenddate']))."</td>";
-                      echo "<td>".$lvobj->numdays($row['apstartdate'], $row['apenddate'])."</td>";
+                      echo "<td class='tdat'>".$lvobj->numdays($row['apstartdate'], $row['apenddate'])."</td>";
                       echo "<td>".$row['location']."</td>";
                       echo "<td>".$lvobj->getname($row['staffid'])."</td>";
                       echo "<td>".date('j M, Y', strtotime($row['datecreated']))."</td>";

@@ -50,15 +50,16 @@ $cat = $_SESSION['staffinfo']['category'];
 <div class="container">
 
 		<div class="row hed">
-			<div class="col-md-4"></div>
-			<h3 style="text-align: center;">Application Status View</h3>
+			<div class="col-md-3"></div>
+			<h3 style="text-align: center;">Application Status View for <?php echo $lvobj->getname($staffid);?></h3>
 		</div>	
 		<!-- End of title  -->
 		
 		<p style="text-align: right;">
 			<button>
           <a style="font-size: 14px;" href="leavedashboard.php?id= <?php echo base64_encode($_SESSION['staffid']); ?>">Back</a>
-        </button>		</p>
+        </button>		
+    </p>
 	<div class="row">
             <table class="table-sm">
 					<tr>
@@ -85,12 +86,12 @@ $cat = $_SESSION['staffinfo']['category'];
 		           echo "<tr>";
 		                  echo "<td>".$n++."</td>";
 		                  echo "<td>".$row['appno']."</td>";
-		                  echo "<td>".$row['transactionid']."</td>";
+		                  echo "<td class='tdat'>".$row['transactionid']."</td>";
 		                  echo "<td>".$row['leavetype']."</td>";
 		                  echo "<td>".$row['reason']."</td>";
 		                  echo "<td>".date('j M, Y', strtotime($row['recstartdate']))."</td>";
 		                  echo "<td>".date('j M, Y', strtotime($row['recenddate']))."</td>";
-		                  echo "<td>".$lvobj->numdays($row['recstartdate'], $row['recenddate'])."</td>";
+		                  echo "<td class='tdat'>".$lvobj->numdays($row['recstartdate'], $row['recenddate'])."</td>";
 		                  echo "<td>".date('j M, Y - h:i:s', strtotime($row['datecreated']))."</td>";
 		                  echo "<td>".$lvobj->getname($row['tstaffid'])."</td>";
 		                  echo "<td>".$row['role']."</td>";

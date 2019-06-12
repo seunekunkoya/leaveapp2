@@ -45,7 +45,7 @@ try {
 	{             
           if($lvobj->updateLeaveApplication($status, $stage, $appno))
           {
-              $message = "Query Submitted";
+              $message = "Remarks Submitted";
               echo $message;
               //$lvobj->sendMail($to, $header, $subject, $message);
           }

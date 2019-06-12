@@ -560,6 +560,17 @@ $('select#leavetype').change(function(e){
       }//end of leavetype test
            
   });
+
+  $('#phone').change(function(){
+      var phoneno = /^\d{11}$/;
+      $( "#apply" ).prop( "disabled", false );
+    if(!($(this).val().match(phoneno)))
+    {
+      $('#modalContent').html('<h5 class="stylo">Enter 11 digit phone number without space.</h5>');
+      $('#myModal1').modal({backdrop: false, keyboard: false});
+      $( "#apply" ).prop( "disabled", true );
+    }
+  });
     
   $("#apply").on('click', function(e){
     //alert("clicked");
@@ -574,8 +585,9 @@ $('select#leavetype').change(function(e){
     var officer1 = $("#officer1").val();
     var officer2 = $("#officer2").val();
     var officer3 = $("#officer3").val();
-
     var staffid = $('#staffid').val();
+
+
 
     //hurl = 'redrect.php';
 	if ((leavetype == '') || (reason == '') || (sdate == '') || (edate == '') || (location == '') || (phone == '') || (officer1 == '') || (officer2 == '') || (officer3 == ''))
@@ -584,8 +596,6 @@ $('select#leavetype').change(function(e){
     $('#myModal1').modal({backdrop: false, keyboard: false});
     $('#apply').html("Submit");
 		
-    //alert("All fields are required.");
-    //$('#apply').html("Submit");
 	}
   else {
         

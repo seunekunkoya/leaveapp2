@@ -658,7 +658,7 @@ else if ($_SESSION['staffid'] == $_SESSION['staffinfo']['dean']) {
   </table>  
 </div>
 </div>
-<div id="error"></div>
+<div id="error" style="color: white;"></div>
   
 </div>
 
