@@ -336,7 +336,7 @@ class leaveclass extends general {
   #gets details of staff leave application in progress
 	public function getStatus($id, $cat){
 
-		$query = "SELECT st.fname, st.sname, s.dept, s.hod, l.staffid, l.leavetype, l.reason, l.startdate, l.enddate, l.leavestatus, l.appno, lt.tstaffid, lt.comment, lt.role, lt.transactionid, lt.recstartdate, lt.recenddate, lt.status, lt.timeviewed, lt.remarks, l.location
+		$query = "SELECT st.fname, st.sname, s.dept, s.hod, l.staffid, l.leavetype, l.reason, l.startdate, l.enddate, l.leavestatus, l.appno, l.datecreated,lt.tstaffid, lt.comment, lt.role, lt.transactionid, lt.recstartdate, lt.recenddate, lt.status, lt.timeviewed, lt.remarks, l.location
 				  FROM stafflst AS s
                   INNER JOIN leaveapplication AS l
                   ON s.staffid = l.staffid
@@ -345,7 +345,7 @@ class leaveclass extends general {
                   INNER JOIN leavetransaction AS lt
                   ON l.appno = lt.appno
                   WHERE l.staffid = '$id' AND s.category = '$cat'
-                  ORDER BY lt.appno DESC";
+                  ORDER BY lt.appno DESC, lt.transactionid DESC";
 
         		  $stmt = $this->db->prepare($query);
         		  $stmt->execute();

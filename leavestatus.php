@@ -63,48 +63,42 @@ $cat = $_SESSION['staffinfo']['category'];
             <table class="table-sm">
 					<tr>
 						<th> No</th>
-						<th> Action Date</th><!--Transaction Date-->
-						<th> Staff Name</th>
-						<th> Role</th>
 						<th> App No</th>
+						<th> Track No</th>
 						<th> Leave Type</th>
 						<th> Reason</th>
 						<th> Start Date</th>
 						<th> End Date</th>
 						<th> Days</th>
-						<th> Location</th>
+						<th> Date Applied</th>
+						<th> Staff Name</th>
+						<th> Role</th>
 						<th> Remark</th>
 						<th> Status</th>
 					</tr>
 
 			<?php 
 			if($num > 0 ){
-				//$ro = $statusStmt->fetch(PDO::FETCH_ASSOC);
-				//print_r($ro);
-				
-			//if ($num > 0) { //if starts here
 					$n = 1;
-					
-					while($row = $statusStmt->fetch(PDO::FETCH_ASSOC))         
-		            {
-		               //extract row this truns array keys into variables
-		               //extract($row);
-		               //create new row per record
-		               echo "<tr>";
+				while($row = $statusStmt->fetch(PDO::FETCH_ASSOC))         
+		        {
+		           echo "<tr>";
 		                  echo "<td>".$n++."</td>";
-		                  echo "<td>".date('j M, Y - h:i:s', strtotime($row['timeviewed']))."</td>";
-		                  echo "<td>".$lvobj->getname($row['tstaffid'])."</td>";
-		                  echo "<td>".$row['role']."</td>";
 		                  echo "<td>".$row['appno']."</td>";
+		                  echo "<td>".$row['transactionid']."</td>";
 		                  echo "<td>".$row['leavetype']."</td>";
 		                  echo "<td>".$row['reason']."</td>";
 		                  echo "<td>".date('j M, Y', strtotime($row['recstartdate']))."</td>";
 		                  echo "<td>".date('j M, Y', strtotime($row['recenddate']))."</td>";
 		                  echo "<td>".$lvobj->numdays($row['recstartdate'], $row['recenddate'])."</td>";
-		                  echo "<td>".$row['location']."</td>";
+		                  echo "<td>".date('j M, Y - h:i:s', strtotime($row['datecreated']))."</td>";
+		                  echo "<td>".$lvobj->getname($row['tstaffid'])."</td>";
+		                  echo "<td>".$row['role']."</td>";
 		                  echo "<td>".$row['remarks']."</td>";
+		                  echo "<td>".$row['status']."</td>";	                  
 		                  //echo "<td>".$row['tstaffid']."</td>";
-		                  echo "<td>".$row['status']."</td>";
+		                  
+		           echo "</tr>";
 		             }//end of while loop
                 }//end of if statement for printing results into tables 
 			else {

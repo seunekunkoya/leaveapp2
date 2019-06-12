@@ -58,7 +58,6 @@ $_SESSION['staffinfo'] = $staffdetails;
   <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/sc-2.0.0/datatables.min.js"></script>
   <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
   <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
-
   <link rel="stylesheet" type="text/css" href="css/annual.css"/>
   
   <script type="text/javascript">
@@ -87,7 +86,7 @@ $_SESSION['staffinfo'] = $staffdetails;
     <tr class="trow">
             <th> No</th>
             <th> Category</th>
-            <th> College/Directorate</th>
+            <th> College / Directorate</th>
             <th> Program/Unit</th>
             <th> Staff Name</th>
             <th> Title</th>

@@ -38,27 +38,12 @@ $_SESSION['staffinfo'] = $staffdetails;
   <title>Leave Schedule</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" type="text/css" href="css/annual.css"/>
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
   <script src="js/datepicker.js"></script>
   <script src="js/table2excel.js"></script>
-<style>
- .btnn{
-  margin-top: 20px;
-  margin-right: 2px;
-}
-.btnn a{
-  color: white;
-}
-.container{
-  width: 1600px;
-}
-#btncapsule{
-  padding-left: 10px;
-  margin-right: 0px;
-}
-</style>
 
 <body>
 <div class="container">
@@ -86,7 +71,7 @@ $_SESSION['staffinfo'] = $staffdetails;
     <!-- End of title  -->
     
     <div class="row">  
-      <table class="table table-bordered table-condensed" id="leaveschedule">
+      <table class="table table-bordered table-condensed table-responsive" id="leaveschedule">
 <?php 
 
     try 
@@ -106,7 +91,7 @@ $_SESSION['staffinfo'] = $staffdetails;
           echo "<tr align ='center'>";
             echo "<th> No</th>";
             echo "<th> Category</th>";
-            echo "<th> College/Directorate</th>";
+            echo "<th> College /<br/ > Directorate</th>";
             echo "<th> Department</th>";
             echo "<th> Unit/Program</th>";
             echo "<th> Staff Name</th>";
@@ -136,20 +121,20 @@ $_SESSION['staffinfo'] = $staffdetails;
                    //create new row per record
                    echo "<tr>";
                       echo "<td>".$n++."</td>";
-                      echo "<td>".$row['category']."</td>";
-                      echo "<td>".$row['kol']."</td>";  
-                      echo "<td>".$row['dept']."</td>";
+                      echo "<td class = 'tdat'>".$row['category']."</td>";
+                      echo "<td class = 'tdat'>".$row['kol']."</td>";  
+                      echo "<td class = 'tdat'>".$row['dept']."</td>";
                       echo "<td>".$row['unitprg']."</td>";   
                       echo "<td>".$row['staffname']."</td>";
-                      echo "<td>".$row['title']."</td>";
+                      echo "<td class = 'tdat'>".$row['title']."</td>";
                       echo "<td>".$row['staffid']."</td>";
                       echo "<td>".$row['post']."</td>";
-                      echo "<td>".$row['level']."</td>";
+                      echo "<td class = 'tdat'>".$row['level']."</td>";
                       echo "<td>".date('j M, Y', $empdate)."</td>";
-                      echo "<td>".$row['daysworked']."</td>";
-                      echo "<td>".$row['daysentitled']."</td>";
-                      echo "<td>".$row['daysgone']."</td>";
-                      echo "<td>".$row['permissibledays']."</td>";
+                      echo "<td class = 'tdat'>".$row['daysworked']."</td>";
+                      echo "<td class = 'tdat'>".$row['daysentitled']."</td>";
+                      echo "<td class = 'tdat'>".$row['daysgone']."</td>";
+                      echo "<td class = 'tdat'>".$row['permissibledays']."</td>";
                       echo "<td>".number_format($row['leavebonus'], 2)."</td>";
                       echo "<td>".$row['bankacct']."</td>";
                       echo "<td>".$row['bankname']."</td>";

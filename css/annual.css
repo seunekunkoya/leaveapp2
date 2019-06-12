@@ -1,6 +1,7 @@
 a {
     text-decoration: none;
   }
+
   div.dataTables_wrapper {
         width: 1200px;
         margin: 0 auto;
@@ -83,3 +84,20 @@ a {
     margin-top: 0px;
     margin-bottom: 20px;
   }
+.btnn{
+  margin-top: 20px;
+  margin-right: 2px;
+}
+.btnn a{
+  color: white;
+}
+.container{
+  width: 1600px;
+}
+#btncapsule{
+  padding-left: 10px;
+  margin-right: 0px;
+}
+.tdat{
+  text-align: center;
+}
