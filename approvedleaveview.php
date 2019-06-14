@@ -43,7 +43,7 @@
       <h3 class="h3">
       
       <?php 
-         echo "Approved Leave Application";
+         echo "Approved Leave List";
       ?> 
         </h3>
     </div>

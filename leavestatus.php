@@ -55,13 +55,13 @@ $cat = $_SESSION['staffinfo']['category'];
 		</div>	
 		<!-- End of title  -->
 		
-		<p style="text-align: right;">
+	<p style="text-align: right;">
 			<button>
-          <a style="font-size: 14px;" href="leavedashboard.php?id= <?php echo base64_encode($_SESSION['staffid']); ?>">Back</a>
+          <a style="font-size: 14px;" href="leavedashboard.php?id= <?php echo base64_encode($_SESSION['staffid']); ?>">Dashboard</a>
         </button>		
     </p>
 	<div class="row">
-            <table class="table-sm">
+            <table class="table-sm tbl">
 					<tr>
 						<th> No</th>
 						<th> App No</th>
@@ -118,7 +118,7 @@ $cat = $_SESSION['staffinfo']['category'];
 		<p> &nbsp; </p>
 	<p style="text-align: right;">
 			<button>
-          <a style="font-size: 14px;" href="leavedashboard.php?id= <?php echo base64_encode($_SESSION['staffid']); ?>">Back</a>
+          <a style="font-size: 14px;" href="leavedashboard.php?id= <?php echo base64_encode($_SESSION['staffid']); ?>">Dashboard</a>
         </button>
 	</p>
 		

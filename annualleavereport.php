@@ -171,9 +171,8 @@ $_SESSION['staffinfo'] = $staffdetails;
             $officer = "HR";
             $recc = "Presented";
             $comment = "Presented";
-            $action = "Presented";
 
-            $lvobj->insertLeaveScheduleTransaction($transactionDate, $transaactionNo, $cursession, $officer, $recc, $comment, $action);  
+            $lvobj->insertLeaveScheduleTransaction($transactionDate, $transaactionNo, $cursession, $officer, $recc, $comment);  
 
         if($lvobj->insertLeaveSchedule($schedule, $cursession))
         {

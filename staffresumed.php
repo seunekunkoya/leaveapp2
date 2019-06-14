@@ -46,7 +46,7 @@
       <h3 class="h3">
       
       <?php 
-         echo "Resumed Staff";
+         echo "Resumed Leave List";
       ?> 
         </h3>
     </div>  
@@ -90,7 +90,7 @@ if(isset($_GET['id']))
             echo  "<th> Phone</th>";
             echo  "<th> Release Date</th>";
             echo  "<th> Resumption Date</th>";
-            echo "<th> Action</th>";
+            // echo "<th> Action</th>";
          echo "</tr>";
  
         if ($num > 0) { //if starts here
@@ -118,12 +118,12 @@ if(isset($_GET['id']))
                       echo "<td>".$row['resumeddate']."</td>";
                       //echo "<td>".$row['status']."</td>";
                       
-                      echo "<td>";
-                          //view a single record
-                      $appno = $row['appno'];
-                      echo '<a href="resumedleavedash.php?appno='.base64_encode($appno).'" class="btn btn-sm m-r-0em">View Details</a>';
-                          //link to update record
-                      echo "</td>";
+                      // echo "<td>";
+                      //     //view a single record
+                      // $appno = $row['appno'];
+                      // echo '<a href="resumedleavedash.php?appno='.base64_encode($appno).'" class="btn btn-sm m-r-0em">View Details</a>';
+                      //     //link to update record
+                      // echo "</td>";
                   echo "</tr>";
                  }//end of while loop
                 }//end of if statement for printing results into tables 

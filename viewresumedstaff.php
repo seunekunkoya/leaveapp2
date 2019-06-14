@@ -74,10 +74,15 @@ $cat = $_SESSION['staffinfo']['category'];
         </h3>
     </div>  
     <!-- End of title  -->
+    <p style="text-align: right;">
+      <button>
+          <a style="font-size: 14px;" href="leavedashboard.php?id= <?php echo base64_encode($_SESSION['staffid']); ?>">Dashboard</a>
+        </button>   
+    </p>
     
     <div class="row">
       <div class="col-md-3"></div>
-          <table class="table-sm ">
+          <table class="table-sm tbl">
        
 <?php 
 
@@ -474,7 +479,6 @@ if(isset($_GET['id']))
 
 
     <!-- End of table list -->
-    <div>&nbsp;</div>
     <div>&nbsp;</div>
     <div>&nbsp;</div>
 

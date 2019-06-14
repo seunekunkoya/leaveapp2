@@ -25,7 +25,7 @@ $track = $lvobj->trackid($appno); //this is the transactionid which will later b
 $transactionid = $track + 1;
 
 //get the time viewed
-$timeviewed = date('Y-m-d H:i:s');
+$datecreated = date('Y-m-d H:i:s');
 
 $edate = date('Y-m-d', strtotime($edate));
 $sdate = date('Y-m-d', strtotime($sdate));
@@ -35,9 +35,9 @@ $comment = '';//to allow arguement passage
 
 try {
     
-    if($lvobj->insertLT($appno, $staffid, $role, $transactionid, $timeviewed, $comment, $status, $sdate, $edate, $remarks))
+    if($lvobj->insertLT($appno, $staffid, $role, $transactionid, $datecreated, $comment, $status, $sdate, $edate, $remarks))
     {
-      if($lvobj->insertApprovedLeaves($staffid, $appno, $leavetype, $reason, $sdate, $edate, $session, $location, $phone))
+      if($lvobj->insertApprovedLeaves($staffid, $appno, $leavetype, $reason, $sdate, $edate, $session, $location, $phone, $datecreated))
       {
           if($lvobj->updateLeaveApplication($status, $stage, $appno))
           {

@@ -420,6 +420,28 @@ $_SESSION['staffinfo'] = $staffdetails;
   <!---------------------------------------------------------------------------------------------------------------------------------------->
  </div><!--end of main row-->
  <hr>  
+ <!-- Modal1 -->
+ <div class="modal fade" id="myModal1" role="dialog">
+    <div class="modal-dialog modal-center modal-lg">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <h4 class="modal-title"><label>Notice</label></h4>
+        </div>
+        <div class="modal-body" id="leavehistory">
+            <div id="modalContent"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">X</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!----MODAL----->
+
 </div><!--end of container--->
   <script>
       $("#hrbtn").click(function(){
@@ -438,7 +460,7 @@ $_SESSION['staffinfo'] = $staffdetails;
                 },
                function(){
                 //alert("Notification Sent");
-                //$(location).attr('href', url);
+                $(location).attr('href', url);
               });                
     });
     $("#regbtn").click(function(){
@@ -448,7 +470,9 @@ $_SESSION['staffinfo'] = $staffdetails;
           var staffid = $('#staffid').val();
           if ((reccom == '') || (comment == ''))
             {
-              alert("All fields are required.");
+              $('#modalContent').html('<h5>All fields are required</h5>');
+              $('#myModal1').modal({backdrop: 'static', keyboard: false});
+              //console.log("All fields are required.");
             }
           
           else
@@ -466,7 +490,7 @@ $_SESSION['staffinfo'] = $staffdetails;
                   },
                   function(){
                     //alert("Notification Sent");
-                    //$(location).attr('href', url);
+                    $(location).attr('href', url);
                   });
           }//end of else          
     });
@@ -477,7 +501,9 @@ $_SESSION['staffinfo'] = $staffdetails;
           var staffid = $('#staffid').val();
           if ((reccom == '') || (comment == ''))
             {
-              alert("All fields are required.");
+              $('#modalContent').html('<h5>All fields are required</h5>');
+              $('#myModal1').modal({backdrop: 'static', keyboard: false});
+              //console.log("All fields are required.");
             }
           
           else
@@ -495,26 +521,26 @@ $_SESSION['staffinfo'] = $staffdetails;
                     },
                    function(){
                     //alert("Notification Sent");
-                    //$(location).attr('href', url);
+                   $(location).attr('href', url);
               });
           }//end of else
       });
     $("#vcbtn").click(function(){
-        //console.log("generate");
+      
           var reccom = $('#reccom').val();
           var comment = $('#comment').val();
           var staffid = $('#staffid').val();
           if ((reccom == '') || (comment == ''))
             {
-              alert("All fields are required.");
+              $('#modalContent').html('<h5>All fields are required</h5>');
+              $('#myModal1').modal({backdrop: 'static', keyboard: false});
+              //console.log("All fields are required.");
             }
           
           else
           {
               var encappno = window.btoa(staffid);
               var url = "leavedashboard.php?id="+encappno;
-              
-              //alert(comment + reccom); 
               
               $('#note').load('sendnote.php',
                     { 
@@ -523,8 +549,8 @@ $_SESSION['staffinfo'] = $staffdetails;
                       reccom: reccom 
                     },
                    function(){
-                    //alert("Notification Sent");
-                    //$(location).attr('href', url);
+                    //console.log("Notification Sent");
+                    $(location).attr('href', url);
                });
           }//end of else
        });

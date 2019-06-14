@@ -36,13 +36,13 @@ try{
             //$resumed = 1;
             $rdt = strtotime($rdate);
             $rdate1 = date("Y-m-d", $rdt);             
-
-                if($lvobj->approvedleavesUpdateByDate($rdate1, $appno));
-                {
-                    $message = "Query Submitted";
-                    echo $message;
-                    //print_r($lvobj->approvedleavesUpdate($rdate1, $appno));
-                }
+                if($status = 'Resumption Confirmed'){
+                    if($lvobj->approvedleavesUpdateByDate($rdate1, $appno));
+                    {
+                        $message = "Query Submitted";
+                        echo $message;
+                    }
+                }//end of status test
         }
         else
         {

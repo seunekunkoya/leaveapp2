@@ -209,10 +209,10 @@ class leaveclass extends general {
 	}
 
   #inserts into the approvedleaves table details of leave approval 
-	public function insertApprovedLeaves($staffid, $appno, $leavetype, $reason, $sdate, $edate, $session, $location, $phone){
+	public function insertApprovedLeaves($staffid, $appno, $leavetype, $reason, $sdate, $edate, $session, $location, $phone, $datecreated){
         
-        $qry = "INSERT INTO approvedleaves (staffid, appno, leavetype, reason, apstartdate, apenddate, session, location, phone) 
-                VALUES (:staffId, :appno, :leavetype, :reason, :recst, :recend, :session, :location, :phone)";
+        $qry = "INSERT INTO approvedleaves (staffid, appno, leavetype, reason, apstartdate, apenddate, session, location, phone, datecreated) 
+                VALUES (:staffId, :appno, :leavetype, :reason, :recst, :recend, :session, :location, :phone, :datecreated)";
 
               $stmt1 = $this->db->prepare($qry);
 
@@ -225,6 +225,7 @@ class leaveclass extends general {
               $stmt1->bindParam(':session', $session);
               $stmt1->bindParam(':location', $location);
               $stmt1->bindParam(':phone', $phone);
+              $stmt1->bindParam(':datecreated', $datecreated);
 
               if($stmt1->execute())
               {
@@ -257,9 +258,9 @@ class leaveclass extends general {
 	} 
 
   #this function inserts into the leave schedule transaction
-	public function insertLeaveScheduleTransaction($transactionDate, $transaactionNo, $cursession, $officer, $recc, $comment, $action){
+	public function insertLeaveScheduleTransaction($transactionDate, $transaactionNo, $cursession, $officer, $recc, $comment){
 
-		$qry = "INSERT INTO leavescheduletransaction (transactionDate, transactionNo, session, officer, recommendation, comment, action) VALUE (:transactionDate, :transactionNo, :session, :officer, :recommendation, :comment, :action)";
+		$qry = "INSERT INTO leavescheduletransaction (transactionDate, transactionNo, session, officer, recommendation, comment) VALUE (:transactionDate, :transactionNo, :session, :officer, :recommendation, :comment)";
                                      
                 $stm = $this->db->prepare($qry);
                 $stm->bindparam(':transactionDate', $transactionDate);
@@ -268,7 +269,7 @@ class leaveclass extends general {
                 $stm->bindparam(':officer', $officer);
                 $stm->bindparam(':recommendation', $recc);
                 $stm->bindparam(':comment', $comment);
-                $stm->bindparam(':action', $action);
+               
 
                 $stm->execute();
 	}
@@ -391,6 +392,7 @@ class leaveclass extends general {
           AND l.leavestageid = '2'
           AND lt.role = 'Hod'
           AND st.category = '$cat'
+          /*OR st.staffid = st.hod*/
           ORDER BY lt.timeviewed DESC";
 
         $stmt = $this->db->prepare($query);

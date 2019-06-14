@@ -388,7 +388,16 @@ if(isset($_GET['id']))
   }
 }//end of get variable       
 ?>
+    <div>&nbsp;</div>
+    <div>&nbsp;</div>
+<!-- 
+<p style="text-align: right;">
+    <button>
+          <a style="font-size: 14px;" href="leavedashboard.php?id= <?php echo base64_encode($_SESSION['staffid']); ?>">Dashboard</a>
+        </button><!-- 
+      <button onclick="goBack()" class="btn btn-default">Back to dashboard</button> -->
 
+  </p> -->
  <!-- End of table list -->
 </div>
 

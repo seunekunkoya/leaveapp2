@@ -70,7 +70,7 @@ echo '<br><br>'.$cursession;
     <div class="row">
         <div class="col-md-7">
             <h3>Personal Leave Tab</h3>
-              <p><a href="leaveapptest.php" class="btn btn-default">Make New Application</a></p>
+              <p><a href="leaveapps.php" class="btn btn-default">Make New Application</a></p>
 
         <?php 
                 echo '<p><a href="leavestatus.php?id='.base64_encode($id).'" class="btn btn-default">View Application Status</a></p>'; 

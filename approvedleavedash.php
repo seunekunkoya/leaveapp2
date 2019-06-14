@@ -348,7 +348,7 @@ try {
             var encappno = window.btoa(staffid);
             var appnum = window.btoa(appno);
 
-            var url = "leavedashboard.php?id="+encappno;            
+            var url = "approvedleaveview.php?id="+encappno;            
 
             if ((appno == '') || (staffid == '') || (sdate == '') || (edate == '') || (remarks == '') || (status == '') )
             {
