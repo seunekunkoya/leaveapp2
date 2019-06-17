@@ -45,7 +45,7 @@ $cat = $_SESSION['staffinfo']['category'];
 <body>
 <div class="container">
     <div class="row hed" >
-      <div class="col-md-3"></div>
+      <div class="col-md-4"></div>
       <h3 class="h3">
       
       <?php 
@@ -54,7 +54,7 @@ $cat = $_SESSION['staffinfo']['category'];
               } 
               elseif ($staffid == $deanid)
               {
-                echo "Pending Leave Application For ".$kol;
+                echo "Resumption List";
               //kol is the directorate or college based on staff category. 
               }//end of if statement 
               elseif ($staffid == $hro)
@@ -174,7 +174,7 @@ if(isset($_GET['id']))
     try 
       {
         #Query to select leave details of the $this staff
-         $stmt = $lvobj->getResumptionViewDean($kol, $deanid, $cat);
+         $stmt = $lvobj->getResumptionViewDean($kol, $hodid, $cat);
          $num = $stmt->rowCount();
         
        }//end of try
@@ -227,7 +227,7 @@ if(isset($_GET['id']))
                       echo "<td>";
                           //view a single record
                       $appno = $row['appno'];
-                      echo '<a href="leavedash.php?appno='.base64_encode($appno).'" class="btn btn-sm m-r-0em">Review</a>';
+                      echo '<a href="resumptionconfirmdash.php?appno='.base64_encode($appno).'" class="btn btn-sm m-r-0em">Review</a>';
                           //link to update record
                       echo "</td>";
                   echo "</tr>";

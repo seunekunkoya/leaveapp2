@@ -392,7 +392,7 @@ class leaveclass extends general {
           AND l.leavestageid = '2'
           AND lt.role = 'Hod'
           AND st.category = '$cat'
-          /*OR st.staffid = st.hod*/
+          OR (st.staffid = st.hod AND l.leavestatus = 'Submitted') 
           ORDER BY lt.timeviewed DESC";
 
         $stmt = $this->db->prepare($query);
@@ -776,7 +776,7 @@ class leaveclass extends general {
 	}
 
   #get resumption details of staff for Dean
-	public function getResumptionViewDean($kol, $deanid, $cat){
+	public function getResumptionViewDean($kol, $hodid, $cat){
 
 		$query = "SELECT lt.timeviewed, l.staffid, lt.appno, lt.tstaffid, l.leavetype, l.reason, l.startdate, l.enddate, l.location, lt.remarks, lt.status, st.coldirid, st.hod, st.dean, st.dept
           FROM leavetransaction AS lt
@@ -784,15 +784,18 @@ class leaveclass extends general {
           ON lt.appno = l.appno
           INNER JOIN stafflst AS st
           ON st.staffid = l.staffid
+          INNER JOIN approvedleaves AS ap
+          ON ap.appno = lt.appno
           WHERE st.kol = '$kol' 
-          AND st.staffid != '$deanid' 
-          AND l.leavestatus = 'Recommended'
-          AND l.leavestageid = '2'
-          AND lt.role = 'Hod'
+          AND st.staffid = '$hodid' 
+          AND lt.status = 'Resumed'
+          AND lt.role = 'Applicant'
+          AND lt.remarks = ''
+          AND ap.resumeddate = ''
           AND st.category = '$cat'
           ORDER BY lt.timeviewed DESC";
 
-        $stmt = $con->prepare($query);
+        $stmt = $this->db->prepare($query);
         $stmt->execute();
 
         return $stmt;
@@ -1044,6 +1047,49 @@ class leaveclass extends general {
 
         return $vcstm;
 	}
+
+  #check if VC has made recommendation on the leave schedule
+  public function VCApproves($cursession){
+
+    $vcqry = "SELECT * FROM leavescheduletransaction
+          WHERE session = '$cursession' 
+          AND officer = 'VC'
+          AND recommendation = 'Approved'";
+
+        $vcappr = $this->db->prepare($vcqry);
+        $vcappr->execute();
+
+        $num = $vcappr->rowCount();
+
+        if($num > 0)
+          { 
+            return true;
+          }
+          
+        return false;
+  }
+
+
+  public function HRpass($cursession){
+
+    $vcqry = "SELECT * FROM leavescheduletransaction
+          WHERE session = '$cursession' 
+          AND officer = 'HR'
+          AND recommendation = 'Passed'";
+
+        $vcappr = $this->db->prepare($vcqry);
+        $vcappr->execute();
+
+        $num = $vcappr->rowCount();
+
+        if($num > 0)
+          { 
+            return true;
+          }
+          
+        return false;
+  }
+
 
 #function to calculate when a staff resumes
 public function resumptionday($edate)

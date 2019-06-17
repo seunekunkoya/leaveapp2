@@ -32,7 +32,7 @@ $ndaysapplied = $lvobj->numdays($_POST['sdate'], $_POST['edate']);
 				 if($ndaysapplied < 0 )
 				 {
 				   	$result['status'] = 'neg';
-				   	$result['reason'] = 'Invalid Days Selected';
+				   	$result['reason'] = 'End date is less than start date.';
 				 }
 			     
 			     else if ($ndaysapplied > $dayspermissible) 
@@ -57,7 +57,7 @@ $ndaysapplied = $lvobj->numdays($_POST['sdate'], $_POST['edate']);
 			if(	$ndaysapplied < 0 )
 			{
 			   	$result['status'] = 'neg';
-			   	$result['reason'] = 'Invalid Days Selected';
+			   	$result['reason'] = 'End date is less than start date.';
 			}
 
 			else

@@ -169,7 +169,7 @@ $_SESSION['staffinfo'] = $staffdetails;
             $transaactionNo = $lvobj->transactionNo();
 
             $officer = "HR";
-            $recc = "Presented";
+            $recc = "Generated";
             $comment = "Presented";
 
             $lvobj->insertLeaveScheduleTransaction($transactionDate, $transaactionNo, $cursession, $officer, $recc, $comment);  

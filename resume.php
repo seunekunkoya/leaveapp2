@@ -62,38 +62,7 @@ try {
     $( "#rdate" ).datepicker({dateFormat: 'd-M-yy'});
   } );
   </script>
-  <style>
-    .wrapper{
-      padding-left: 300px;
-    }
-    /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
-    .row.content {height: 1000px;}
-    
-    /* Set gray background color and 100% height */
-    .sidenav {
-      background-color: #f1f1f1;
-      height: 100%;
-    }
-
-  .adiff {
-  position: absolute;
-  top: 237px;
-  right: -90px;
-  width: 100px;
-  height: 40px;
-  padding: 3px;
-  margin-left: 10px;  
-}
   
-    /* On small screens, set height to 'auto' for sidenav and grid */
-    @media screen and (max-width: 767px) {
-      .sidenav {
-        height: auto;
-        padding: 15px;
-      }
-      .row.content {height: auto;} 
-    }
-  </style>
 </head>
 <body>
 <?php
@@ -207,7 +176,7 @@ try {
                                     </tr>                                   
                                   </tbody>
                             </table>
-
+<!-- 
 <h4><b>Leave History for Current Year</b></h4>
 <table class="table table-bordered table-condensed">
   <tr>
@@ -223,7 +192,7 @@ try {
     <th>Leave Days Entitled</th>
     <td>4</td>
   </tr>
-</table>
+</table> -->
 
 <!---------------------------------------------------------------------------------------------------------------------------------------------------->
 </div><!---End of Side bar--->

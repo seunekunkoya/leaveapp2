@@ -327,7 +327,7 @@ echo $lvobj->addSlash($lvobj->getSession());
             <div id="modalContent"></div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">X</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
         </div>
       </div>
     </div>
@@ -524,7 +524,7 @@ $('select#leavetype').change(function(e){
                     if(result.status == 'neg')
                     {
                         //alert(result.reason);
-                        $('#modalContent').html('<h5 class="stylo">'+result.reason+'. Please select another set of dates.</h5>');
+                        $('#modalContent').html('<h5 class="stylo">'+result.reason+'. Please select another end date.</h5>');
                         $('#myModal1').modal({backdrop: false, keyboard: false});
 
                         $( "#reason" ).prop( "disabled", true );//disables the form fields

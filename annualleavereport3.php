@@ -45,6 +45,8 @@ $_SESSION['staffinfo'] = $staffdetails;
 
         //$rowvco = $stmvco->fetch(PDO::FETCH_ASSOC); 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////     
+        
+        
 ?>
 <!DOCTYPE html>
 <html>
@@ -59,6 +61,7 @@ $_SESSION['staffinfo'] = $staffdetails;
   <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
   <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
   <link rel="stylesheet" type="text/css" href="css/annual.css"/>
+  <script src="js/table2excel.js"></script>
   
   <script type="text/javascript">
   $(document).ready(function() {
@@ -157,7 +160,7 @@ $_SESSION['staffinfo'] = $staffdetails;
         else {
           //echo "<tr>";
                     //echo "<td colspan=\"14\"> No Schedule Yet </td>";
-                    echo "<p>No Schedule Yet</p>";
+                    echo "<p>No Leave Schedule Yet</p>";
           //echo "</tr>";
         }
     ?>
@@ -172,7 +175,7 @@ $_SESSION['staffinfo'] = $staffdetails;
       <button class = "dsh_btn">
           <a style="font-size: 14px;" href="leavedashboard.php?id= <?php echo base64_encode($_SESSION['staffid']); ?>">Dashboard</a>
         </button>
-        <button class = "dsh_btn">Export To Excel</button>
+        <button class = "dsh_btn export">Export To Excel</button>
         <?php //echo $rego ?>
     </div>
     <div class="col-sm-3">
@@ -182,7 +185,7 @@ $_SESSION['staffinfo'] = $staffdetails;
       <table id="table_style">
         <tr>
           <th>Total Leave Bonus</th>
-          <td> <?php echo " &nbsp;&nbsp;&nbsp;   ". number_format($totalbonus); ?> </td>
+          <td> <b><?php echo " &nbsp;&nbsp;&nbsp;   ". number_format($totalbonus); ?> </b></td>
         </tr>
       </table>
     </div>
@@ -388,7 +391,49 @@ $_SESSION['staffinfo'] = $staffdetails;
   }//end of vco
   else if ($hro == $staffid)
   {
-    if($hrnum > 0)
+    if($lvobj->HRpass($slashedSession))
+    {
+          
+          $send_btn = '
+                <div class="col-sm-3"> </div>
+                <div class="col-sm-8">
+                    <div class="row">
+                      <div class="col-sm-10">         
+                        <h3 style="
+                            border: 1px solid;
+                            margin-left: auto;
+                            margin-right: auto;
+                            padding: 10px;
+                            width: 16em;
+                        ">
+                        Schedule Sent to DFS for Payroll</h3>
+                      </div>
+                    </div>
+                </div>
+                <input type="hidden" id="staffid" name="staffId" value="'.$_SESSION['staffid'].'">
+                <div id ="note"class="col-sm-1"> </div>
+                  ';
+                echo $send_btn;
+    }
+
+    else if($lvobj->VCApproves($slashedSession))
+    {
+          $send_btn = '
+                <div class="col-sm-3"> </div>
+                <div class="col-sm-8">
+                    <div class="row">
+                      <div class="col-sm-12">         
+                        <button class="hr_send_btn" id="hrpassbtn">Pass to DFS</button>
+                      </div>
+                    </div>
+                </div>
+                <input type="hidden" id="staffid" name="staffId" value="'.$_SESSION['staffid'].'">
+                <div id ="note"class="col-sm-1"> </div>
+                  ';
+                echo $send_btn;
+    }
+
+    else if($hrnum > 0)
     {
       $message = '<div class="col-sm-3"> </div>
                   <div class="col-sm-8">
@@ -398,6 +443,7 @@ $_SESSION['staffinfo'] = $staffdetails;
     }
     else 
     {    
+        
                //echo "It is HR";
                 $send_btn = '
                 <div class="col-sm-3"> </div>
@@ -444,6 +490,31 @@ $_SESSION['staffinfo'] = $staffdetails;
 
 </div><!--end of container--->
   <script>
+    $('.export').click(function(){
+            $("#example").table2excel({
+                filename: "leaveschedule.xls"
+            });
+        });
+
+      $("#hrpassbtn").click(function(){
+        //console.log("generate");
+          var staffid = $('#staffid').val();
+          var encappno = window.btoa(staffid);
+          var reccom = "Passed";
+          var comment = "Passed to DFS";
+          var url = "leavedashboard.php?id="+encappno;
+          
+          //alert("generate"); 
+          $('#note').load('sendnote.php',
+                { staffid: staffid, 
+                  reccom: reccom, 
+                  comment: comment 
+                },
+               function(){
+                //alert("Notification Sent");
+                $(location).attr('href', url);
+              });                
+    });
       $("#hrbtn").click(function(){
         //console.log("generate");
           var staffid = $('#staffid').val();

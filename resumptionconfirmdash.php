@@ -48,38 +48,8 @@ try {
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-<style>
-    .wrapper{
-      padding-left: 300px;
-    }
-    /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
-    .row.content {height: 1000px;}
-    
-    /* Set gray background color and 100% height */
-    .sidenav {
-      background-color: #f1f1f1;
-      height: 100%;
-    }
+  <link rel="stylesheet" type="text/css" href="css/leavedash1.css">
 
-  .adiff {
-  position: absolute;
-  top: 237px;
-  right: -90px;
-  width: 100px;
-  height: 40px;
-  padding: 3px;
-  margin-left: 10px;  
-}
-  
-    /* On small screens, set height to 'auto' for sidenav and grid */
-    @media screen and (max-width: 767px) {
-      .sidenav {
-        height: auto;
-        padding: 15px;
-      }
-      .row.content {height: auto;} 
-    }
-  </style>
 </head>
 <body>
 
@@ -201,7 +171,7 @@ try {
                         </tbody>
                     </table>
 
-<h4><b>Leave History for Current Year</b></h4>
+<!-- <h4><b>Leave History for Current Year</b></h4>
 <table class="table table-bordered table-condensed">
   <tr>
     <th style="width: 50%;">Casual leave days taken</th>
@@ -216,7 +186,7 @@ try {
     <th>Leave Days Entitled</th>
     <td>4</td>
   </tr>
-</table>
+</table> -->
 
 <!---------------------------------------------------------------------------------------------------------------------------------------------------->
 </div><!---End of Side bar--->
@@ -263,10 +233,15 @@ try {
       <td>
         <button id="btn-save" class="btn">Confirm</button>
         <button id="btn-notconfirmed" class="btn">Not Confirmed</button>
-        <button>
+      </td>
+      </tr>
+      <tr>
+        <td>
+          <button class = "dshbdbtn">
           <a style="font-size: 14px;" href="leavedashboard.php?id= <?php echo base64_encode($_SESSION['staffid']); ?>">Cancel</a>
         </button>
-      </td>
+
+        </td>
       </tr>
   </table>  
 </div>

@@ -93,6 +93,7 @@ echo '<br><br>'.$cursession;
                 if ($deanid == $id) {
                     echo "DEAN";
                     echo ' <p><a href="leaveview.php?id='.base64_encode($id).'" class="btn btn-default">View Pending Applications</a></p>';
+                    echo '<p> <a href="viewresumedstaff.php?id='.base64_encode($id).'" class="btn btn-default">View Pending Resumption Confirmation</a></p>';
                 }
                 if ($_SESSION['staffinfo']['hro'] == $id) {
                      echo '<p> <a href="leaveview.php?id='.base64_encode($id).'" class="btn btn-default">View Pending Applications</a></p>';
@@ -102,11 +103,11 @@ echo '<br><br>'.$cursession;
                      echo '<p> <a href="overstayedview.php?id='.base64_encode($id).'" class="btn btn-default">View Overstayed Staff</a></p>';
                      
                     if( $num1 > 0 ){
-                        echo '<p><a href="annualleavereport3.php" class="btn btn-default">View Schedule</a></p>';    
+                        echo '<p><a href="annualleavereport3.php" class="btn btn-default">View Annual Leave Schedule</a></p>';    
                     }
                     else
                      {
-                        echo '<p> <a href="annualleavereport.php" class="btn btn-default">Leave Schedule</a></p>';
+                        echo '<p> <a href="annualleavereport.php" class="btn btn-default">Annual Leave Schedule</a></p>';
                      }
                 }
                 if ($_SESSION['staffinfo']['rego'] == $id) {
