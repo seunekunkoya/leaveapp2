@@ -101,3 +101,11 @@ a {
 .tdat{
   text-align: center;
 }
+.notesent{
+  border: 1px solid;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+  width: 16em;
+  text-align: center;
+}

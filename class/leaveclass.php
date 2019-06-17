@@ -1090,6 +1090,45 @@ class leaveclass extends general {
         return false;
   }
 
+  public function DFSpass($cursession){
+
+    $vcqry = "SELECT * FROM leavescheduletransaction
+          WHERE session = '$cursession' 
+          AND officer = 'DFS'
+          AND recommendation = 'Passed'";
+
+        $dfspass = $this->db->prepare($vcqry);
+        $dfspass->execute();
+
+        $num = $dfspass->rowCount();
+
+        if($num > 0)
+          { 
+            return true;
+          }
+          
+        return false;
+  }
+
+  public function payrollAck($cursession){
+
+    $vcqry = "SELECT * FROM leavescheduletransaction
+          WHERE session = '$cursession' 
+          AND officer = 'payroll'
+          AND recommendation = 'Acknowledged'";
+
+        $dfspass = $this->db->prepare($vcqry);
+        $dfspass->execute();
+
+        $num = $dfspass->rowCount();
+
+        if($num > 0)
+          { 
+            return true;
+          }
+          
+        return false;
+  }
 
 #function to calculate when a staff resumes
 public function resumptionday($edate)

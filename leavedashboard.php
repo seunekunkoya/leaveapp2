@@ -18,6 +18,7 @@ $hodid = $_SESSION['staffinfo']['hod'];
 $cat = $_SESSION['staffinfo']['category'];
 $deanid = $_SESSION['staffinfo']['dean'];
 $dfs = $_SESSION['staffinfo']['dfs'];
+$payroll = $_SESSION['staffinfo']['payrollofficer'];
 
 //$cursession = '2018/2019';
 
@@ -45,7 +46,8 @@ echo '<br><br>'.$cursession;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
              #Query to check  if schedule is created
             $stmt1 = $lvobj->getSchedule($slashedSession);
-            $num1 = $stmt1->rowCount();       
+            $num1 = $stmt1->rowCount();  
+
 ?>
  
 <html lang="en">
@@ -125,9 +127,15 @@ echo '<br><br>'.$cursession;
                     }
                 }
                 if ($_SESSION['staffinfo']['dfs'] == $id) {
-                    if( $num1 > 0 ){
+                    if( $lvobj->HRpass($slashedSession) ){
                         echo '<p><a href="annualleavereport3.php" class="btn btn-default">View Schedule</a></p>';    
-                    }                 
+                    }                
+                }
+                if ($_SESSION['staffinfo']['payrollofficer'] == $id) {
+                    //only shown when DFS has sent it to the payroll
+                    if( $lvobj->DFSpass($slashedSession)){
+                        echo '<p><a href="annualleavereport3.php" class="btn btn-default">View Schedule</a></p>';    
+                    }                
                 }
         ?>
         </div>

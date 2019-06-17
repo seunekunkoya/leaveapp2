@@ -165,7 +165,7 @@ $_SESSION['staffinfo'] = $staffdetails;
       
       //print_r($schedule[0]['staffid']);
 
-            $transactionDate = date('Y-m-d');
+            $transactionDate = date('Y-m-d H:i:s');
             $transaactionNo = $lvobj->transactionNo();
 
             $officer = "HR";

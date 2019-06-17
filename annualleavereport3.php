@@ -9,6 +9,7 @@ $_SESSION['staffinfo'] = $staffdetails;
   $rego = $_SESSION['staffinfo']['rego'];
   $vco = $_SESSION['staffinfo']['vco'];  
   $dfs = $_SESSION['staffinfo']['dfs'];
+  $payroll = $_SESSION['staffinfo']['payrollofficer'];
   
   //echo $rego;
     $cursession = $lvobj->getSession();
@@ -200,11 +201,17 @@ $_SESSION['staffinfo'] = $staffdetails;
   if($rego == $staffid) {
     if($regnm > 0)
     { 
-      $message = '<div class="col-sm-3"> </div>
-                  <div class="col-sm-8">
-                  <h3 class="recommend">Note Sent.</h3>
-                  </div>';
-      echo $message;
+      $note = '<div class="col-sm-3"> </div>
+                <div class="col-sm-8">
+                    <div class="row">
+                      <div class="col-sm-10">         
+                        <h3  class="notesent">Schedule Recommendation Sent</h3>
+                      </div>
+                    </div>
+                </div>
+                <div id ="note"class="col-sm-1" > </div>
+                  ';
+          echo $note;
     }
     else {
             //echo "Rego";
@@ -237,13 +244,56 @@ $_SESSION['staffinfo'] = $staffdetails;
     }
   }//end of registrar
   if($dfs == $staffid) {
-    if($vconum > 0)
+    
+   if($lvobj->DFSpass($slashedSession))
+    {
+          
+          $note = '
+                <div class="col-sm-3"> </div>
+                <div class="col-sm-8">
+                    <div class="row">
+                      <div class="col-sm-10">         
+                        <h3  class="notesent">Schedule Sent to Payroll</h3>
+                      </div>
+                    </div>
+                </div>
+                <input type="hidden" id="staffid" name="staffId" value="'.$_SESSION['staffid'].'">
+                <div id ="note"class="col-sm-1"> </div>
+                  ';
+          echo $note;
+    }
+
+    else if($lvobj->HRpass($slashedSession))
+    {
+          $send_btn = '
+                <div class="col-sm-3"> </div>
+                <div class="col-sm-8">
+                    <div class="row">
+                      <div class="col-sm-12">         
+                        <button class="hr_send_btn" id="dfspassbtn">Send to Payroll</button>
+                      </div>
+                    </div>
+                </div>
+                <input type="hidden" id="staffid" name="staffId" value="'.$_SESSION['staffid'].'">
+                <div id ="note"class="col-sm-1"> </div>
+                  ';
+                echo $send_btn;
+    }
+
+   else if($vconum > 0)
     { 
-      $message = '<div class="col-sm-3"> </div>
-                  <div class="col-sm-8">
-                  <h3 class="recommend">Note Sent.</h3>
-                  </div>';
-      echo $message;
+      $note = '
+                <div class="col-sm-3"> </div>
+                <div class="col-sm-8">
+                    <div class="row">
+                      <div class="col-sm-10">         
+                        <h3  class="notesent">Schedule Recommendation Sent</h3>
+                      </div>
+                    </div>
+                </div>
+                <div id ="note"class="col-sm-1"> </div>
+                  ';
+          echo $note;
     }
     else {
       while($rowvc = $stmvc->fetch(PDO::FETCH_ASSOC))
@@ -312,12 +362,21 @@ $_SESSION['staffinfo'] = $staffdetails;
   if($vco == $staffid) {
     if($numvc > 0)
     {
-      $message = '<div class="col-sm-3"> </div>
-                  <div class="col-sm-8">
-                  <h3 class="recommend">Note Sent.</h3>
-                  </div>';
-      echo $message;
+      $note = '
+                <div class="col-sm-3"> </div>
+                <div class="col-sm-8">
+                    <div class="row">
+                      <div class="col-sm-10">         
+                        <h3  class="notesent">Schedule Approved</h3>
+                      </div>
+                    </div>
+                </div>
+                <input type="hidden" id="staffid" name="staffId" value="'.$_SESSION['staffid'].'">
+                <div id ="note"class="col-sm-1"> </div>
+                  ';
+          echo $note;
     }
+    
     else {
         while($rowvc = $stmvc->fetch(PDO::FETCH_ASSOC))
         {  
@@ -389,24 +448,35 @@ $_SESSION['staffinfo'] = $staffdetails;
               echo $commentform;
      }//end of numvc
   }//end of vco
-  else if ($hro == $staffid)
+
+  else if ($payroll == $staffid)
   {
-    if($lvobj->HRpass($slashedSession))
+    if($lvobj->payrollAck($slashedSession))
     {
           
-          $send_btn = '
+          $note = '
                 <div class="col-sm-3"> </div>
                 <div class="col-sm-8">
                     <div class="row">
                       <div class="col-sm-10">         
-                        <h3 style="
-                            border: 1px solid;
-                            margin-left: auto;
-                            margin-right: auto;
-                            padding: 10px;
-                            width: 16em;
-                        ">
-                        Schedule Sent to DFS for Payroll</h3>
+                        <h3  class="notesent">Acknowledgement Sent</h3>
+                      </div>
+                    </div>
+                </div>
+                <input type="hidden" id="staffid" name="staffId" value="'.$_SESSION['staffid'].'">
+                <div id ="note"class="col-sm-1"> </div>
+                  ';
+          echo $note;
+    }
+    else 
+    { 
+               //echo "It is HR";
+                $send_btn = '
+                <div class="col-sm-3"> </div>
+                <div class="col-sm-8">
+                    <div class="row">
+                      <div class="col-sm-12">         
+                        <button class="hr_send_btn" id="ackbtn">Acknowledge Receipt</button>
                       </div>
                     </div>
                 </div>
@@ -414,6 +484,27 @@ $_SESSION['staffinfo'] = $staffdetails;
                 <div id ="note"class="col-sm-1"> </div>
                   ';
                 echo $send_btn;
+    }//end of hrnum
+  }//end of hr
+
+  else if ($hro == $staffid)
+  {
+    if($lvobj->HRpass($slashedSession))
+    {
+          
+          $note = '
+                <div class="col-sm-3"> </div>
+                <div class="col-sm-8">
+                    <div class="row">
+                      <div class="col-sm-10">         
+                        <h3  class="notesent">Schedule Sent to DFS for Payroll</h3>
+                      </div>
+                    </div>
+                </div>
+                <input type="hidden" id="staffid" name="staffId" value="'.$_SESSION['staffid'].'">
+                <div id ="note"class="col-sm-1"> </div>
+                  ';
+          echo $note;
     }
 
     else if($lvobj->VCApproves($slashedSession))
@@ -423,7 +514,7 @@ $_SESSION['staffinfo'] = $staffdetails;
                 <div class="col-sm-8">
                     <div class="row">
                       <div class="col-sm-12">         
-                        <button class="hr_send_btn" id="hrpassbtn">Pass to DFS</button>
+                        <button class="hr_send_btn" id="hrpassbtn">Send to DFS</button>
                       </div>
                     </div>
                 </div>
@@ -435,11 +526,19 @@ $_SESSION['staffinfo'] = $staffdetails;
 
     else if($hrnum > 0)
     {
-      $message = '<div class="col-sm-3"> </div>
-                  <div class="col-sm-8">
-                  <h3 class="recommend">Note Sent.</h3>
-                  </div>';
-      echo $message;
+      $note = '
+                <div class="col-sm-3"> </div>
+                <div class="col-sm-8">
+                    <div class="row">
+                      <div class="col-sm-10">         
+                        <h3  class="notesent">Notification Sent</h3>
+                      </div>
+                    </div>
+                </div>
+                <input type="hidden" id="staffid" name="staffId" value="'.$_SESSION['staffid'].'">
+                <div id ="note"class="col-sm-1"> </div>
+                  ';
+          echo $note;
     }
     else 
     {    
@@ -596,6 +695,70 @@ $_SESSION['staffinfo'] = $staffdetails;
               });
           }//end of else
       });
+
+    $("#dfspassbtn").click(function(){
+        //console.log("generate");
+          var staffid = $('#staffid').val();
+          var reccom = "Passed";
+          var comment = "Passed to Payroll";
+          if ((reccom == '') || (comment == ''))
+            {
+              $('#modalContent').html('<h5>All fields are required</h5>');
+              $('#myModal1').modal({backdrop: 'static', keyboard: false});
+              //console.log("All fields are required.");
+            }
+          
+          else
+          {
+              var encappno = window.btoa(staffid);
+              var url = "leavedashboard.php?id="+encappno;
+              
+              //alert(comment + reccom); 
+              
+              $('#note').load('sendnote.php',
+                    { 
+                      staffid: staffid,
+                      comment: comment,
+                      reccom: reccom 
+                    },
+                   function(){
+                    //alert("Notification Sent");
+                   $(location).attr('href', url);
+              });
+          }//end of else
+      });
+
+      $("#ackbtn").click(function(){
+        //console.log("generate");
+          var staffid = $('#staffid').val();
+          var reccom = "Acknowledged";
+          var comment = "Receipt Acknowledged";
+          if ((reccom == '') || (comment == ''))
+            {
+              $('#modalContent').html('<h5>All fields are required</h5>');
+              $('#myModal1').modal({backdrop: 'static', keyboard: false});
+              //console.log("All fields are required.");
+            }
+          else
+          {
+              var encappno = window.btoa(staffid);
+              var url = "leavedashboard.php?id="+encappno;
+              
+              //alert(comment + reccom); 
+              
+              $('#note').load('sendnote.php',
+                    { 
+                      staffid: staffid,
+                      comment: comment,
+                      reccom: reccom 
+                    },
+                   function(){
+                    //alert("Notification Sent");
+                   $(location).attr('href', url);
+              });
+          }//end of else
+      });
+
     $("#vcbtn").click(function(){
       
           var reccom = $('#reccom').val();

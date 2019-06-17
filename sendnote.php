@@ -14,6 +14,7 @@ $hro = $_SESSION['staffinfo']['hro'];
 $rego = $_SESSION['staffinfo']['rego'];
 $vco = $_SESSION['staffinfo']['vco'];
 $dfs = $_SESSION['staffinfo']['dfs'];
+$payroll = $_SESSION['staffinfo']['payrollofficer'];
 
 $cursession = $lvobj->getSession();
 //$slashedSession = $lvobj->addSlash($cursession);
@@ -76,6 +77,19 @@ if(isset($_POST['staffid'])){
                //$lvobj->sendMail($to, $header, $subject, $message);
             }//
     }//end of vc
+
+    if($staffid == $payroll){
+
+      $transaactionNo = $lvobj->transactionNo();
+
+          $officer = "payroll";
+          
+           if($lvobj->insertNote($transactionDate, $transaactionNo, $cursession, $officer, $reccom, $comment))
+            {
+               echo "Note Submitted";
+               //$lvobj->sendMail($to, $header, $subject, $message);
+            }//
+    }//end of payroll
 
 }//end of post
 else{
