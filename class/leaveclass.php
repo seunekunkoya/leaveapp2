@@ -689,8 +689,7 @@ class leaveclass extends general {
                     FROM approvedleaves AS al
                     INNER JOIN stafflst AS st
                     ON st.staffid = al.staffid       
-                    WHERE al.resumeddate = ' '";
-
+                    WHERE al.resumeddate = ''";
 
         $stmt = $this->db->prepare($query);
         $stmt->execute();

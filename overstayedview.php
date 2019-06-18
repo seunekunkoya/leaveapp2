@@ -43,7 +43,7 @@ $cat = $_SESSION['staffinfo']['category'];
 <body>
 <div class="container">
     <div class="row hed" >
-      <div class="col-md-5"></div>
+      <div class="col-md-3"></div>
       <h3 class="h3">
       
       <?php 
@@ -57,7 +57,7 @@ $cat = $_SESSION['staffinfo']['category'];
     
 <div class="container">
     <div class="row">
-      <div class="col-md-3"></div>
+      
           <table class="table-sm ">
        
 <?php 
@@ -105,7 +105,7 @@ if(isset($_GET['id']))
               $resdt =$lvobj->resumptionday($row['apenddate']);
 
               if($today > $resdt){
-
+                  
                    echo "<tr>";
                       echo "<td>".$n++."</td>";
                       //echo "<td>".date('j M, Y - h:i:s', strtotime($row['timeviewed']))."</td>";
@@ -133,8 +133,7 @@ if(isset($_GET['id']))
                   echo "</tr>";
                 # code...
               }//end of resumption
-
-                 }//end of while loop
+            }//end of while loop
                 }//end of if statement for printing results into tables 
         else {
           echo "<tr>";

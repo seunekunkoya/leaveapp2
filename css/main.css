@@ -1,8 +1,11 @@
 html {
-    zoom: 0.65; /* Old IE only */
-    -moz-transform: scale(0.65);
-    -webkit-transform: scale(0.65);
-    transform: scale(0.65);
+    zoom: 0.90; /* Old IE only */
+    -moz-transform: scale(0.90);
+    -webkit-transform: scale(0.90);
+    transform: scale(0.90);
+}
+a{
+	text-decoration: none;
 }
 .content {
 	max-width: 1400px;
@@ -51,6 +54,7 @@ html {
 		/*Table CSS*/
 .tbl{
 	width: 100%;
+	border-radius: 5px;
 }
 table, th, td {
 	border: 1px solid black;
@@ -61,4 +65,11 @@ background-color: #f7f7ef;
 }
 .tdat{
   text-align: center;
+}
+.btnbtn{
+	margin-left: 880px;
+    margin-bottom: 10px;
+}
+button#export.btn{
+	margin-right: 10px;
 }

@@ -39,24 +39,28 @@
   <title>View Resumed staff</title>
   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="css/main.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script src="js/table2excel.js"></script>
 <body>
 <div class="container">
     <div class="row hed" >
       <div class="col-md-5"></div>
-      <h3 class="h3">
-      
-      <?php 
-         echo "Resumed Leave List";
-      ?> 
-        </h3>
+      <h3 class="h3"><?php echo "Resumed Leave List";?> </h3>
     </div>  
     <!-- End of title  -->
+    <div class="row btnbtn">
+        <?php 
+            echo '<button class="btn" id="export">Export to Excel</button>';
+            echo '<a href="leavedashboard.php?id='.base64_encode($_SESSION['staffid']).'"><button class="btn">Dashboard</button></a>';
+        ?>
+    </div>
 </div>
     
 <div class="container">
     <div class="row">
       <div class="col-md-3"></div>
-          <table class="table-sm ">
+          <table class="table-sm" id="resumelist">
        
 <?php 
 
@@ -116,14 +120,7 @@ if(isset($_GET['id']))
                       echo "<td>".$row['phone']."</td>";
                       echo "<td>".$row['releaseddate']."</td>";
                       echo "<td>".$row['resumeddate']."</td>";
-                      //echo "<td>".$row['status']."</td>";
                       
-                      // echo "<td>";
-                      //     //view a single record
-                      // $appno = $row['appno'];
-                      // echo '<a href="resumedleavedash.php?appno='.base64_encode($appno).'" class="btn btn-sm m-r-0em">View Details</a>';
-                      //     //link to update record
-                      // echo "</td>";
                   echo "</tr>";
                  }//end of while loop
                 }//end of if statement for printing results into tables 
@@ -143,19 +140,17 @@ if(isset($_GET['id']))
     <div>&nbsp;</div>
 
   <p style="text-align: right;">
-    <button>
-          <a style="font-size: 14px;" href="leavedashboard.php?id= <?php echo base64_encode($_SESSION['staffid']); ?>">Dashboard</a>
-        </button>
-      <!-- <button onclick="goBack()" class="btn btn-default">Back to dashboard</button> -->
+          <a style="font-size: 14px;" href="leavedashboard.php?id= <?php echo base64_encode($_SESSION['staffid']); ?>"><button class="btn">Dashboard</button></a>
   </p>
 </div>
-
-  <script src="js/jquery-slim.min.js"></script>
-    <script src="../../dist/js/bootstrap.js"></script>
-    <script>
-    function goBack() {
-        window.history.back();
-    }
+  <script>
+  $(document).ready(function () {
+     $('#export').click(function(){
+        $("#resumelist").table2excel({
+            filename: "resumedlist.xls"
+        });
+      });
+  });      
 </script>
 </body>
 </html>

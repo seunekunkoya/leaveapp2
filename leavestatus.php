@@ -46,22 +46,26 @@ $cat = $_SESSION['staffinfo']['category'];
 	<title>View leave Page</title>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="js/table2excel.js"></script>
 <body>
 <div class="container">
 
 		<div class="row hed">
-			<div class="col-md-3"></div>
+			<div class="col-md-2"></div>
 			<h3 style="text-align: center;">Application Status View for <?php echo $lvobj->getname($staffid);?></h3>
 		</div>	
 		<!-- End of title  -->
 		
-	<p style="text-align: right;">
-			<button>
-          <a style="font-size: 14px;" href="leavedashboard.php?id= <?php echo base64_encode($_SESSION['staffid']); ?>">Dashboard</a>
-        </button>		
-    </p>
+	<div class="row btnbtn">
+        <?php 
+            echo '<button class="btn" id="export">Export to Excel</button>';
+            echo '<a href="leavedashboard.php?id='.base64_encode($_SESSION['staffid']).'"><button class="btn">Dashboard</button></a>';
+        ?>
+    </div>
 	<div class="row">
-            <table class="table-sm tbl">
+            <table class="table-sm tbl" id="status">
 					<tr>
 						<th> No</th>
 						<th> App No</th>
@@ -115,21 +119,21 @@ $cat = $_SESSION['staffinfo']['category'];
 		</div>
 		<!-- End of table list
 		<p style="text-align: center;"><b> Rec = Reccommended </b></p> -->
-		<p> &nbsp; </p>
-	<p style="text-align: right;">
-			<button>
-          <a style="font-size: 14px;" href="leavedashboard.php?id= <?php echo base64_encode($_SESSION['staffid']); ?>">Dashboard</a>
-        </button>
-	</p>
+		<div>&nbsp;</div>
+  		<p style="text-align: right;">
+          <a style="font-size: 14px;" href="leavedashboard.php?id= <?php echo base64_encode($_SESSION['staffid']); ?>"><button class="btn">Dashboard</button></a>
+ 		 </p>
+</div>
 		
 </div>
-
-	<script src="js/jquery-slim.min.js"></script>
-    <script src="../../dist/js/bootstrap.js"></script>
-    <script>
-		function goBack() {
-  			window.history.back();
-		}
-	</script>
+<script>
+  $(document).ready(function () {
+     $('#export').click(function(){
+        $("#status").table2excel({
+            filename: "status.xls"
+        });
+      });
+  });      
+</script>
 </body>
 </html>

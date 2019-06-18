@@ -202,16 +202,14 @@ $_SESSION['staffinfo'] = $staffdetails;
 
   </p>
 </div>
-
-   <script>
-      $(document).ready(function () {
-        $('#export').click(function(){
-            $("#leaveschedule").table2excel({
-                filename: "leaveschedule.xls"
-            });
+<script>
+  $(document).ready(function () {
+     $('#export').click(function(){
+        $("#leaveschedule").table2excel({
+            filename: "leaveschedule.xls"
         });
       });
-        
+  });      
 </script>
 </body>
 </html>

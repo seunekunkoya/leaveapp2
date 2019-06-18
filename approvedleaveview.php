@@ -36,16 +36,21 @@
   <title>View leave Page</title>
   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="css/main.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script src="js/table2excel.js"></script>
 <body>
 <div class="container">
     <div class="row hed" >
-      <div class="col-md-3"></div>
-      <h3 class="h3">
-      
-      <?php 
-         echo "Approved Leave List";
-      ?> 
-        </h3>
+      <div class="col-md-4"></div>
+      <h3 class="h3"><?php echo "Approved Leave List"; ?> </h3>
+    </div>
+
+    <div class="row btnbtn">
+        <?php 
+            echo '<button class="btn" id="export">Export to Excel</button>';
+            echo '<a href="leavedashboard.php?id='.base64_encode($_SESSION['staffid']).'"><button class="btn">Dashboard</button></a>';
+        ?>
     </div>
 </div> 
     <!-- End of title  -->
@@ -53,7 +58,7 @@
 <div class="container">
     <div class="row">
       <div class="col-md-1"></div>
-          <table class="table-sm ">
+          <table class="table-sm tbl" id="approvedlist">
        
 <?php 
 
@@ -115,7 +120,7 @@ if(isset($_GET['id']))
                       echo "<td>";
                           //view a single record
                       $appno = $row['appno'];
-                      echo '<a href="approvedleavedash.php?appno='.base64_encode($appno).'" class="btn btn-sm m-r-0em">Release</a>';
+                      echo '<a href="approvedleavedash.php?appno='.base64_encode($appno).'" class="btn">Release</a>';
                           //link to update record
                       echo "</td>";
                   echo "</tr>";
@@ -139,22 +144,21 @@ if(isset($_GET['id']))
     <div>&nbsp;</div>
 
   <p style="text-align: right;">
-      <button class="btn btn-default">
-          <a class="btn btn-small" style="font-size: 14px;" href="leavedashboard.php?id= <?php echo base64_encode($_SESSION['staffid']); ?>">Dashboard</a>
-      </button>
-
+          <a class="btn btn-small" style="font-size: 14px;" href="leavedashboard.php?id= <?php echo base64_encode($_SESSION['staffid']); ?>">
+            <button class="btn">Dashboard</button>
+          </a>
   </p>
 </div>
 
 </div>
-
-
-  <script src="js/jquery-slim.min.js"></script>
-    <script src="../../dist/js/bootstrap.js"></script>
-    <script>
-    function goBack() {
-        window.history.back();
-    }
+<script>
+  $(document).ready(function () {
+     $('#export').click(function(){
+        $("#approvedlist").table2excel({
+            filename: "approvedlist.xls"
+        });
+      });
+  });      
 </script>
 </body>
 </html>
