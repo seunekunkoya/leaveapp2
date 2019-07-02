@@ -357,15 +357,16 @@ class leaveclass extends general {
                           $stmt1->bindparam(':dayspermissible', $schedule[$i]['permissibledays']);
                           $stmt1->bindparam(':leavebonus', $schedule[$i]['leavebonus']);
                           $stmt1->bindparam(':bankacctno', $schedule[$i]['bankacct']);
-                          $stmt1->bindparam(':bankname', $schedule[$i]['bankname']); 
+                          $stmt1->bindparam(':bankname', $schedule[$i]['bankname']);
 
                           //print_r($stmt1);             
-                          $result1 = $stmt1->execute();                          
-                           
+                          $result1 = $stmt1->execute();                           
         }//end of for loop
         if($result1){
           return true;
-        }else{
+        }
+        else
+        {
           return false;
         }
 	}
@@ -1024,32 +1025,24 @@ public function getStatus($id, $cat){
   #function to get annual leave schedule
 	public function getAnnualLeaveSchdule(){
 
-		$query = "SELECT st.staffid, CONCAT(sname,\" \", fname) AS staffname, st.title, st.post, st.level, st.dept, st.employmentdate, st.category, st.kol, st.unitprg,
-                  daysworked(st.employmentdate) AS daysworked, 
-                  daysentitled(st.level) AS daysentitled,
-                  IFNULL(daystaken.daystaken, 0) AS daysgone, 
-                  permissible(daysentitled(st.level), IFNULL(daystaken.daystaken, 0)) AS permissibledays, 
-                  leavebonus(st.monthlybasic, daysworked(st.employmentdate)) AS leavebonus, 
-                  st.bankacct, 
-                  st.bankname
+		$query = "SELECT st.staffid, CONCAT(sname,\" \", fname) AS staffname, st.title, st.post, st.level, st.dept, st.employmentdate, st.category, st.kol, st.unitprg, daysworked(st.employmentdate) AS daysworked, daysentitled(st.level) AS daysentitled,      IFNULL(daystaken.daystaken, 0) AS daysgone, permissible(daysentitled(st.level), IFNULL(daystaken.daystaken, 0)) AS permissibledays, leavebonus(st.monthlybasic, daysworked(st.employmentdate)) AS leavebonus, st.bankacct, st.bankname
                   FROM stafflst AS st
                   LEFT JOIN daystaken
                   ON st.staffid = daystaken.staffid
-                  ORDER BY st.category, st.kol, st.dept, st.unitprg, staffname ";
+                  ORDER BY st.category, st.kol, st.dept, st.unitprg, staffname";
 
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
+    $stmt = $this->db->prepare($query);
+    $stmt->execute();
 
-        return $stmt;  
-
+    return $stmt;  
 	}
 
 #to check if leave application for a leavetype is in progress so as to disallow staff from making double application
 	public function isLeaveAppExist($staffid, $leavetype){
 
 		$query = "SELECT staffid, leavetype, leavestatus
-						FROM leaveapplication 
-							WHERE staffid = '$staffid'
+						  FROM leaveapplication 
+							 WHERE staffid = '$staffid'
 								AND leavetype = '$leavetype' 
 									AND leavestatus != 'Resumption Confirmed'
 				";

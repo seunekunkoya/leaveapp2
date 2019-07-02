@@ -4,7 +4,7 @@ include "include/config.php";
 $currentsession = $lvobj->addSlash($lvobj->getSession()); 
 $leavetype = 'annual';
 
-	$query = "SELECT st.staffid, CONCAT(sname,\" \", fname) AS staffname, st.title, st.post, st.level, st.dept, st.employmentdate, st.category, st.kol, st.unitprg,st.employmentdate,st.level, IFNULL(dy.daystaken, 0) AS daysgone, st.monthlybasic, st.bankacct, st.bankname
+	$query = "SELECT st.staffid, CONCAT(sname,\" \", fname) AS staffname, st.title, st.post, st.level, st.dept, st.employmentdate, st.category, st.kol, st.unitprg,IFNULL(dy.daystaken, 0) AS daysgone, st.monthlybasic, st.bankacct, st.bankname
              FROM stafflst AS st
                LEFT JOIN daystaken AS dy
                  ON st.staffid = dy.staffid
@@ -38,9 +38,8 @@ echo "<table>";
           $schedule = array();
           $n = 1;
           $totalbonus = 0;
-          while($row=$stmt->fetch(PDO::FETCH_ASSOC))         
+          while($row = $stmt->fetch(PDO::FETCH_ASSOC))         
                 {             
-                  $schedule[] = $row;
                   $date1 = $row['employmentdate'];
                   $date2 = date("Y-m-d");
 

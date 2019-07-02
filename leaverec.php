@@ -26,7 +26,7 @@ extract($_POST);
 // $newformat = date('Y-m-d',$time);
 
 // echo $newformat;
-// // 2003-10-16
+// 2003-10-16
 
 $edate = date('Y-m-d', strtotime($edate));
 $sdate = date('Y-m-d', strtotime($sdate));

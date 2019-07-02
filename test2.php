@@ -180,7 +180,7 @@ $_SESSION['staffinfo'] = $staffdetails;
 
             $lvobj->insertLeaveScheduleTransaction($transactionDate, $transaactionNo, $cursession, $officer, $recc, $comment);  
 
-        if($lvobj->insertLeaveSchedule($scheduleDetails, $cursession))
+        if($lvobj->insertLeaveSchedule($schedule, $cursession))
         {
           //header('Location: annualleavereport3.php');
           echo '<script> location.replace("annualleavereport3.php"); </script>';

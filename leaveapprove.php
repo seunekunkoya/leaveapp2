@@ -42,7 +42,6 @@ try {
           {
               $message = "Query Submitted";
               echo $message;
-
               //$lvobj->sendMail($to, $header, $subject, $message);
             }
         }
