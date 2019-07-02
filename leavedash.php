@@ -7,8 +7,8 @@
   $staffid = $_SESSION['staffid'];
 //$staffid = implode(',', array_map(function($el){ return $el['idno']; }, get_user($_SESSION['loginid'])));
 
-$staffdetails = $lvobj->staffInfo($staffid);
-$_SESSION['staffinfo'] = $staffdetails;
+  $staffdetails = $lvobj->staffInfo($staffid);
+  $_SESSION['staffinfo'] = $staffdetails;
 
 
   $staffid = $_SESSION['staffid'];
@@ -176,13 +176,18 @@ try {
                           </tr> 
                           
                           <tr>
-                           <td> Days </td>
+                           <td> Days Requested</td>
                            <td> <?php echo $lvobj->numdays($staffdet['startdate'], $staffdet['enddate']); ?> </td>
                           </tr>
+
+                          <tr>
+                           <td> Days to be deducted from annual leave </td>
+                           <td> <?php echo $staffdet['deductible'];; ?> </td>
+                          </tr>
                                     
-                                    <tr>
-                                        <td>Reason:</td>
-                                        <td><?php echo $staffdet['reason']; ?></td>
+                          <tr>
+                            <td>Reason:</td>
+                            <td><?php echo $staffdet['reason']; ?></td>
                                     </tr>
                                     <tr>
                                         <td>Phone number:</td>
@@ -323,7 +328,6 @@ if(!isset($hodid) || !isset($deanid) || !isset($hro) || !isset($vco) || !isset($
     if ($_SESSION['staffid'] == $_SESSION['staffinfo']['hod'] ) 
       {
         
-
         echo '<b>Make Recommendation</b>';
 
         echo "</span>";
@@ -768,8 +772,8 @@ else if ($_SESSION['staffid'] == $_SESSION['staffinfo']['dean']) {
                 method:"post",  
                 data:{staffid:staffid, ltype:ltype},  
                 success:function(data){  
-                     $('#leavehistory').html(data);  
-                     $('#myModal2').modal("show");  
+                  $('#leavehistory').html(data);  
+                  $('#myModal2').modal("show");  
                 }  
            });  
       });
@@ -800,10 +804,8 @@ else if ($_SESSION['staffid'] == $_SESSION['staffinfo']['dean']) {
                 $("#message").html(data);
                 $("p").addClass("alert alert-danger");
             },
-      });
-    
-      //alert("The text has been changed.");
-  });
+       });
+    });
           
   $('.goback').click(function() {
        history.back();

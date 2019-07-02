@@ -33,7 +33,7 @@ try {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         #Query to select leave details of the $this staff
         $stmtleave = $lvobj->getDetailsByStaffid($staffid, $cat);
-        
+                
         $num = $stmtleave->rowCount();
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////        
@@ -130,7 +130,7 @@ try {
                             <td>Leave Start Date:</td>
                               <td>
                                    <?php
-                                     $stdate = date_create($staffdet['startdate']);
+                                     $stdate = date_create($staffdet['apstartdate']);
                                      echo date_format($stdate, "d-M-Y");
                                    ?>         
                               </td>
@@ -140,7 +140,7 @@ try {
                             <td>Leave End Date</td>
                             <td>
                                <?php
-                                  $eddate = date_create($staffdet['enddate']);
+                                  $eddate = date_create($staffdet['apenddate']);
                                   echo date_format($eddate, "d-M-Y");                                                
                                ?>    
                             </td>
@@ -215,8 +215,8 @@ try {
         <?php echo '<input type="hidden" id="role" value="Applicant">'; ?>
         <?php echo '<input type="hidden" id="stage" value="1">'; ?>
         <?php echo '<input type="hidden" id="status" value="Resumed">'; ?>
-        <?php echo '<input type="hidden" id="sdate" value="'.$staffdet['recstartdate'].'">'; ?>
-        <?php echo '<input type="hidden" id="edate" value="'.$staffdet['recenddate'].'">'; ?>
+        <?php echo '<input type="hidden" id="sdate" value="'.$staffdet['startdate'].'">'; ?>
+        <?php echo '<input type="hidden" id="edate" value="'.$staffdet['enddate'].'">'; ?>
         <?php echo '<input type="hidden" id="staffid" value="'.$staffid.'">'; ?>
       </td>
       <td>

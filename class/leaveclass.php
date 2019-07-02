@@ -64,6 +64,15 @@ class leaveclass extends general {
 		return $staffinfo;
 	}
 
+  public function getOfficers(){
+
+    $qry = "SELECT staffid, sname, fname FROM stafflst";
+    $stmt = $this->db->prepare($qry);
+    $stmt->execute();
+
+    return $stmt;
+  }
+
   #gets the current academic session 
   function getSession()
   {
@@ -138,6 +147,54 @@ class leaveclass extends general {
                         return false;
                       }
 
+  }
+
+  public function insertDeductible($session, $appno, $numdays, $datecreated){
+                $qry = "INSERT INTO annualleavedeductible (session, appno, numdays, datecreated)
+                        VALUE (:session, :appno, :numdays, :datecreated)";
+                $stmt = $this->db->prepare($qry);
+
+                $stmt->bindParam(':session', $session);
+                $stmt->bindParam(':appno', $appno);
+                $stmt->bindParam(':numdays', $numdays);
+                $stmt->bindParam(':datecreated', $datecreated);
+
+                $stmt->execute();
+  }
+
+  public function updateDeductible($status, $appno, $session){
+
+                $qry = "UPDATE annualleavedeductible 
+                SET status = :status
+                WHERE appno = :appno
+                AND session = :session";
+
+                $stmt = $this->db->prepare($qry);
+
+                $stmt->bindParam(':status', $status);
+                $stmt->bindParam(':appno', $appno);
+                $stmt->bindParam(':session', $session);
+                $stmt->execute();
+  }
+
+
+  public function getDeductibleDays($staffid, $session)
+  {
+        $qry = "SELECT deductibledays FROM annualleavedeductible 
+                WHERE staffid = '$staffid'
+                AND session = '$session'"; 
+                
+        $stmt = $this->db->prepare($qry);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $deduct = $row['deductibledays'];
+
+        $num = $stmt->rowCount();
+        
+        $deducted = $num > 0 ? $deduct : 0; #ternary operator
+
+        return $deducted;
   }
 
   #updates approveleaves table from 0 to 1 to indicate staff resumption awaiting HOD confirmation
@@ -334,8 +391,47 @@ class leaveclass extends general {
         	}
 
 	}
-  #gets details of staff leave application in progress
-	public function getStatus($id, $cat){
+
+
+  public function getEntitleDays($staffid){
+      $qry = "SELECT an.ndays AS nday
+              FROM stafflst AS st
+              JOIN annualleavedays AS an
+              ON st.level = an.level
+              WHERE st.staffid = '$staffid'";
+
+      $stmt = $this->db->prepare($qry);
+      $stmt->execute();
+
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+      return $row['nday'];
+  }
+
+  public function getDaysWorked($ndays){
+    $ndays >= 365 ? $daysworked = 365 : $daysworked = $ndays;
+    return $daysworked;
+  }
+
+public function leaveBonus($mbasic, $daysworked){
+  $daysw = (int)$this->getDaysWorked($daysworked);
+  $lbonus = $mbasic * 12 * 0.1 * ($daysw/365);
+
+  return $lbonus;
+}
+
+public function annualPermissibleDays($staffid, $currentsession, $leavetype){
+    $entitledDays = (int)$this->getEntitleDays($staffid);
+    $daysgone = (int)$this->leavedaysgone($staffid, $currentsession, $leavetype);
+
+    $permissibledays = $entitledDays - $daysgone;
+
+    return $permissibledays;  
+}
+
+
+#gets details of staff leave application in progress
+public function getStatus($id, $cat){
 
 		$query = "SELECT st.fname, st.sname, s.dept, s.hod, l.staffid, l.leavetype, l.reason, l.startdate, l.enddate, l.leavestatus, l.appno, l.datecreated,lt.tstaffid, lt.comment, lt.role, lt.transactionid, lt.recstartdate, lt.recenddate, lt.status, lt.timeviewed, lt.remarks, l.location
 				  FROM stafflst AS s
@@ -392,7 +488,7 @@ class leaveclass extends general {
           AND l.leavestageid = '2'
           AND lt.role = 'Hod'
           AND st.category = '$cat'
-          OR (st.staffid = st.hod AND l.leavestatus = 'Submitted') 
+          /*OR (st.staffid = st.hod AND l.leavestatus = 'Submitted')*/
           ORDER BY lt.timeviewed DESC";
 
         $stmt = $this->db->prepare($query);
@@ -474,11 +570,13 @@ class leaveclass extends general {
 	public function leaveDetails($appno){
 
 		$query = "
-					SELECT st.sname, st.fname, l.staffid, l.leavetype, l.startdate, l.enddate, l.phone, l.reason, l.location, l.session, l.officer1, l.officer2, l.officer3, st.post, st.dept, st.kol, st.unitprg, st.category
+					SELECT st.sname, st.fname, l.staffid, l.leavetype, l.startdate, l.enddate, l.phone, l.reason, l.location, l.session, l.officer1, l.officer2, l.officer3, st.post, st.dept, st.kol, st.unitprg, st.category, de.numdays as deductible
                        FROM leaveapplication AS l
                        INNER JOIN stafflst AS st
                        ON st.staffid = l.staffid
-                       WHERE appno = $appno
+                       LEFT JOIN annualleavedeductible as de
+                       ON de.appno = l.appno
+                       WHERE l.appno = $appno
                    ";
 
         $stmt = $this->db->prepare($query);
@@ -725,21 +823,18 @@ class leaveclass extends general {
   #get staff details using staffid
 	public function getDetailsByStaffid($staffid, $cat){
 
-		$query = "	SELECT *
-          			FROM stafflst AS s
-          			INNER JOIN leaveapplication AS l
-                  	ON s.staffid = l.staffid
-                  	INNER JOIN stafflist AS st
-                  	ON s.staffid = st.staffid
-                  	INNER JOIN leavetransaction AS lt
-                  	ON l.appno = lt.appno
-                  	INNER JOIN approvedleaves AS ap
-                  	ON ap.staffid = s.staffid
-                  	WHERE l.staffid = '$staffid' 
-                  	AND s.category = '$cat'
-                  	AND ap.resumeddate = ''
-                  	ORDER BY lt.timeviewed DESC
-                  	LIMIT 1
+		$query = "	SELECT DISTINCT *
+                FROM stafflst AS s
+                RIGHT JOIN leaveapplication AS l
+                    ON s.staffid = l.staffid
+                    RIGHT JOIN stafflist AS st
+                    ON s.staffid = st.staffid
+                    RIGHT JOIN approvedleaves AS ap
+                    ON ap.staffid = s.staffid
+                    WHERE l.staffid = '$staffid' 
+                    AND s.category = '$cat'
+                    AND ap.resumeddate = ''
+                    ORDER BY l.datecreated DESC
 	             ";
 
         $stmt = $this->db->prepare($query);
@@ -956,9 +1051,8 @@ class leaveclass extends general {
 						FROM leaveapplication 
 							WHERE staffid = '$staffid'
 								AND leavetype = '$leavetype' 
-									AND leavestatus != 'Released'
+									AND leavestatus != 'Resumption Confirmed'
 				";
-
 
 		$stmt = $this->db->prepare($query);
 		$stmt->execute();
@@ -1244,7 +1338,10 @@ public function leavedaysgone($staffid, $currentsession, $leavetype)
 		            ++$i;//increment counter
 		          }
 
-		         return $leavedaystotal;
+            //$ldt = is_null($leavedaystotal) ? 0 : $leavedaystotal;
+            
+
+		        return $leavedaystotal;
 }//end of public function leavedaysdone
 
 
@@ -1424,6 +1521,7 @@ public function isdean($staffid){
 
         return (int)$ndays + 1;
 	}//end of public function number of days
+
 
 }
 

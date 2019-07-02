@@ -3,7 +3,7 @@
 Developer: Ekunkoya Isaiah
 Site:      ekunkoya.com.ng
 Script:    Insert data into transaction table
-File:      leavetrack.php
+File:      leaveapps.php
 For every appno entrying this file, the transactionid increases by 1.
 */
 
@@ -42,56 +42,10 @@ echo $lvobj->addSlash($lvobj->getSession());
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">  
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" type="text/css" href="css/leaveapps.css">
   <script src="js/datepicker.js"></script>
 
-<!-------------------------------------------------Include the above in your HEAD tag--------------------------------------------------------------->
-<style type="text/css">
-        #space{
-          padding-top: 100px;
-        }
-
-      .adiff {
-        position: absolute;
-        top: 237px;
-        right: -90px;
-        width: 100px;
-        height: 40px;
-        padding: 3px;
-        margin-left: 10px;  
-      }
-
-      .dialog{
-      	display: none;
-      }
-
-    #leavehistory{ z-index: 3000; }
-
-    h5.stylo{
-      line-height: 2;
-    }
-
-    .modal a {
-      text-decoration: none;
-      color: black;
-    }
-
-    a.btn-style {
-        width: 50px;
-        height: 25px;
-        font-size: 12px;
-        text-decoration: none;
-        border: 1px solid #474849;
-        margin: 0px 5px 0px 5px;
-        padding: 3px;
-        background-color: #f9fbff;
-        color: black;
-        border-radius: 5px;
-    }
-    a.btn-style:hover {background-color: #e7e7e7;}
-
-
-</style>
 
 </head>
 <body>
@@ -116,8 +70,6 @@ echo $lvobj->addSlash($lvobj->getSession());
 <div>
   <?php
       echo "Level = ".$level."<br>";
-      //echo " Allowed leave days of level = ".leavedays($level);
-      //echo "Leave days in the Session = ".(int)casualleavedaysgone($staffid, '2018/2019');
   ?>
 </div>
 
@@ -273,6 +225,7 @@ echo $lvobj->addSlash($lvobj->getSession());
                 
                 <a class="btn btn-md btn-default" href='leavedashboard.php?id= <?php echo base64_encode($_SESSION['staffid']); ?>'>Cancel</a>
                  <button type="submit" class="btn btn-md" id="apply">Submit</button><span class="loading"></span>
+                 <button type="submit" class="btn btn-md" id="casual_apply">Submit</button>
               </div>
             </div>
           </div>
@@ -334,13 +287,144 @@ echo $lvobj->addSlash($lvobj->getSession());
   </div>
 <!----MODAL----->
 
+<!----MODAL----->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-sm" style="margin-top: 35vh;">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
 
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <h4 class="modal-title"><label>Notice</label></h4>
+        </div>
+        <div class="modal-body" id="leavehistory">
+            <div id="deductiblecontent"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" id="yesbtn"><b>YES</b></button>
+          <button type="button" class="btn btn-default" data-dismiss="modal" id="nobtn"><b>Cancel</b></button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal -->
  
 </body>
 
 
 <script type="text/javascript">
 $(function(){
+
+  $('#yesbtn').click(function(){
+    console.log('YES');
+    $('#myModal').modal('hide');
+
+    $( "#reason" ).prop( "disabled", false );//enables the form fields
+    $( "#location" ).prop( "disabled", false );
+    $( "#phone" ).prop( "disabled", false );
+    $( "#officer1" ).prop( "disabled",false );
+    $( "#officer2" ).prop( "disabled", false );
+    $( "#officer3" ).prop( "disabled", false );
+    $( "#apply" ).prop( "disabled", false );
+
+    $('#apply').hide();
+    $('#casual_apply').show();
+
+  });
+
+  $('#nobtn').click(function(){
+    console.log('NO');
+    $('#myModal').modal('hide');
+
+    $( "#sdate" ).prop( "disabled", true );
+    $( "#edate" ).prop( "disabled", true );
+    $( "#reason" ).prop( "disabled", true );//disables the form fields
+    $( "#location" ).prop( "disabled", true );
+    $( "#phone" ).prop( "disabled", true );
+    $( "#officer1" ).prop( "disabled", true );
+    $( "#officer2" ).prop( "disabled", true );
+    $( "#officer3" ).prop( "disabled", true );
+    $( "#apply" ).prop( "disabled", true );
+    $('select#leavetype').val('');
+
+    $('#datedif2').html("");
+
+  });
+
+  $('#casual_apply').click(function(){
+    console.log('Casual Submitted');
+    var leavetype = 'casual';
+    var reason = $("#reason").val();
+    var sdate = $("#sdate").val();
+    var edate = $("#edate").val();
+    var location = $("#location").val();
+    var phone = $('#phone').val();
+    var officer1 = $("#officer1").val();
+    var officer2 = $("#officer2").val();
+    var officer3 = $("#officer3").val();
+    var staffid = $('#staffid').val();
+    var deduct = true;
+
+    //hurl = 'redrect.php';
+  if ((leavetype == '') || (reason == '') || (sdate == '') || (edate == '') || (location == '') || (phone == '') || (officer1 == '') || (officer2 == '') || (officer3 == ''))
+  {
+    $('#modalContent').html('<h5 class="stylo">All fields are required</h5>');
+    $('#myModal1').modal({backdrop: false, keyboard: false});
+    $('#apply').html("Submit");
+    
+  }
+  else {
+        
+//AJAX code to send data to php file.
+    $.ajax({
+            method: "POST",
+            url:   "leaveappinsert.php",
+            datatype: "text",
+            data: {
+              leavetype:leavetype,
+              reason:reason,
+              sdate:sdate,
+              edate:edate,
+              location:location,
+              phone:phone,
+              officer1:officer1,
+              officer2:officer2,
+              officer3:officer3,
+              deduct:deduct
+            },
+            success: function(response) {
+              console.log(response);
+                if (response == 'SUCCESS')   {
+                  window.location.replace("leavedashboard.php?id="+btoa(staffid));
+                }
+
+                if (response == 'FAIL') {
+                  $('#modalContent').html('<h3 class="stylo">TRY AGAIN</h3>');
+                  $('#myModal1').modal({backdrop: 'static', keyboard: false});
+                  $('#apply').html("Submit");
+                }
+
+                if (response == 'EMPTY FORM') {
+                  $('#modalContent').html('<h5 class="stylo">One part of the form is not filled</h5>');
+                  $('#myModal1').modal({backdrop: 'static', keyboard: false});
+                  $('#apply').html("Submit");
+                }
+
+                if (response == 'DBASE ERROR') {
+                  $('#modalContent').html('<h5 class="stylo">Try again later</h5>');
+                  $('#myModal1').modal({backdrop: 'static', keyboard: false});
+                  $('#apply').html("Submit");
+                }
+                
+            },
+            error: function(){
+              alert("error");
+            }
+        });
+    }//end of if else
+  });
+
 
   $("#eddform").click(function(){
       edd = $('#edd').val();
@@ -419,14 +503,13 @@ $('select#leavetype').change(function(e){
             url: "checkleavetype.php",
             data: {leavetype:leavetype, staffid:staffid},
             dataType: "json",
-                success: function(result) {
-                
+                success: function(result) {                
                   //console.log(result);
                    if(result.status == 'TRUE')
                     {
                       $('#modalContent').html('<h5 class="stylo">You currently have an application for ' +leavetype+ ' leave in progress. Click check status to view the status of your application or click back to select another leave category.</h5>');
-                      $('.modal-footer').html('<button class="btn btn-default pull-left"><a href="leavestatus.php?id=<?php echo base64_encode($_SESSION['staffid']); ?>">Check Status</a></button> <button class="btn btn-default" data-dismiss="modal">Back</button>')
-                      $('#myModal1').modal({backdrop: false, keyboard: false})
+                      $('.modal-footer').html('<button class="btn btn-default pull-left"><a href="leavestatus.php?id=<?php echo base64_encode($_SESSION['staffid']); ?>">Check Status</a></button> <button class="btn btn-default" data-dismiss="modal">Back</button>');
+                      $('#myModal1').modal({backdrop: false, keyboard: false});
 
                        $( "#sdate" ).prop( "disabled", true );
                        $( "#edate" ).prop( "disabled", true );
@@ -497,7 +580,7 @@ $('select#leavetype').change(function(e){
 
            $.ajax({
                 type: "POST",
-                url: "datediff.php",
+                url: "checkdaysapplied.php",
                 data: {
                     sdate:sdate,
                     edate:edate,
@@ -508,10 +591,11 @@ $('select#leavetype').change(function(e){
                     console.log(result);
                     if(result.status == 'err')
                     {
-                        //alert(result.reason);
+                        var ndays ="Days : " + result.daysapplied;
+                       $('#datedif2').html(ndays);
 
-                        $('#modalContent').html('<h5 class="stylo">'+result.reason+'. Please select another set of dates.</h5>');
-                        $('#myModal1').modal({backdrop: false, keyboard: false});
+                        $('#deductiblecontent').html('<div class ="stylo"><h5>'+result.reason+'. </h5> <h5>The excess <b>'+result.deduct+' days</b> may be deducted from your annual leave.</h5><h5> If you agree for the deduction click <b>YES</b>.</h5><h5> Otherwise click <b>Cancel</b>. </h5>');
+                        $('#myModal').modal({backdrop: false, keyboard: false});
 
                         $( "#reason" ).prop( "disabled", true );//disables the form fields
                         $( "#location" ).prop( "disabled", true );
@@ -523,8 +607,44 @@ $('select#leavetype').change(function(e){
                     }
                     if(result.status == 'neg')
                     {
-                        //alert(result.reason);
+                        var ndays ="Days : " + result.daysapplied;
+                        $('#datedif2').html(ndays);
+
                         $('#modalContent').html('<h5 class="stylo">'+result.reason+'. Please select another end date.</h5>');
+                        $('#myModal1').modal({backdrop: false, keyboard: false});
+
+                        $( "#reason" ).prop( "disabled", true );//disables the form fields
+                        $( "#location" ).prop( "disabled", true );
+                        $( "#phone" ).prop( "disabled", true );
+                        $( "#officer1" ).prop( "disabled", true );
+                        $( "#officer2" ).prop( "disabled", true );
+                        $( "#officer3" ).prop( "disabled", true );
+                        $( "#apply" ).prop( "disabled", true );
+                    }
+                    
+                    if(result.status == 'na')
+                    {
+                        var ndays ="Days : " + result.daysapplied;
+                         $('#datedif2').html(ndays);
+                      
+                        $('#modalContent').html('<h5 class="stylo">'+result.reason+'</h5>');
+                        $('#myModal1').modal({backdrop: false, keyboard: false});
+
+                        $( "#reason" ).prop( "disabled", true );//disables the form fields
+                        $( "#location" ).prop( "disabled", true );
+                        $( "#phone" ).prop( "disabled", true );
+                        $( "#officer1" ).prop( "disabled", true );
+                        $( "#officer2" ).prop( "disabled", true );
+                        $( "#officer3" ).prop( "disabled", true );
+                        $( "#apply" ).prop( "disabled", true );
+                    }
+
+                    if(result.status == 'np')
+                    {
+                        var ndays ="Days : " + result.daysapplied;
+                        $('#datedif2').html(ndays);
+                        
+                        $('#modalContent').html('<h5 class="stylo">'+result.reason+'. Please select another set of dates.</h5>');
                         $('#myModal1').modal({backdrop: false, keyboard: false});
 
                         $( "#reason" ).prop( "disabled", true );//disables the form fields
@@ -537,11 +657,9 @@ $('select#leavetype').change(function(e){
                     }
 
                     if(result.status == 'ok'){
-                      var ndays ="Days : " + result.daysapplied;
-                       $('#datedif2').html(ndays);
-                       console.log(ndays);
-                       //$("#datedif").css({"border-left": "5px solid grey", "background-color": "lightgrey", "border-radius": "5px"});
-
+                        var ndays ="Days : " + result.daysapplied;
+                        $('#datedif2').html(ndays);
+                       
                           $( "#reason" ).prop( "disabled", false );//enables the form fields
                           $( "#location" ).prop( "disabled", false );
                           $( "#phone" ).prop( "disabled", false );
@@ -551,9 +669,10 @@ $('select#leavetype').change(function(e){
                           $( "#apply" ).prop( "disabled", false );
                     }
                   },
-                error: function(data) {
-                    $("#message").html(data);
-                    $("p").addClass("alert alert-danger");
+                error: function(result) {
+                  //console.log(result.promise);
+                    // $("#message").html(data);
+                    // $("p").addClass("alert alert-danger");
                 },
             });
            
@@ -586,8 +705,6 @@ $('select#leavetype').change(function(e){
     var officer2 = $("#officer2").val();
     var officer3 = $("#officer3").val();
     var staffid = $('#staffid').val();
-
-
 
     //hurl = 'redrect.php';
 	if ((leavetype == '') || (reason == '') || (sdate == '') || (edate == '') || (location == '') || (phone == '') || (officer1 == '') || (officer2 == '') || (officer3 == ''))

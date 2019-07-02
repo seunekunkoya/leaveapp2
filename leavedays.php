@@ -38,7 +38,6 @@ extract($_POST);
 	$output .= "<h6>". ucfirst($leavetype). " leave days gone is ".$leavedaysgone." day(s), ";
 	$output .= "you still have ".$dayspermissible." days out of your ".$leavetype." leave </h6>";
 	
-
 	echo $outp['da']."|".$outp['dg']."|".$outp['dp'];
 	// echo json_encode($outp);
 ?>

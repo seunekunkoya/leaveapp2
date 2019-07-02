@@ -30,7 +30,7 @@ $comment = '';
 //get status
 try{
             
-		
+		$lvobj->updateLeaveApplication($status, $stage, $appno);
         if($lvobj->insertLT($appno, $staffid, $role, $transactionid, $timeviewed, $comment, $status, $sdate, $edate, $remarks)){
             
             //$resumed = 1;

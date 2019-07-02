@@ -81,7 +81,61 @@ extract($_POST);
 
   if (count($formerror) == 0) {
 
+    if(isset($deduct))
+    {
+        
         $datecreated = date('Y-m-d H:i:s');
+        // $$lvobj->timeviewed = date('Y-m-d H:i:s');
+        $appno = $lvobj->serAppno();
+        //$appno = appNo(9);
+        $leavestatus = "Submitted";
+        $leavestageid = 1;
+        $transactionid = 1;
+        $role = "Applicant";//role of the staff as at the point of leave application
+        //$session = '2018/2019';
+        $session = $lvobj->getSession();
+        $cursession = $lvobj->addSlash($lvobj->getSession());
+        
+        $remarks = '';//so as to be able to use it as an argument
+        $edate = date('Y-m-d', strtotime($edate));
+        $sdate = date('Y-m-d', strtotime($sdate));
+        $numdays = $lvobj->numdays($sdate, $edate);
+
+        ###check for deduction
+
+        $leavedaysgone = (int)$lvobj->leavedaysgone($staffid, $cursession, $leavetype);
+        $leaveallowed = (int)$lvobj->leavedaysallowed($staffid, $leavetype);
+        
+        $deductible = ($leaveallowed - $leavedaysgone) > 0 ? $numdays - ($leaveallowed - $leavedaysgone) : $numdays; #ternary operator
+
+        $lvobj->insertDeductible($session, $appno, $deductible, $datecreated);      
+
+        //echo $deductible ." ". $deducted;
+        if($lvobj->insertLAT($staffid, $appno, $leavetype, $reason, $sdate, $edate, $numdays, $session, $location, $phone, $officer1, $officer2, $officer3, $leavestatus, $leavestageid, $datecreated))
+        {                         
+          if ($lvobj->insertLT($appno, $staffid, $role, $transactionid, $datecreated, $reason, $leavestatus, $sdate, $edate, $remarks))
+          {
+            //$result['success'] = 'Data Inserted';
+            echo "SUCCESS";
+            //$lvobj->sendMail($to, $header, $subject, $message);
+          }
+          else 
+          {
+            //$result['failed'] = 'Please try again';
+            echo "FAIL";
+          }//end of else
+        }
+        else
+        {
+          //$result['derror'] = 'Database Error';
+          echo "DBASE ERROR";
+        }
+        
+    }//end of deduct
+    
+    else
+    {
+      $datecreated = date('Y-m-d H:i:s');
         // $$lvobj->timeviewed = date('Y-m-d H:i:s');
         $appno = $lvobj->serAppno();
         //$appno = appNo(9);
@@ -116,15 +170,16 @@ extract($_POST);
           //$result['derror'] = 'Database Error';
           echo "DBASE ERROR";
         }//end of if statement executes
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    }
   }//end of form not having error
-  else
-  {
+else
+{
     foreach ($formerror as $error) 
     {
       echo $error;
     }
-  }//end of form error
+}//end of form error
 
 //echo json_encode($result);
 

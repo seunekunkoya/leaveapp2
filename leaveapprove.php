@@ -11,12 +11,6 @@ include "include/config.php";
 
 $lvobj->checkSession();
 
-//$staffid = $_SESSION['staffid'];
-//$staffid = implode(',', array_map(function($el){ return $el['idno']; }, get_user($_SESSION['loginid'])));
-
-//$staffdetails = $lvobj->staffInfo($staffid);
-//$_SESSION['staffinfo'] = $staffdetails;
-
 extract($_POST);
 
 extract($approvedArr);
@@ -31,9 +25,14 @@ $edate = date('Y-m-d', strtotime($edate));
 $sdate = date('Y-m-d', strtotime($sdate));
 
 $comment = '';//to allow arguement passage
+$session = $lvobj->getSession();
+$cursession = $lvobj->addSlash($lvobj->getSession());
+
+$deductibleStatus = 1;
 
 
 try {
+      $lvobj->updateDeductible($deductibleStatus, $appno, $session);
     
     if($lvobj->insertLT($appno, $staffid, $role, $transactionid, $datecreated, $comment, $status, $sdate, $edate, $remarks))
     {

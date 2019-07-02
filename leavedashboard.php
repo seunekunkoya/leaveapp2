@@ -73,9 +73,11 @@ echo '<br><br>'.$cursession;
         <div class="col-md-7">
             <h3>Personal Leave Tab</h3>
               <p><a href="leaveapps.php" class="btn btn-default">Make New Application</a></p>
+              <!-- <p><a href="casual.php" class="btn btn-default">Apply for Casual Leave</a></p> -->
 
         <?php 
-                echo '<p><a href="leavestatus.php?id='.base64_encode($id).'" class="btn btn-default">View Application Status</a></p>'; 
+                echo '<p><a href="leavestatus.php?id='.base64_encode($id).'" class="btn btn-default">View Application Status</a></p>';
+
                 
                     if ($num > 0 ) {
                         echo ' <p><a href="resume.php?id='.base64_encode($id).'" class="btn btn-default">Resume Work</a></p>'; 

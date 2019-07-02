@@ -18,7 +18,6 @@ $staffid = $_SESSION['staffid'];
 $staffdetails = $lvobj->staffInfo($staffid);
 $_SESSION['staffinfo'] = $staffdetails;
 
-//print_r($staffdetails);
 
 $level = $_SESSION['staffinfo']['level'];
 
@@ -33,10 +32,8 @@ $cat = $_SESSION['staffinfo']['category'];
   $hro = $_SESSION['staffinfo']['hro'];
   $rego = $_SESSION['staffinfo']['rego'];
   $vco = $_SESSION['staffinfo']['vco'];
-  
 ?>
 <!DOCTYPE html>
-<html>
 <head>
   <title>View leave Page</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
@@ -49,7 +46,6 @@ $cat = $_SESSION['staffinfo']['category'];
     <div class="row hed" >
       <div class="col-md-4"></div>
       <h3 class="h3">
-
       
       <?php 
               if ($staffid == $hodid) {
@@ -71,8 +67,7 @@ $cat = $_SESSION['staffinfo']['category'];
               elseif ($staffid == $vco)
               {
                 echo "Leave Application List";
-              }//end of if statement
-          
+              }//end of if statement          
           ?> 
         </h3>
     </div>
@@ -118,7 +113,6 @@ if(isset($_GET['id']))
           
           while($row=$stmt->fetch(PDO::FETCH_ASSOC))         
                 {
-
                    echo "<tr>";
                       echo "<td>".$n++."</td>";
                       echo "<td>".$row['appno']."</td>";
